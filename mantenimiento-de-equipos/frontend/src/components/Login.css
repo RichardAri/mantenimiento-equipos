@@ -1,50 +1,66 @@
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
 .login-background {
-    background-image: url('/fondo-windows.jpg');
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .login-container {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
-    width: 300px;
-    text-align: center;
-  }
-  
-  .login-container h1 {
-    margin-bottom: 20px;
-  }
-  
-  .login-container label {
-    display: block;
-    margin: 10px 0 5px;
-  }
-  
-  .login-container input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .login-container button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #0078d4;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .login-container button:hover {
-    background: #005a9e;
-  }
-  
+  background: url(/fondo-windows.jpg);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clock-container {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.login-container {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  width: 300px;
+  text-align: center;
+}
+
+.login-container h1 {
+  margin-bottom: 20px;
+}
+
+.login-container label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.login-container input {
+  width: 90%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.login-container button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #0078d4;
+  color: white;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background: #005a9e;
+}
