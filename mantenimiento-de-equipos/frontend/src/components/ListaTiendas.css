@@ -1,18 +1,24 @@
 /* src/components/ListaTiendas.css */
+
+body{
+    background: #FBF9ED;
+}
+
 .lista-tiendas {
-    padding: 20px;
+    padding: 1px;
 }
 
 .tiendas-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
 }
 
 .tienda-card {
+    width: 250px;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 10px;
+    border-radius: 18px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
@@ -25,18 +31,34 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .edit-button {
-    background-color: #2196F3;
-    color: white;
+    background-color: #359401;
+    color: white; 
     padding: 10px 20px;
     margin-top: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+}
+ 
+.lt-title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
 }
 
-h1 {
-    text-align: center;
+.lt-title-card{
+    color: black;
+}
+
+.lt-info-card{
+    color: black;
+}
+
+.del-button{
+    background-color: #e21515;
 }

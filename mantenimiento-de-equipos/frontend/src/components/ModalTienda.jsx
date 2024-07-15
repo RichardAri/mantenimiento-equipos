@@ -21,22 +21,21 @@ const Modal = ({ data, onSave, onClose }) => {
     return (
         <div className="modal">
             <div className="modal-content">
-                <h2>{formData.id ? 'EDITAR: ' + formData.nombre : 'AÑADIR TIENDA'}</h2>
+                <h2 className='me-title-card'>{formData.id ? 'EDITAR: ' + formData.nombre : 'AÑADIR TIENDA'}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Tienda:</label>
+                        <label className='me-lbl-tienda'>Tienda:</label>
                         <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <label>Ubicación:</label>
+                        <label className='me-lbl-tienda'>Ubicación:</label>
                         <input type="text" name="ubicacion" value={formData.ubicacion} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <label>Nro de Equipos:</label>
-                        <input type="number" name="equipos" value={formData.equipos} onChange={handleChange} required readOnly={!!formData.id} />
+                        <label className='me-lbl-tienda'>Nro de Equipos: 0</label>
                     </div>
                     <div className="form-group">
-                        <label>Encargado:</label>
+                        <label className='me-lbl-tienda'>Encargado:</label>
                         <input type="text" name="encargado" value={formData.encargado} onChange={handleChange} required />
                     </div>
                     <button type="submit" className="save-button">Guardar</button>

@@ -6,14 +6,14 @@ import ListaTiendas from './components/ListaTiendas';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/tiendas" element={<ListaTiendas />} />
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/tiendas" element={<ListaTiendas />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;

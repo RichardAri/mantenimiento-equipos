@@ -23,7 +23,8 @@
     margin-bottom: 15px;
 }
 
-label {
+.me-lbl-tienda {
+    color: black;
     display: block;
     margin-bottom: 5px;
 }
@@ -46,4 +47,8 @@ input {
 
 .close-button {
     background-color: #f44336;
+}
+
+.me-title-card{
+    color: black;
 }
