@@ -2,9 +2,7 @@
 .clock-container {
     text-align: center;
     color: #fff;
-    margin-bottom: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    margin-top: 20px;
 }
 
 .time {
@@ -13,6 +11,6 @@
 }
 
 .date {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 300;
 }
