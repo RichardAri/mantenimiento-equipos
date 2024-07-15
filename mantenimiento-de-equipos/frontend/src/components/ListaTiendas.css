@@ -1,64 +1,66 @@
-/* src/components/ListaTiendas.css */
-
-body{
-    background: #FBF9ED;
-}
-
-.lista-tiendas {
-    padding: 1px;
-}
-
 .tiendas-container {
+    padding: 20px;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    font-size: 2em;
+  }
+  
+  header button {
+    background: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  header button:hover {
+    background: #005a9e;
+  }
+  
+  .card-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
-}
-
-.tienda-card {
-    width: 250px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 18px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.add-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    margin: 20px 0;
+    gap: 16px;
+  }
+  
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(33.333% - 16px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card h2 {
+    margin: 0 0 10px;
+  }
+  
+  .card p {
+    margin: 5px 0;
+  }
+  
+  .edit-button {
+    align-self: flex-end;
+    background: transparent;
     border: none;
-    border-radius: 5px;
+    color: #0078d4;
+    font-size: 1.2em;
     cursor: pointer;
-    font-weight: bold;
-}
-
-.edit-button {
-    background-color: #359401;
-    color: white; 
-    padding: 10px 20px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
- 
-.lt-title{
-    text-align: center;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.lt-title-card{
-    color: black;
-}
-
-.lt-info-card{
-    color: black;
-}
-
-.del-button{
-    background-color: #e21515;
-}
+  }
+  
+  .edit-button:hover {
+    color: #005a9e;
+  }
+  

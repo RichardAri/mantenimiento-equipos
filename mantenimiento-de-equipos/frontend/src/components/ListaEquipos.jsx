@@ -1,53 +1,64 @@
-// src/components/ListaEquipos.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { db } from '../firebase';
 import './ListaEquipos.css';
-import ModalEquipo from './ModalEquipo';
 
 const ListaEquipos = () => {
-    const [equipos, setEquipos] = useState([
-        { id: 1, nombre: 'Equipo 1', ip: '192.168.1.1', descripcion: 'Procesador: i7, RAM: 16GB, S.O.: Windows 10', ultimoMantenimiento: '04/07/2024', encargado: 'Alonso' },
-        // Añade más equipos aquí...
-    ]);
+  const { tiendaId } = useParams();
+  const [equipos, setEquipos] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-    const [modalEquipoData, setModalEquipoData] = useState(null);
-
-    const handleEditEquipo = (equipo) => {
-        setModalEquipoData(equipo);
+  useEffect(() => {
+    // Suponiendo que estás obteniendo los equipos desde Firestore o alguna otra fuente de datos
+    const fetchEquipos = async () => {
+      const equiposSnapshot = await db.collection('tiendas').doc(tiendaId).collection('equipos').get();
+      const equiposList = equiposSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setEquipos(equiposList);
     };
 
-    const handleAddEquipo = () => {
-        setModalEquipoData({ id: null, nombre: '', ip: '', descripcion: '', ultimoMantenimiento: '', encargado: '' });
-    };
+    fetchEquipos();
+  }, [tiendaId]);
 
-    const handleSaveEquipo = (data) => {
-        if (data.id) {
-            setEquipos(equipos.map(equipo => equipo.id === data.id ? data : equipo));
-        } else {
-            data.id = equipos.length + 1;
-            setEquipos([...equipos, data]);
-        }
-        setModalEquipoData(null);
-    };
+  const filteredEquipos = equipos.filter(equipo =>
+    equipo.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    equipo.codigo.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    return (
-        <div className="page">
-            <h1>Lista de Equipos</h1>
-            <button onClick={handleAddEquipo} className="add-button">Añadir Equipo</button>
-            <div className="equipos-container">
-                {equipos.map(equipo => (
-                    <div key={equipo.id} className="equipo-card">
-                        <h2>{equipo.nombre}</h2>
-                        <p>IP: {equipo.ip}</p>
-                        <p>Descripción: {equipo.descripcion}</p>
-                        <p>Último Mantenimiento: {equipo.ultimoMantenimiento}</p>
-                        <p>Encargado: {equipo.encargado}</p>
-                        <button onClick={() => handleEditEquipo(equipo)} className="edit-button">Editar</button>
-                    </div>
-                ))}
-            </div>
-            {modalEquipoData && <ModalEquipo data={modalEquipoData} onSave={handleSaveEquipo} onClose={() => setModalEquipoData(null)} />}
-        </div>
-    );
+  return (
+    <div className="lista-equipos-container">
+      <header>
+        <Link to="/tiendas">Atrás</Link>
+        <h1>Lista de Equipos: {tiendaId}</h1>
+        <Link to={`/tiendas/${tiendaId}/equipos/nuevo`} className="add-button">+ Añadir</Link>
+      </header>
+      <input
+        type="text"
+        placeholder="Buscar..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
+      <div className="equipos-grid">
+        {filteredEquipos.map(equipo => (
+          <div key={equipo.id} className="equipo-card">
+            <h2>Equipo: {equipo.codigo}</h2>
+            <p>Nombre: {equipo.nombre}</p>
+            <p>IP: {equipo.ip}</p>
+            <p>Descripción:</p>
+            <ul>
+              {equipo.descripcion.split('\n').map((line, index) => (
+                <li key={index}>{line}</li>
+              ))}
+            </ul>
+            <p>Último Mantenimiento</p>
+            <p>{equipo.ultimoMantenimiento.nombre}</p>
+            <p>{equipo.ultimoMantenimiento.fecha}</p>
+            <Link to={`/equipos/editar/${equipo.id}`} className="edit-button">✏️ Editar</Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default ListaEquipos;
