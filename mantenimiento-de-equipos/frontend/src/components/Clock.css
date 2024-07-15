@@ -1,0 +1,18 @@
+/* src/components/Clock.css */
+.clock-container {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-top: 20px;
+}
+
+.time {
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+.date {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
