@@ -1,55 +1,51 @@
+// ModalEditarEquipo.jsx
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 import './Modal.css';
 
 Modal.setAppElement('#root');
 
-const ModalEditarEquipo = ({ isOpen, onRequestClose, equipoId }) => {
+const ModalEditarEquipo = ({ isOpen, onRequestClose, equipo, onSave, onDelete }) => {
   const [codigo, setCodigo] = useState('');
   const [nombre, setNombre] = useState('');
   const [ip, setIp] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const db = getFirestore();
 
   useEffect(() => {
-    if (equipoId) {
-      const fetchEquipo = async () => {
-        const docSnap = await getDoc(doc(db, 'equipos', equipoId));
-        if (docSnap.exists()) {
-          const equipo = docSnap.data();
-          setCodigo(equipo.codigo);
-          setNombre(equipo.nombre);
-          setIp(equipo.ip);
-          setDescripcion(equipo.descripcion);
-        }
-      };
-      fetchEquipo();
+    if (equipo) {
+      setCodigo(equipo.codigo);
+      setNombre(equipo.nombre);
+      setIp(equipo.ip);
+      setDescripcion(equipo.descripcion);
     }
-  }, [equipoId, db]);
+  }, [equipo]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await updateDoc(doc(db, 'equipos', equipoId), {
-      codigo,
-      nombre,
-      ip,
-      descripcion
-    });
-    onRequestClose();
+    const equipoActualizado = { codigo, nombre, ip, descripcion };
+    onSave(equipo.id, equipoActualizado);
+  };
+
+  const handleDelete = () => {
+    onDelete(equipo.id);
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
-      <h2>Editar: {codigo}</h2>
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
+      <h2>Editar Equipo</h2>
       <form onSubmit={handleSubmit}>
+        <label>Código:</label>
+        <input type="text" value={codigo} onChange={(e) => setCodigo(e.target.value)} required />
         <label>Nombre:</label>
         <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
         <label>IP:</label>
         <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} required />
         <label>Descripción:</label>
-        <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required></textarea>
-        <button type="submit">Guardar</button>
+        <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
+        <div className="button-group">
+          <button type="submit" className="save-button">Guardar</button>
+          <button type="button" className="delete-button" onClick={handleDelete}>Eliminar</button>
+        </div>
       </form>
     </Modal>
   );

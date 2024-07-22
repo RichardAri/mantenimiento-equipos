@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import './Modal.css';
 
 Modal.setAppElement('#root');
 
-const ModalAñadirEquipo = ({ isOpen, onRequestClose, tiendaId }) => {
+const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
   const [codigo, setCodigo] = useState('');
   const [nombre, setNombre] = useState('');
   const [ip, setIp] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const db = getFirestore();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await addDoc(collection(db, 'equipos'), {
-      codigo,
-      nombre,
-      ip,
-      descripcion,
-      tiendaId
-    });
-    onRequestClose();
+    const nuevoEquipo = { codigo, nombre, ip, descripcion };
+    onSave(nuevoEquipo);
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
       <h2>Añadir Equipo</h2>
       <form onSubmit={handleSubmit}>
         <label>Código:</label>
@@ -35,8 +27,8 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, tiendaId }) => {
         <label>IP:</label>
         <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} required />
         <label>Descripción:</label>
-        <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required></textarea>
-        <button type="submit">Añadir</button>
+        <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
+        <button type="submit" className="save-button">Añadir</button>
       </form>
     </Modal>
   );
