@@ -13,10 +13,10 @@ const ModalEditarEquipo = ({ isOpen, onRequestClose, equipo, onSave, onDelete })
 
   useEffect(() => {
     if (equipo) {
-      setCodigo(equipo.codigo);
-      setNombre(equipo.nombre);
-      setIp(equipo.ip);
-      setDescripcion(equipo.descripcion);
+      setCodigo(equipo.codigo || '');
+      setNombre(equipo.nombre || '');
+      setIp(equipo.ip || '');
+      setDescripcion(equipo.descripcion || '');
     }
   }, [equipo]);
 
@@ -26,12 +26,8 @@ const ModalEditarEquipo = ({ isOpen, onRequestClose, equipo, onSave, onDelete })
     onSave(equipo.id, equipoActualizado);
   };
 
-  const handleDelete = () => {
-    onDelete(equipo.id);
-  };
-
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
       <h2>Editar Equipo</h2>
       <form onSubmit={handleSubmit}>
         <label>Código:</label>
@@ -44,7 +40,7 @@ const ModalEditarEquipo = ({ isOpen, onRequestClose, equipo, onSave, onDelete })
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
         <div className="button-group">
           <button type="submit" className="save-button">Guardar</button>
-          <button type="button" className="delete-button" onClick={handleDelete}>Eliminar</button>
+          <button type="button" className="delete-button" onClick={() => onDelete(equipo.id)}>Eliminar</button>
         </div>
       </form>
     </Modal>

@@ -8,16 +8,18 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
   const [codigo, setCodigo] = useState('');
   const [nombre, setNombre] = useState('');
   const [ip, setIp] = useState('');
-  const [descripcion, setDescripcion] = useState('');
+  const [ram, setRam] = useState('');
+  const [procesador, setProcesador] = useState('');
+  const [sistemaOperativo, setSistemaOperativo] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const nuevoEquipo = { codigo, nombre, ip, descripcion };
+    const nuevoEquipo = { codigo, nombre, ip, ram, procesador, sistemaOperativo };
     onSave(nuevoEquipo);
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
       <h2>Añadir Equipo</h2>
       <form onSubmit={handleSubmit}>
         <label>Código:</label>
@@ -26,9 +28,13 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
         <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
         <label>IP:</label>
         <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} required />
-        <label>Descripción:</label>
-        <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
-        <button type="submit" className="save-button">Añadir</button>
+        <label>RAM:</label>
+        <input type="text" value={ram} onChange={(e) => setRam(e.target.value)} required />
+        <label>Procesador:</label>
+        <input type="text" value={procesador} onChange={(e) => setProcesador(e.target.value)} required />
+        <label>Sistema Operativo:</label>
+        <input type="text" value={sistemaOperativo} onChange={(e) => setSistemaOperativo(e.target.value)} required />
+        <button type="submit">Añadir</button>
       </form>
     </Modal>
   );
