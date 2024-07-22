@@ -1,62 +1,68 @@
+// ListaEquipos.jsx
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { db } from '../firebase';
+import { useParams } from 'react-router-dom';
+import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import ModalAñadirEquipo from './ModalAñadirEquipo';
+import ModalEditarEquipo from './ModalEditarEquipo';
 import './ListaEquipos.css';
 
 const ListaEquipos = () => {
   const { tiendaId } = useParams();
   const [equipos, setEquipos] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
+  const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
+  const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
+  const db = getFirestore();
 
   useEffect(() => {
-    // Suponiendo que estás obteniendo los equipos desde Firestore o alguna otra fuente de datos
     const fetchEquipos = async () => {
-      const equiposSnapshot = await db.collection('tiendas').doc(tiendaId).collection('equipos').get();
-      const equiposList = equiposSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setEquipos(equiposList);
+      const querySnapshot = await getDocs(collection(db, `tiendas/${tiendaId}/equipos`));
+      setEquipos(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     };
-
     fetchEquipos();
-  }, [tiendaId]);
+  }, [db, tiendaId]);
 
-  const filteredEquipos = equipos.filter(equipo =>
-    equipo.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    equipo.codigo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const abrirModalAñadir = () => setModalAñadirAbierto(true);
+  const cerrarModalAñadir = () => setModalAñadirAbierto(false);
+
+  const abrirModalEditar = (equipo) => {
+    setEquipoSeleccionado(equipo);
+    setModalEditarAbierto(true);
+  };
+  const cerrarModalEditar = () => setModalEditarAbierto(false);
+
+  const añadirEquipo = async (nuevoEquipo) => {
+    const docRef = await setDoc(doc(collection(db, `tiendas/${tiendaId}/equipos`)), nuevoEquipo);
+    setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
+    cerrarModalAñadir();
+  };
+
+  const editarEquipo = async (equipoId, equipoActualizado) => {
+    await setDoc(doc(db, `tiendas/${tiendaId}/equipos`, equipoId), equipoActualizado);
+    setEquipos(equipos.map(equipo => (equipo.id === equipoId ? { id: equipoId, ...equipoActualizado } : equipo)));
+    cerrarModalEditar();
+  };
 
   return (
-    <div className="lista-equipos-container">
+    <div className="equipos-container">
       <header>
-        <Link to="/tiendas">Atrás</Link>
+        <button onClick={() => window.history.back()}>Atrás</button>
         <h1>Lista de Equipos: {tiendaId}</h1>
-        <Link to={`/tiendas/${tiendaId}/equipos/nuevo`} className="add-button">+ Añadir</Link>
+        <button onClick={abrirModalAñadir}>Añadir Equipo</button>
       </header>
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
-      />
-      <div className="equipos-grid">
-        {filteredEquipos.map(equipo => (
-          <div key={equipo.id} className="equipo-card">
-            <h2>Equipo: {equipo.codigo}</h2>
+      <div className="card-container">
+        {equipos.map((equipo) => (
+          <div className="card" key={equipo.id}>
+            <h2>{equipo.codigo}</h2>
             <p>Nombre: {equipo.nombre}</p>
             <p>IP: {equipo.ip}</p>
-            <p>Descripción:</p>
-            <ul>
-              {equipo.descripcion.split('\n').map((line, index) => (
-                <li key={index}>{line}</li>
-              ))}
-            </ul>
-            <p>Último Mantenimiento</p>
-            <p>{equipo.ultimoMantenimiento.nombre}</p>
-            <p>{equipo.ultimoMantenimiento.fecha}</p>
-            <Link to={`/equipos/editar/${equipo.id}`} className="edit-button">✏️ Editar</Link>
+            <p>Descripción: {equipo.descripcion}</p>
+            <button className="edit-button" onClick={() => abrirModalEditar(equipo)}>✎</button>
           </div>
         ))}
       </div>
+      <ModalAñadirEquipo isOpen={modalAñadirAbierto} onRequestClose={cerrarModalAñadir} onSave={añadirEquipo} />
+      <ModalEditarEquipo isOpen={modalEditarAbierto} onRequestClose={cerrarModalEditar} equipo={equipoSeleccionado} onSave={editarEquipo} />
     </div>
   );
 };
