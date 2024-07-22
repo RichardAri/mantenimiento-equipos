@@ -18,10 +18,10 @@ const App = () => {
       <Route path="/tiendas" element={<ListaTiendas />} />
       <Route path="/tiendas/:tiendaId/equipos" element={<ListaEquipos />} />
       <Route path="/tiendas/:tiendaId/equipos/nuevo" element={<ModalAñadirEquipo />} />
-      <Route path="/equipos/editar/:equipoId" element={<ModalEditarEquipo />} />
-      <Route path="/equipos/:equipoId/mantenimientos" element={<ListaMantenimientos />} />
-      <Route path="/equipos/:equipoId/mantenimientos/nuevo" element={<ModalAñadirMantenimiento />} />
-      <Route path="/mantenimientos/editar/:mantenimientoId" element={<ModalEditarMantenimiento />} />
+      <Route path="/tiendas/:tiendaId/equipos/:equipoId/editar" element={<ModalEditarEquipo />} />
+      <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos" element={<ListaMantenimientos />} />
+      <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo" element={<ModalAñadirMantenimiento />} />
+      <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar" element={<ModalEditarMantenimiento />} />
     </Routes>
   );
 };
