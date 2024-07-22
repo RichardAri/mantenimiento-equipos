@@ -1,24 +1,32 @@
-// ListaEquipos.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getFirestore, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 import ModalAñadirEquipo from './ModalAñadirEquipo';
 import ModalEditarEquipo from './ModalEditarEquipo';
 import './ListaEquipos.css';
 
 const ListaEquipos = () => {
   const { tiendaId } = useParams();
+  const navigate = useNavigate();
   const [equipos, setEquipos] = useState([]);
+  const [nombreTienda, setNombreTienda] = useState('');
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const db = getFirestore();
 
   useEffect(() => {
+    const fetchTienda = async () => {
+      const tiendaDoc = await getDoc(doc(db, 'tiendas', tiendaId));
+      setNombreTienda(tiendaDoc.data().nombre);
+    };
+
     const fetchEquipos = async () => {
       const querySnapshot = await getDocs(collection(db, `tiendas/${tiendaId}/equipos`));
       setEquipos(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     };
+
+    fetchTienda();
     fetchEquipos();
   }, [db, tiendaId]);
 
@@ -43,26 +51,35 @@ const ListaEquipos = () => {
     cerrarModalEditar();
   };
 
+  const eliminarEquipo = async (equipoId) => {
+    await deleteDoc(doc(db, `tiendas/${tiendaId}/equipos`, equipoId));
+    setEquipos(equipos.filter(equipo => equipo.id !== equipoId));
+  };
+
   return (
     <div className="equipos-container">
       <header>
-        <button onClick={() => window.history.back()}>Atrás</button>
-        <h1>Lista de Equipos: {tiendaId}</h1>
+        <button onClick={() => navigate(-1)}>Atrás</button>
+        <h1>Lista de Equipos: {nombreTienda}</h1>
         <button onClick={abrirModalAñadir}>Añadir Equipo</button>
       </header>
       <div className="card-container">
         {equipos.map((equipo) => (
-          <div className="card" key={equipo.id}>
-            <h2>{equipo.codigo}</h2>
-            <p>Nombre: {equipo.nombre}</p>
+          <div className="card" key={equipo.id} onClick={() => navigate(`/tiendas/${tiendaId}/equipos/${equipo.id}/mantenimientos`)}>
+            <h2>{equipo.nombre}</h2>
             <p>IP: {equipo.ip}</p>
-            <p>Descripción: {equipo.descripcion}</p>
-            <button className="edit-button" onClick={() => abrirModalEditar(equipo)}>✎</button>
+            <p>Descripción:</p>
+            <ul>
+              {equipo.descripcion.split('\n').map((line, index) => (
+                <li key={index}>{line}</li>
+              ))}
+            </ul>
+            <button className="edit-button" onClick={(e) => { e.stopPropagation(); abrirModalEditar(equipo); }}>✎</button>
           </div>
         ))}
       </div>
       <ModalAñadirEquipo isOpen={modalAñadirAbierto} onRequestClose={cerrarModalAñadir} onSave={añadirEquipo} />
-      <ModalEditarEquipo isOpen={modalEditarAbierto} onRequestClose={cerrarModalEditar} equipo={equipoSeleccionado} onSave={editarEquipo} />
+      <ModalEditarEquipo isOpen={modalEditarAbierto} onRequestClose={cerrarModalEditar} equipo={equipoSeleccionado} onSave={editarEquipo} onDelete={eliminarEquipo} />
     </div>
   );
 };
