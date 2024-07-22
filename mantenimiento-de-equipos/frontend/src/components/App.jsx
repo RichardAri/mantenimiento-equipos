@@ -16,7 +16,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/tiendas" element={<ListaTiendas />} />
-      <Route path="/tiendas/:tiendaId" element={<ListaEquipos />} />
+      <Route path="/tiendas/:tiendaId/equipos" element={<ListaEquipos />} />
       <Route path="/tiendas/:tiendaId/equipos/nuevo" element={<ModalAñadirEquipo />} />
       <Route path="/equipos/editar/:equipoId" element={<ModalEditarEquipo />} />
       <Route path="/equipos/:equipoId/mantenimientos" element={<ListaMantenimientos />} />
