@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import './ModalAñadirTienda.css';
+import './Modal.css';
 
 Modal.setAppElement('#root');
 
-const ModalAñadirTienda = ({ isOpen, onRequestClose }) => {
+const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
   const [nombre, setNombre] = useState('');
   const [ubicacion, setUbicacion] = useState('');
   const [encargado, setEncargado] = useState('');
@@ -13,17 +13,27 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addDoc(collection(db, 'tiendas'), {
+    const nuevaTienda = {
       nombre,
       ubicacion,
       encargado,
       nroEquipos: 0
-    });
+    };
+    await addDoc(collection(db, 'tiendas'), nuevaTienda);
+    onSave(nuevaTienda);
     onRequestClose();
+    setNombre('');
+    setUbicacion('');
+    setEncargado('');
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      className="modal"
+      overlayClassName="modal-overlay"
+    >
       <h2>Añadir Tienda</h2>
       <form onSubmit={handleSubmit}>
         <label>Tienda:</label>
@@ -32,7 +42,7 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose }) => {
         <input type="text" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} required />
         <label>Encargado:</label>
         <input type="text" value={encargado} onChange={(e) => setEncargado(e.target.value)} required />
-        <button type="submit">Añadir</button>
+        <button type="submit" className='add-button'>Añadir</button>
       </form>
     </Modal>
   );
