@@ -1,53 +1,98 @@
-// src/components/ListaMantenimientos.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import ModalAñadirMantenimiento from './ModalAñadirMantenimiento';
+import ModalEditarMantenimiento from './ModalEditarMantenimiento';
 import './ListaMantenimientos.css';
-import ModalMantenimiento from './ModalMantenimiento';
 
 const ListaMantenimientos = () => {
-    const [mantenimientos, setMantenimientos] = useState([
-        { id: 1, codigo: 'CH0001', nombre: 'Cambio de RAM', descripcion: 'Se cambió la RAM de 4GB a 8GB', fecha: '04/07/2024 1:12 PM', personal: 'Richard' },
-        // Se añaden más mantenimientos aquí...
-    ]);
+  const { tiendaId, equipoId } = useParams();
+  const navigate = useNavigate();
+  const [mantenimientos, setMantenimientos] = useState([]);
+  const [equipoNombre, setEquipoNombre] = useState('');
+  const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
+  const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
+  const [mantenimientoSeleccionado, setMantenimientoSeleccionado] = useState(null);
+  const db = getFirestore();
 
-    const [modalMantenimientoData, setModalMantenimientoData] = useState(null);
-
-    const handleEditMantenimiento = (mantenimiento) => {
-        setModalMantenimientoData(mantenimiento);
+  useEffect(() => {
+    const fetchMantenimientos = async () => {
+      const querySnapshot = await getDocs(collection(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`));
+      setMantenimientos(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     };
 
-    const handleAddMantenimiento = () => {
-        setModalMantenimientoData({ id: null, codigo: '', nombre: '', descripcion: '', fecha: '', personal: '' });
+    const fetchEquipoNombre = async () => {
+      const docRef = doc(db, `tiendas/${tiendaId}/equipos`, equipoId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setEquipoNombre(docSnap.data().nombre);
+      }
     };
 
-    const handleSaveMantenimiento = (data) => {
-        if (data.id) {
-            setMantenimientos(mantenimientos.map(mantenimiento => mantenimiento.id === data.id ? data : mantenimiento));
-        } else {
-            data.id = mantenimientos.length + 1;
-            setMantenimientos([...mantenimientos, data]);
-        }
-        setModalMantenimientoData(null);
-    };
+    fetchMantenimientos();
+    fetchEquipoNombre();
+  }, [db, tiendaId, equipoId]);
 
-    return (
-        <div className="lista-mantenimientos">
-            <h1>Lista de Mantenimientos</h1>
-            <button onClick={handleAddMantenimiento} className="add-button">Añadir Mantenimiento</button>
-            <div className="mantenimientos-container">
-                {mantenimientos.map(mantenimiento => (
-                    <div key={mantenimiento.id} className="mantenimiento-card">
-                        <h2>{mantenimiento.nombre}</h2>
-                        <p>Código: {mantenimiento.codigo}</p>
-                        <p>Descripción: {mantenimiento.descripcion}</p>
-                        <p>Fecha: {mantenimiento.fecha}</p>
-                        <p>Personal: {mantenimiento.personal}</p>
-                        <button onClick={() => handleEditMantenimiento(mantenimiento)} className="edit-button">Editar</button>
-                    </div>
-                ))}
-            </div>
-            {modalMantenimientoData && <ModalMantenimiento data={modalMantenimientoData} onSave={handleSaveMantenimiento} onClose={() => setModalMantenimientoData(null)} />}
-        </div>
-    );
+  const abrirModalAñadir = () => setModalAñadirAbierto(true);
+  const cerrarModalAñadir = () => setModalAñadirAbierto(false);
+
+  const abrirModalEditar = (mantenimiento) => {
+    setMantenimientoSeleccionado(mantenimiento);
+    setModalEditarAbierto(true);
+  };
+  const cerrarModalEditar = () => setModalEditarAbierto(false);
+
+  const añadirMantenimiento = async (nuevoMantenimiento) => {
+    const docRef = await addDoc(collection(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`), nuevoMantenimiento);
+    setMantenimientos([...mantenimientos, { id: docRef.id, ...nuevoMantenimiento }]);
+    cerrarModalAñadir();
+  };
+
+  const editarMantenimiento = async (mantenimientoId, mantenimientoActualizado) => {
+    await updateDoc(doc(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`, mantenimientoId), mantenimientoActualizado);
+    setMantenimientos(mantenimientos.map(mantenimiento => (mantenimiento.id === mantenimientoId ? { id: mantenimientoId, ...mantenimientoActualizado } : mantenimiento)));
+    cerrarModalEditar();
+  };
+
+  const eliminarMantenimiento = async (mantenimientoId) => {
+    await deleteDoc(doc(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`, mantenimientoId));
+    setMantenimientos(mantenimientos.filter(mantenimiento => mantenimiento.id !== mantenimientoId));
+    cerrarModalEditar();
+  };
+
+  return (
+    <div className="mantenimientos-container">
+      <header>
+        <button onClick={() => navigate(-1)}>Atrás</button>
+        <h1>Lista de Mantenimientos: {equipoNombre}</h1>
+        <button onClick={abrirModalAñadir}>Añadir Mantenimiento</button>
+      </header>
+      <div className="card-container">
+        {mantenimientos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).map((mantenimiento) => (
+          <div className="card" key={mantenimiento.id} onClick={() => abrirModalEditar(mantenimiento)}>
+            <h2>{new Date(mantenimiento.fecha).toLocaleString()}</h2>
+            <p>Nombre: {mantenimiento.nombre}</p>
+            <p>Descripción: {mantenimiento.descripcion}</p>
+            <p>Personal: {mantenimiento.personal}</p>
+          </div>
+        ))}
+      </div>
+      <ModalAñadirMantenimiento 
+        isOpen={modalAñadirAbierto} 
+        onRequestClose={cerrarModalAñadir} 
+        onSave={añadirMantenimiento} 
+        equipoId={equipoId} 
+        tiendaId={tiendaId} 
+      />
+      <ModalEditarMantenimiento 
+        isOpen={modalEditarAbierto} 
+        onRequestClose={cerrarModalEditar} 
+        mantenimiento={mantenimientoSeleccionado} 
+        onSave={editarMantenimiento} 
+        onDelete={eliminarMantenimiento} 
+      />
+    </div>
+  );
 };
 
 export default ListaMantenimientos;
