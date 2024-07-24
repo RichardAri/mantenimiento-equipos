@@ -63,7 +63,7 @@ const ListaMantenimientos = () => {
   return (
     <div className="mantenimientos-container">
       <header>
-        <button onClick={() => navigate(-1)}>Atrás</button>
+        <button className="back-button" onClick={() => navigate(-1)}>Atrás</button>
         <h1>Lista de Mantenimientos: {equipoNombre}</h1>
         <button onClick={abrirModalAñadir}>Añadir Mantenimiento</button>
       </header>

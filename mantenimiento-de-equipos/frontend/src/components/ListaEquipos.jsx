@@ -59,9 +59,9 @@ const ListaEquipos = () => {
   return (
     <div className="equipos-container">
       <header>
-        <button onClick={() => navigate(-1)}>Atrás</button>
+        <button className="back-button" onClick={() => navigate(-1)}>Atrás</button>
         <h1>Lista de Equipos: {nombreTienda}</h1>
-        <button onClick={abrirModalAñadir}>Añadir Equipo</button>
+        <button className='add-button' onClick={abrirModalAñadir}>Añadir Equipo</button>
       </header>
       <div className="card-container">
         {equipos.map((equipo) => (

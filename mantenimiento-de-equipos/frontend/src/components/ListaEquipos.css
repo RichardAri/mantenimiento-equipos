@@ -9,23 +9,37 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  position: relative;
 }
 
 header h1 {
   font-size: 2em;
+  margin: 0 auto; /* Centrando el título */
 }
 
-header button {
-  padding: 10px 20px;
-  font-size: 16px;
+header .back-button {
+  left: 20px;
   border: none;
+  border-radius: 5px;
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+  width: 100px;
+}
+
+header .back-button:hover {
+  background: #218838;
+}
+
+header .add-button {
+  right: 20px;
   border-radius: 5px;
   background: #28a745;
   color: white;
   cursor: pointer;
 }
 
-header button:hover {
+header .add-button:hover {
   background: #218838;
 }
 
