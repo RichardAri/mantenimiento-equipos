@@ -10,7 +10,7 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
   const [ubicacion, setUbicacion] = useState('');
   const [encargado, setEncargado] = useState('');
   const db = getFirestore();
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const nuevaTienda = {

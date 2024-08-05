@@ -8,14 +8,13 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
   const [codigo, setCodigo] = useState('');
   const [nombre, setNombre] = useState('');
   const [ip, setIp] = useState('');
-  const [ram, setRam] = useState('');
-  const [procesador, setProcesador] = useState('');
-  const [sistemaOperativo, setSistemaOperativo] = useState('');
+  const [descripcion, setDescripcion] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const nuevoEquipo = { codigo, nombre, ip, ram, procesador, sistemaOperativo };
+    const nuevoEquipo = { codigo, nombre, ip, descripcion };
     onSave(nuevoEquipo);
+    onRequestClose();  // Cerrar modal
   };
 
   return (
@@ -28,13 +27,9 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
         <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
         <label>IP:</label>
         <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} required />
-        <label>RAM:</label>
-        <input type="text" value={ram} onChange={(e) => setRam(e.target.value)} required />
-        <label>Procesador:</label>
-        <input type="text" value={procesador} onChange={(e) => setProcesador(e.target.value)} required />
-        <label>Sistema Operativo:</label>
-        <input type="text" value={sistemaOperativo} onChange={(e) => setSistemaOperativo(e.target.value)} required />
-        <button type="submit">Añadir</button>
+        <label>Descripción:</label>
+        <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
+        <button type="submit" className="save-button">Añadir</button>
       </form>
     </Modal>
   );

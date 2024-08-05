@@ -10,8 +10,10 @@ const ListaTiendas = () => {
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
+  const [alertaVisible, setAlertaVisible] = useState(false); // Nuevo estado para la alerta
   const db = getFirestore();
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchTiendas = async () => {
@@ -34,10 +36,17 @@ const ListaTiendas = () => {
     navigate(`/tiendas/${tiendaId}/equipos`);
   };
 
+  const mostrarAlerta = () => {
+    setAlertaVisible(true);
+    setTimeout(() => {
+      setAlertaVisible(false);
+    }, 3000); // Mostrar la alerta por 3 segundos
+  };
+
   return (
     <div className="tiendas-container">
       <header>
-        <h1>Capriccio</h1>
+        <h1 className='title-page'>Capriccio</h1>
         <button onClick={abrirModalAñadir}>Añadir Tienda</button>
       </header>
       <div className="card-container">

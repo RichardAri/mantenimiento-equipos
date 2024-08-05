@@ -53,19 +53,19 @@ const ModalAñadirMantenimiento = ({ isOpen, onRequestClose, onSave, equipoId, t
       <form onSubmit={handleSubmit}>
         <label className="readonly-label">Código del Equipo:</label>
         <input type="text" value={codigoEquipo} readOnly className="readonly-input" />
-        <label>Nombre:</label>
+        <label className='form-lbl-text' >Nombre: </label>
         <select value={nombre} onChange={(e) => setNombre(e.target.value)}>
-          <option value="Cambio de Disco">Cambio de Disco</option>
+          <option className='form-lbl-text' value="Cambio de Disco">Cambio de Disco</option>
           <option value="Cambio de S.O.">Cambio de S.O.</option>
           <option value="Cambio de Ram">Cambio de Ram</option>
           <option value="Mantenimiento General">Mantenimiento General</option>
         </select>
-        <label>Descripción:</label>
+        <label className='form-lbl-text' > Descripción: </label>
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
-        <label>Personal:</label>
+        <label className='form-lbl-text'>Personal:</label>
         <input type="text" value={personal} onChange={(e) => setPersonal(e.target.value)} required />
-        <h3>Cambios</h3>
-        <label>Nombre del Equipo:</label>
+        <h3 className='add-subtitle'>Cambios</h3>
+        <label className='form-lbl-text'>Nombre del Equipo:</label>
         <input type="text" value={nombreEquipo} onChange={(e) => setNombreEquipo(e.target.value)} />
         <label>IP del Equipo:</label>
         <input type="text" value={ipEquipo} onChange={(e) => setIpEquipo(e.target.value)} />

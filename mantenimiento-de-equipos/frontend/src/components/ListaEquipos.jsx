@@ -1,6 +1,7 @@
+// ListaEquipos.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getFirestore, collection, getDocs, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, deleteDoc, addDoc, getDoc } from 'firebase/firestore';
 import ModalAñadirEquipo from './ModalAñadirEquipo';
 import ModalEditarEquipo from './ModalEditarEquipo';
 import './ListaEquipos.css';
@@ -13,6 +14,7 @@ const ListaEquipos = () => {
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
+  const [alertaVisible, setAlertaVisible] = useState(false);
   const db = getFirestore();
 
   useEffect(() => {
@@ -39,10 +41,18 @@ const ListaEquipos = () => {
   };
   const cerrarModalEditar = () => setModalEditarAbierto(false);
 
+  const mostrarAlerta = () => {
+    setAlertaVisible(true);
+    setTimeout(() => {
+      setAlertaVisible(false);
+    }, 3000);
+  };
+
   const añadirEquipo = async (nuevoEquipo) => {
-    const docRef = await setDoc(doc(collection(db, `tiendas/${tiendaId}/equipos`)), nuevoEquipo);
+    const docRef = await addDoc(collection(db, `tiendas/${tiendaId}/equipos`), nuevoEquipo);
     setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
     cerrarModalAñadir();
+    mostrarAlerta();
   };
 
   const editarEquipo = async (equipoId, equipoActualizado) => {
@@ -59,10 +69,11 @@ const ListaEquipos = () => {
   return (
     <div className="equipos-container">
       <header>
-        <button className="back-button" onClick={() => navigate(-1)}>Atrás</button>
+        <button className='back-button' onClick={() => navigate(-1)}>Atrás</button>
         <h1>Lista de Equipos: {nombreTienda}</h1>
-        <button className='add-button' onClick={abrirModalAñadir}>Añadir Equipo</button>
+        <button onClick={abrirModalAñadir}>Añadir Equipo</button>
       </header>
+      {alertaVisible && <div className="alerta">Equipo creado exitosamente</div>}
       <div className="card-container">
         {equipos.map((equipo) => (
           <div className="card" key={equipo.id} onClick={() => navigate(`/tiendas/${tiendaId}/equipos/${equipo.id}/mantenimientos`)}>

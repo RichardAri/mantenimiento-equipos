@@ -4,7 +4,7 @@
   min-height: 100vh;
 }
 
-header {
+.header-page {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,9 +12,9 @@ header {
   position: relative;
 }
 
-header h1 {
+.title-page{
   font-size: 2em;
-  margin: 0 auto; /* Centrando el título */
+  margin: 0 auto; 
 }
 
 header .back-button {
@@ -78,11 +78,25 @@ header .add-button:hover {
   padding: 5px;
   border: none;
   border-radius: 5px;
-  background: #0078d4;
+  background: #0286d7;
   color: white;
   cursor: pointer;
+  width: 2.5rem ;
+  height: 2.5rem;
 }
 
 .edit-button:hover {
   background: #005a9e;
+}
+
+.alerta {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }

@@ -1,7 +1,7 @@
 .tiendas-container {
   padding: 20px;
-  background-color: #f7f7f7; /* Asegurarse de tener un color de fondo */
-  min-height: 100vh; /* Asegurarse de que ocupe toda la altura de la vista */
+  background-color: #f7f7f7;
+  min-height: 100vh; 
 }
 
 header {
@@ -73,4 +73,12 @@ header button:hover {
 
 .edit-button:hover {
   background: #005a9e;
+}
+
+.add-button{
+  background-color: #28a745;
+}
+
+.add-button:hover{
+  background-color: #218838;
 }
