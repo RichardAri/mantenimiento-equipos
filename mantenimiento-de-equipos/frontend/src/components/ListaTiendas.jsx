@@ -12,8 +12,7 @@ const ListaTiendas = () => {
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
   const [alertaVisible, setAlertaVisible] = useState(false); // Nuevo estado para la alerta
   const db = getFirestore();
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchTiendas = async () => {
