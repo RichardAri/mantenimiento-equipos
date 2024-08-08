@@ -21,14 +21,14 @@ header .back-button {
   left: 20px;
   border: none;
   border-radius: 5px;
-  background: #28a745;
+  background: #8d0321;
   color: white;
   cursor: pointer;
   width: 100px;
 }
 
 header .back-button:hover {
-  background: #218838;
+  background: #6A0000;
 }
 
 header .add-button {

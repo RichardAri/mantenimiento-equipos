@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
-import Clock from './Clock';
-import './Login.css';
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+import Clock from "./Clock";
+import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/tiendas');
+      navigate("/tiendas");
     } catch (error) {
-      alert('Error al iniciar sesión');
+      alert("Error al iniciar sesión");
     }
   };
 
