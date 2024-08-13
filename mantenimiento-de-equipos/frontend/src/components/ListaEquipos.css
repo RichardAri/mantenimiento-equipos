@@ -29,10 +29,12 @@ header .back-button {
   color: white;
   cursor: pointer;
   width: 100px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra alrededor del botón */
 }
 
 header .back-button:hover {
   background: #6A0000;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
 header .add-button {
