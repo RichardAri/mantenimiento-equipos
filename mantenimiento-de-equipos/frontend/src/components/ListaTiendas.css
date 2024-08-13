@@ -1,8 +1,12 @@
 .tiendas-container {
   padding: 20px;
-  background-color: #FFF0EB; /* Background color de ListaTiendas */
+  background-image: url('/src/assets/bg.svg'); /* Ruta relativa al SVG */
+  background-size: cover; /* Ajusta el tamaño del fondo */
+  background-repeat: no-repeat; /* Evita la repetición del fondo */
+  background-position: center; /* Centra el fondo en el contenedor */
   min-height: 100vh; 
 }
+
 
 header {
   display: flex;
