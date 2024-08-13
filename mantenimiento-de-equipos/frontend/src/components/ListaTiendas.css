@@ -21,6 +21,7 @@ header h1 {
   flex-grow: 1;
   text-align: center;
   margin: 0;
+  color: #f4f4f4;
 }
 
 header button {
