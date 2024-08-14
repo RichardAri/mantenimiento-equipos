@@ -48,8 +48,8 @@ const ModalAñadirMantenimiento = ({ isOpen, onRequestClose, onSave, equipoId, t
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
-      <h2>Añadir Mantenimiento</h2>
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
+      <h2 className='add-subtitle'>Añadir Mantenimiento</h2>
       <form onSubmit={handleSubmit}>
         <label className="readonly-label">Código del Equipo:</label>
         <input type="text" value={codigoEquipo} readOnly className="readonly-input" />
@@ -64,7 +64,7 @@ const ModalAñadirMantenimiento = ({ isOpen, onRequestClose, onSave, equipoId, t
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
         <label className='form-lbl-text'>Personal:</label>
         <input type="text" value={personal} onChange={(e) => setPersonal(e.target.value)} required />
-        <h3 className='add-subtitle'>Cambios</h3>
+        <h3>Cambios</h3>
         <label className='form-lbl-text'>Nombre del Equipo:</label>
         <input type="text" value={nombreEquipo} onChange={(e) => setNombreEquipo(e.target.value)} />
         <label>IP del Equipo:</label>

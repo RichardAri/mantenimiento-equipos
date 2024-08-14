@@ -18,7 +18,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
       <h2>Añadir Equipo</h2>
       <form onSubmit={handleSubmit}>
         <label>Código:</label>
