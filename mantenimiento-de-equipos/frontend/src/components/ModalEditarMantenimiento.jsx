@@ -43,7 +43,7 @@ const ModalEditarMantenimiento = ({ isOpen, onRequestClose, mantenimiento, onSav
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
       <h2>Editar Mantenimiento</h2>
       <form onSubmit={handleSubmit}>
         <label className="readonly-label">Código del Equipo:</label>

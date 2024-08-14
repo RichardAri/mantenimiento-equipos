@@ -27,16 +27,16 @@ const ModalEditarEquipo = ({ isOpen, onRequestClose, equipo, onSave, onDelete })
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal">
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
       <h2 className=''>Editar Equipo</h2>
       <form onSubmit={handleSubmit}>
-        <label className='.form-lbl-text' >Código:</label>
+        <label className='form-lbl-text' >Código:</label>
         <input type="text" className='readonly-input' value={codigo} onChange={(e) => setCodigo(e.target.value)} readOnly />
-        <label className='.form-lbl-text'>Nombre:</label>
+        <label className='form-lbl-text'>Nombre:</label>
         <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
-        <label className='.form-lbl-text' >IP:</label>
+        <label className='form-lbl-text' >IP:</label>
         <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} required />
-        <label className='.form-lbl-text' >Descripción:</label>
+        <label className='form-lbl-text' >Descripción:</label>
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
         <div className="button-group">
           <button type="submit" className="save-button">Guardar</button>
