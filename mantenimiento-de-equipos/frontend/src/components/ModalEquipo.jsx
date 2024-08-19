@@ -19,7 +19,7 @@ const ModalEquipo = ({ data, onSave, onClose }) => {
     };
 
     return (
-        <div className="modal">
+        <div className="modal" overlayClassName="modal-overlay">
             <div className="modal-content">
                 <h2>{formData.id ? 'EDITAR: ' + formData.nombre : 'AÑADIR EQUIPO'}</h2>
                 <form onSubmit={handleSubmit}>

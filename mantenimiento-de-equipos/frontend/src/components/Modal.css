@@ -52,12 +52,9 @@
 }
 
 .auto-textarea{
-  width: 100%;
-  min-height: 50px; /* Altura mínima para que no se haga demasiado pequeño */
-  overflow: hidden; /* Oculta el desbordamiento del contenido */
-  resize: none; /* Opcional: desactiva el redimensionamiento manual */
-  box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
-  padding: 10px;
+  line-height: 1.5;
+  field-sizing: content;
+  min-height: 3lh;
 }
 
 .container-txta {
