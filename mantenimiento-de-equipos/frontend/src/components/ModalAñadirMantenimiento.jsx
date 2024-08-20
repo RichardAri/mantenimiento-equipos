@@ -53,13 +53,15 @@ const ModalAñadirMantenimiento = ({ isOpen, onRequestClose, onSave, equipoId, t
       <form onSubmit={handleSubmit}>
         <label className="readonly-label">Código del Equipo:</label>
         <input type="text" value={codigoEquipo} readOnly className="readonly-input" />
-        <label className='form-lbl-text' >Nombre: </label>
-        <select value={nombre} onChange={(e) => setNombre(e.target.value)}>
-          <option className='form-lbl-text' value="Cambio de Disco">Cambio de Disco</option>
-          <option value="Cambio de S.O.">Cambio de S.O.</option>
-          <option value="Cambio de Ram">Cambio de Ram</option>
-          <option value="Mantenimiento General">Mantenimiento General</option>
-        </select>
+        <div className="form-group">
+          <label className='form-lbl-text' >Nombre: </label>
+          <select value={nombre} onChange={(e) => setNombre(e.target.value)}>
+            <option className='form-lbl-text' value="Cambio de Disco">Cambio de Disco</option>
+            <option value="Cambio de S.O.">Cambio de S.O.</option>
+            <option value="Cambio de Ram">Cambio de Ram</option>
+            <option value="Mantenimiento General">Mantenimiento General</option>
+          </select>
+        </div>
         <label className='form-lbl-text' > Descripción: </label>
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required />
         <label className='form-lbl-text'>Personal:</label>

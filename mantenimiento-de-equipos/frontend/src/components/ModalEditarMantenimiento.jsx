@@ -48,7 +48,9 @@ const ModalEditarMantenimiento = ({ isOpen, onRequestClose, mantenimiento, onSav
       <form onSubmit={handleSubmit}>
         <label className="readonly-label">Código del Equipo:</label>
         <input type="text" value={codigoEquipo} readOnly className="readonly-input"/>
-        <label className='form-lbl-text'> Nombre:</label>
+        <div className="form-group">
+          <label className='form-lbl-text'> Nombre:</label>
+        </div>
         <select className='form-lbl-text ' value={nombre} onChange={(e) => setNombre(e.target.value)}>
           <option value="Cambio de Disco">Cambio de Disco</option>
           <option value="Cambio de S.O.">Cambio de S.O.</option>

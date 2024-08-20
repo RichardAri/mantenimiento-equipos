@@ -36,7 +36,7 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
     >
       <h2>Añadir Tienda</h2>
       <form onSubmit={handleSubmit}>
-        <label>Tienda:</label>
+        <label >Tienda:</label>
         <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
         <label>Ubicación:</label>
         <input type="text" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} required />
