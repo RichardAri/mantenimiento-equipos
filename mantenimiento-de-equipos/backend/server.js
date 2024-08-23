@@ -27,8 +27,6 @@ app.post('/tiendas', async (req, res) => {
     }
 });
 
-// Otras rutas para manejar equipos y mantenimientos...
-
 app.listen(3000, () => {
     console.log('Servidor escuchando en el puerto 3000');
 });
