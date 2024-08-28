@@ -10,7 +10,6 @@ const ListaTiendas = () => {
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
-  const [alertaVisible, setAlertaVisible] = useState(false); // Nuevo estado para la alerta
   const db = getFirestore();
   const navigate = useNavigate()
 
@@ -33,13 +32,6 @@ const ListaTiendas = () => {
 
   const navegarAEquipos = (tiendaId) => {
     navigate(`/tiendas/${tiendaId}/equipos`);
-  };
-
-  const mostrarAlerta = () => {
-    setAlertaVisible(true);
-    setTimeout(() => {
-      setAlertaVisible(false);
-    }, 3000); // Mostrar la alerta por 3 segundos
   };
 
   return (

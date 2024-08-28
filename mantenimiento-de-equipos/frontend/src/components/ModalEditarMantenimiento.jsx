@@ -11,7 +11,7 @@ const ModalEditarMantenimiento = ({ isOpen, onRequestClose, mantenimiento, onSav
   const [nombreEquipo, setNombreEquipo] = useState('');
   const [ipEquipo, setIpEquipo] = useState('');
   const [descripcionEquipo, setDescripcionEquipo] = useState('');
-
+  
   useEffect(() => {
     if (mantenimiento) {
       setNombre(mantenimiento.nombre || '');
