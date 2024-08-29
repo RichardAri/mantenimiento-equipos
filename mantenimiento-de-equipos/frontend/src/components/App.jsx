@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Login from './Login';
+import Login from './Auth/Login';
 import ListaTiendas from './ListaTiendas';
 import ListaEquipos from './ListaEquipos';
 import ListaMantenimientos from './ListaMantenimientos';
