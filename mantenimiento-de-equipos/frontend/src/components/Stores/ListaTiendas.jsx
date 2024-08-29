@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import ModalAñadirTienda from '../ModalAñadirTienda';
-import ModalEditarTienda from '../ModalEditarTienda';
+import ModalAñadirTienda from './ModalAñadirTienda';
+import ModalEditarTienda from './ModalEditarTienda';
 import './ListaTiendas.css';
 
 const ListaTiendas = () => {

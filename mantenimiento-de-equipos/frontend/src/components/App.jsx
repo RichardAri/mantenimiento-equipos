@@ -2,12 +2,12 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './Auth/Login';
 import ListaTiendas from './Stores/ListaTiendas';
-import ListaEquipos from './ListaEquipos';
-import ListaMantenimientos from './ListaMantenimientos';
-import ModalAñadirEquipo from './ModalAñadirEquipo';
-import ModalEditarEquipo from './ModalEditarEquipo';
-import ModalAñadirMantenimiento from './ModalAñadirMantenimiento';
-import ModalEditarMantenimiento from './ModalEditarMantenimiento';
+import ListaEquipos from './Tools/ListaEquipos';
+import ListaMantenimientos from './Maintenance/ListaMantenimientos';
+import ModalAñadirEquipo from './Tools/ModalAñadirEquipo';
+import ModalEditarEquipo from './Tools/ModalEditarEquipo';
+import ModalAñadirMantenimiento from './Maintenance/ModalAñadirMantenimiento';
+import ModalEditarMantenimiento from './Maintenance/ModalEditarMantenimiento';
 
 const App = () => {
   return (
