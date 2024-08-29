@@ -41,14 +41,14 @@ header .add-button {
   right: 20px;
   border: none;
   border-radius: 5px;
-  background: #28a745;
+  background: #0b57d0;
   color: white;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra alrededor del botón */
 }
 
 header .add-button:hover {
-  background: #218838;
+  background: #0946aa;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
@@ -95,7 +95,7 @@ header .add-button:hover {
 }
 
 .edit-button:hover {
-  background: #005a9e;
+  background: #0946aa;
 }
 
 .alerta {

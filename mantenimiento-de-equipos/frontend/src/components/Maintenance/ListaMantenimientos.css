@@ -24,13 +24,13 @@ header button {
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background: #28a745;
+  background: #0078d4;
   color: white;
   cursor: pointer;
 }
 
 header button:hover {
-  background: #218838;
+  background: #0946aa;
 }
 
 .card-container {

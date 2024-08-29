@@ -30,13 +30,13 @@ header button {
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background: #28a745;
+  background: #0b57d0;
   color: white;
   cursor: pointer;
 }
 
 header button:hover {
-  background: #218838;
+  background: #0a4cbe;
 }
 
 .card-container {
@@ -69,7 +69,7 @@ header button:hover {
   right: 10px;
   padding: 5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
   background: #0078d4;
   color: white;
   cursor: pointer;
@@ -80,9 +80,9 @@ header button:hover {
 }
 
 .add-button {
-  background-color: #28a745;
+  background-color: #0b57d0;
 }
 
 .add-button:hover {
-  background-color: #218838;
+  background-color: #005a9e;
 }
