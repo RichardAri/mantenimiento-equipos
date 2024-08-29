@@ -1,6 +1,6 @@
 .equipos-container {
   padding: 20px;
-  background-image: url('/src/assets/background.svg'); /* Ruta relativa al SVG */
+  background-image: url("/src/assets/background.svg"); /* Ruta relativa al SVG */
   background-size: cover; /* Ajusta el tamaño del fondo */
   background-repeat: no-repeat; /* Evita la repetición del fondo */
   background-position: center; /* Centra el fondo en el contenedor */
@@ -15,9 +15,9 @@
   position: relative;
 }
 
-.title-page{
+.title-page {
   font-size: 2em;
-  margin: 0 auto; 
+  margin: 0 auto;
   color: #f4f4f4;
 }
 
@@ -33,7 +33,7 @@ header .back-button {
 }
 
 header .back-button:hover {
-  background: #6A0000;
+  background: #6a0000;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
@@ -90,7 +90,7 @@ header .add-button:hover {
   background: #0286d7;
   color: white;
   cursor: pointer;
-  width: 2.5rem ;
+  width: 2.5rem;
   height: 2.5rem;
 }
 

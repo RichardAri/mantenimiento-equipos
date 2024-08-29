@@ -1,12 +1,11 @@
 .tiendas-container {
   padding: 20px;
-  background-image: url('/src/assets/background.svg'); /* Ruta relativa al SVG */
+  background-image: url("/src/assets/background.svg"); /* Ruta relativa al SVG */
   background-size: cover; /* Ajusta el tamaño del fondo */
   background-repeat: no-repeat; /* Evita la repetición del fondo */
   background-position: center; /* Centra el fondo en el contenedor */
-  min-height: 100vh; 
+  min-height: 100vh;
 }
-
 
 header {
   display: flex;
@@ -80,10 +79,10 @@ header button:hover {
   background: #005a9e;
 }
 
-.add-button{
+.add-button {
   background-color: #28a745;
 }
 
-.add-button:hover{
+.add-button:hover {
   background-color: #218838;
 }
