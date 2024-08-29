@@ -2,10 +2,10 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './Auth/Login';
 import ListaTiendas from './Stores/ListaTiendas';
-import ListaEquipos from './Tools/ListaEquipos';
+import ListaEquipos from './Hardware/ListaEquipos';
 import ListaMantenimientos from './Maintenance/ListaMantenimientos';
-import ModalAñadirEquipo from './Tools/ModalAñadirEquipo';
-import ModalEditarEquipo from './Tools/ModalEditarEquipo';
+import ModalAñadirEquipo from './Hardware/ModalAñadirEquipo';
+import ModalEditarEquipo from './Hardware/ModalEditarEquipo';
 import ModalAñadirMantenimiento from './Maintenance/ModalAñadirMantenimiento';
 import ModalEditarMantenimiento from './Maintenance/ModalEditarMantenimiento';
 

@@ -1,7 +1,7 @@
 // ModalEditarEquipo.jsx
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import './Modal.css';
+import '../Modal.css';
 
 Modal.setAppElement('#root');
 

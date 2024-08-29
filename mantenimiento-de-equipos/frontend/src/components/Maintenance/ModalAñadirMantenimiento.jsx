@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import './Modal.css';
+import '../Modal.css';
 
 Modal.setAppElement('#root');
 
