@@ -10,6 +10,7 @@ const ListaTiendas = () => {
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
   const db = getFirestore();
   const navigate = useNavigate();
 
@@ -36,14 +37,26 @@ const ListaTiendas = () => {
     navigate(`/tiendas/${tiendaId}/equipos`);
   };
 
+  // Filtrar las tiendas en base al término de búsqueda
+  const filteredTiendas = tiendas.filter((tienda) =>
+    tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="tiendas-container">
       <header>
         <h1 className="title-page">Capriccio</h1>
         <button onClick={abrirModalAñadir}>Añadir Tienda</button>
       </header>
+      <input
+        type="text"
+        placeholder="Buscar tienda..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
+        className="search-input"
+      />
       <div className="card-container">
-        {tiendas.map((tienda) => (
+        {filteredTiendas.map((tienda) => (
           <div
             className="card"
             key={tienda.id}

@@ -86,3 +86,11 @@ header button:hover {
 .add-button:hover {
   background-color: #005a9e;
 }
+
+.search-input {
+  margin-left: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px; /* Ajusta el tamaño según necesites */
+}
