@@ -4,7 +4,7 @@ body, html {
 }
 
 .login-background {
-  background: url(/fondo-windows.jpg);
+  background: url("/src/assets/background.png");
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -20,7 +20,7 @@ body, html {
 }
 
 .clock-container {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: white;
 }
 
@@ -29,7 +29,7 @@ body, html {
   padding: 20px;
   border-radius: 10px;
   color: white;
-  width: 300px;
+  width: auto;
   text-align: center;
 }
 
@@ -39,7 +39,7 @@ body, html {
 
 .login-container label {
   display: block;
-  margin: 10px 0 5px;
+  margin: 1px 10px 5px;
 }
 
 .login-container input {
@@ -51,8 +51,8 @@ body, html {
 }
 
 .login-container button {
-  margin-top: 15px;
-  width: 100%;
+  margin-top: 5px;
+  width: 95%;
   padding: 10px;
   border: none;
   border-radius: 5px;

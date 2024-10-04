@@ -23,11 +23,9 @@ const Login = () => {
   return (
     <div className="login-background">
       <div className="login-wrapper">
-        <div className="clock-container">
-          <Clock />
-        </div>
         <div className="login-container">
-          <h1>Control De Mantenimiento</h1>
+          <Clock />
+          <h1 >Control De Mantenimiento</h1>
           <form onSubmit={handleLogin}>
             <label htmlFor="email">Usuario:</label>
             <input
