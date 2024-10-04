@@ -113,7 +113,7 @@ const ListaMantenimientos = () => {
           Atrás
         </button>
         <h1>Lista de Mantenimientos: {equipoNombre}</h1>
-        <button onClick={abrirModalAñadir}>Añadir Mantenimiento</button>
+        <button className="add-button" onClick={abrirModalAñadir}>Añadir Mantenimiento</button>
       </header>
       <div className="card-container">
         {mantenimientos

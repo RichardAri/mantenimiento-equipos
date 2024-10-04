@@ -1,7 +1,7 @@
-body{
+body {
   background: linear-gradient(180deg, rgba(75,108,183,1) 0%, rgba(25,40,72,1) 100%);
+  background-attachment: fixed; /* Hace que el fondo sea fijo */
   overflow-x: hidden;
-  overflow-y: auto;
   margin: 0;
   padding: 0;
 }
@@ -40,10 +40,12 @@ header button {
   background: #0b57d0;
   color: white;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra alrededor del botón */
 }
 
 header button:hover {
-  background: #0a4cbe;
+  background: #0946aa;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
 .card-container {
@@ -57,7 +59,7 @@ header button:hover {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: calc(25% - 20px);
+  width: calc(20% - 20px);
   box-sizing: border-box;
   position: relative;
 }
@@ -77,13 +79,14 @@ header button:hover {
   padding: 5px;
   border: none;
   border-radius: 50%;
-  background: #0078d4;
+  background: #0b57d0;
   color: white;
   cursor: pointer;
 }
 
 .edit-button:hover {
-  background: #005a9e;
+  background: #0946aa;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
 .add-button {
@@ -91,7 +94,8 @@ header button:hover {
 }
 
 .add-button:hover {
-  background-color: #005a9e;
+  background-color: #0946aa;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
 .search-input {
@@ -104,7 +108,6 @@ header button:hover {
   margin-bottom: 20px;
 }
 
-/* Footer */
 .footer {
   position: fixed;
   bottom: 0;

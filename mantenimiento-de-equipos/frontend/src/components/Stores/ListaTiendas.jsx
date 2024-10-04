@@ -46,7 +46,7 @@ const ListaTiendas = () => {
     <div className="tiendas-container">
       <header>
         <h1 className="title-page">Capriccio</h1>
-        <button onClick={abrirModalAñadir}>Añadir Tienda</button>
+        <button className="add-button" onClick={abrirModalAñadir}>Añadir Tienda</button>
       </header>
         <input
           type="text"
