@@ -1,29 +1,10 @@
-body {
-  font-family: Arial, sans-serif;
-}
-
-header {
+/* App.css */
+.app-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: #0078d4;
-  color: white;
+  flex-direction: column;
+  min-height: 100vh; /* Para que el contenido ocupe toda la pantalla */
 }
 
-h1 {
-  margin: 0;
-}
-
-button {
-  background: #0078d4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #005a9e;
+footer {
+  margin-top: auto; /* Esto asegura que el footer esté siempre al final */
 }

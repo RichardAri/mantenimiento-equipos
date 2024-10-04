@@ -109,3 +109,48 @@ header .add-button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  margin: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.footer .social-icons {
+  display: flex;
+  gap: 15px;
+  margin-left: 15px;
+}
+
+.footer .social-icons a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer .social-icons a:hover {
+  color: #0b57d0; /* Cambia el color al pasar el mouse */
+}

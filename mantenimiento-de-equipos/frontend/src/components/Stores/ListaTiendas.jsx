@@ -48,13 +48,13 @@ const ListaTiendas = () => {
         <h1 className="title-page">Capriccio</h1>
         <button onClick={abrirModalAñadir}>Añadir Tienda</button>
       </header>
-      <input
-        type="text"
-        placeholder="Buscar tienda..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
-        className="search-input"
-      />
+        <input
+          type="text"
+          placeholder="Buscar tienda..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
+          className="search-input"
+        />
       <div className="card-container">
         {filteredTiendas.map((tienda) => (
           <div

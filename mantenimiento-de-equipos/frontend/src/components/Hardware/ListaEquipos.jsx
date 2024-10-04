@@ -9,6 +9,7 @@ import {
   deleteDoc,
   addDoc,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import ModalAñadirEquipo from "./ModalAñadirEquipo";
 import ModalEditarEquipo from "./ModalEditarEquipo";
@@ -23,6 +24,7 @@ const ListaEquipos = () => {
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [alertaVisible, setAlertaVisible] = useState(false);
+  const [busqueda, setBusqueda] = useState(""); // Nuevo estado para la búsqueda
   const db = getFirestore();
 
   useEffect(() => {
@@ -88,6 +90,10 @@ const ListaEquipos = () => {
     setEquipos(equipos.filter((equipo) => equipo.id !== equipoId));
   };
 
+  const filtrarEquipos = equipos.filter((equipo) =>
+    equipo.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
   return (
     <div className="equipos-container">
       <header>
@@ -95,13 +101,22 @@ const ListaEquipos = () => {
           Atrás
         </button>
         <h1>Lista de Equipos: {nombreTienda}</h1>
-        <button onClick={abrirModalAñadir}>Añadir Equipo</button>
+        <button className="add-button" onClick={abrirModalAñadir}>
+          Añadir Equipo
+        </button>
       </header>
       {alertaVisible && (
         <div className="alerta">Equipo creado exitosamente</div>
       )}
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Buscar equipo por nombre"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+      />
       <div className="card-container">
-        {equipos.map((equipo) => (
+        {filtrarEquipos.map((equipo) => (
           <div
             className="card"
             key={equipo.id}
