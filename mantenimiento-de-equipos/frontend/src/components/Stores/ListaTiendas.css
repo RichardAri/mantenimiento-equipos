@@ -159,10 +159,12 @@ header button:hover {
   }
 
   header button {
+    margin-top: 4rem;
     font-size: 14px; /* Reduce el tamaño del botón */
   }
 
   .search-input {
     width: 100vw; /* Hace que el input ocupe todo el ancho disponible */
   }
+
 }
