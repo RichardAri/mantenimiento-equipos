@@ -1,10 +1,17 @@
+body{
+  background: linear-gradient(180deg, rgba(75,108,183,1) 0%, rgba(25,40,72,1) 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
 .tiendas-container {
   padding: 20px;
-  background-image: url("/src/assets/background.svg"); /* Ruta al SVG */
-  background-size: cover; /* Ajusta el tamaño del fondo */
-  background-repeat: no-repeat; /* Evita la repetición del fondo */
-  background-position: center; /* Centra el fondo */
+  width: auto;
+  height: auto;
   min-height: 100vh;
+  background: none;
 }
 
 header {
@@ -16,7 +23,7 @@ header {
 }
 
 header h1 {
-  font-size: 2em;
+  font-size: 2.5em;
   flex-grow: 1;
   text-align: center;
   margin: 0;
@@ -129,5 +136,29 @@ header button:hover {
 }
 
 .footer .social-icons a:hover {
-  color: #0b57d0; /* Cambia el color al pasar el mouse */
+  color: #0b57d0;
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column; /* Cambia la dirección del flex a columna para móviles */
+    width: 375vw;
+  }
+
+  .card {
+    width: 100vw; /* Cambia el ancho a 100% para celulares */
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-size: 2.5em; 
+  }
+
+  header button {
+    font-size: 14px; /* Reduce el tamaño del botón */
+  }
+
+  .search-input {
+    width: 100vw; /* Hace que el input ocupe todo el ancho disponible */
+  }
 }

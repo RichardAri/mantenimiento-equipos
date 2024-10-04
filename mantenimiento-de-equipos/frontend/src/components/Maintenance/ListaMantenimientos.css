@@ -1,6 +1,6 @@
 .mantenimientos-container {
   padding: 20px;
-  background-image: url("/src/assets/background.svg"); /* Ruta relativa al SVG */
+  background-image: linear-gradient(180deg, rgba(75,108,183,1) 0%, rgba(25,40,72,1) 100%);
   background-size: cover; /* Ajusta el tamaño del fondo */
   background-repeat: no-repeat; /* Evita la repetición del fondo */
   background-position: center; /* Centra el fondo en el contenedor */
