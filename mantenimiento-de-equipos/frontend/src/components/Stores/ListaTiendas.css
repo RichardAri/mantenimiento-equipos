@@ -1,9 +1,9 @@
 .tiendas-container {
   padding: 20px;
-  background-image: url("/src/assets/background.svg"); /* Ruta relativa al SVG */
+  background-image: url("/src/assets/background.svg"); /* Ruta al SVG */
   background-size: cover; /* Ajusta el tamaño del fondo */
   background-repeat: no-repeat; /* Evita la repetición del fondo */
-  background-position: center; /* Centra el fondo en el contenedor */
+  background-position: center; /* Centra el fondo */
   min-height: 100vh;
 }
 
@@ -88,9 +88,11 @@ header button:hover {
 }
 
 .search-input {
-  margin-left: 20px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 200px; /* Ajusta el tamaño según necesites */
+  width: 200px;
+  margin: auto;
+  display: block;
+  margin-bottom: 20px;
 }
