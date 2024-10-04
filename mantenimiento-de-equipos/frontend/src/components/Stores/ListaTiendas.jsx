@@ -37,7 +37,7 @@ const ListaTiendas = () => {
     navigate(`/tiendas/${tiendaId}/equipos`);
   };
 
-  // Filtrar las tiendas en base al término de búsqueda
+  // Filtrar las tiendas en base al termino de búsqueda
   const filteredTiendas = tiendas.filter((tienda) =>
     tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -48,15 +48,13 @@ const ListaTiendas = () => {
         <h1 className="title-page">Capriccio</h1>
         <button onClick={abrirModalAñadir}>Añadir Tienda</button>
       </header>
-      <div className="input-box">
-        <input
-          type="text"
-          placeholder="Buscar tienda..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
-          className="search-input"
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Buscar tienda..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
+        className="search-input"
+      />
       <div className="card-container">
         {filteredTiendas.map((tienda) => (
           <div
