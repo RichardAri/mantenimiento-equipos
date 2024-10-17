@@ -19,12 +19,22 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
       encargado,
       nroEquipos: 0,
     };
-    await addDoc(collection(db, "tiendas"), nuevaTienda);
-    onSave(nuevaTienda);
-    onRequestClose();
-    setNombre("");
-    setUbicacion("");
-    setEncargado("");
+
+    try {
+      // Guardar en Firebase
+      await addDoc(collection(db, "tiendas"), nuevaTienda);
+
+      // Limpiar campos
+      setNombre("");
+      setUbicacion("");
+      setEncargado("");
+  
+      onSave(nuevaTienda); 
+      // Primero cerrar el modal
+      onRequestClose();
+    } catch (error) {
+      console.error("Error al añadir la tienda: ", error);
+    }
   };
 
   return (
@@ -42,7 +52,7 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           required
-        />
+        /> 
         <label>Ubicación:</label>
         <input
           type="text"

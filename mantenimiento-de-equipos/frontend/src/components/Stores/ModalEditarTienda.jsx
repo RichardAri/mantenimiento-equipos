@@ -5,7 +5,7 @@ import "../Modal.css";
 
 Modal.setAppElement("#root");
 
-const ModalEditarTienda = ({ isOpen, onRequestClose, tienda }) => {
+const ModalEditarTienda = ({ isOpen, onRequestClose, tienda, onSave, onDelete }) => {
   const [nombre, setNombre] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [encargado, setEncargado] = useState("");
@@ -21,19 +21,34 @@ const ModalEditarTienda = ({ isOpen, onRequestClose, tienda }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const tiendaRef = doc(db, "tiendas", tienda.id);
+
+    // Primero cerrar el modal
+    onRequestClose();
+
+    // Luego actualizar la tienda en Firebase
     await updateDoc(tiendaRef, {
       nombre,
       ubicacion,
       encargado,
     });
-    onRequestClose();
+
+    // Llamar a onSave para actualizar la tienda en la lista y mostrar la notificación
+    onSave({ ...tienda, nombre, ubicacion, encargado });
   };
 
   const handleDelete = async () => {
     const tiendaRef = doc(db, "tiendas", tienda.id);
-    await deleteDoc(tiendaRef);
+
+    // Primero cerrar el modal
     onRequestClose();
+
+    // Luego eliminar la tienda en Firebase
+    await deleteDoc(tiendaRef);
+
+    // Llamar a onDelete para actualizar la lista y mostrar la notificación
+    onDelete(tienda.id);
   };
 
   return (

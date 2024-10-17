@@ -10,7 +10,8 @@ const ListaTiendas = () => {
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const [searchTerm, setSearchTerm] = useState("");
+  const [notification, setNotification] = useState(""); // Estado para la notificación
   const db = getFirestore();
   const navigate = useNavigate();
 
@@ -37,7 +38,29 @@ const ListaTiendas = () => {
     navigate(`/tiendas/${tiendaId}/equipos`);
   };
 
-  // Filtrar las tiendas en base al termino de búsqueda
+  const handleSaveTienda = (nuevaTienda) => {
+    setTiendas([...tiendas, nuevaTienda]); // Añade la nueva tienda a la lista existente
+    setNotification("Tienda añadida exitosamente!"); // Muestra la notificación
+    setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
+  };
+
+  // Maneja la actualización de una tienda editada
+  const handleSaveTiendaEditada = (tiendaActualizada) => {
+    setTiendas(tiendas.map(tienda =>
+      tienda.id === tiendaActualizada.id ? tiendaActualizada : tienda
+    ));
+    setNotification("Tienda actualizada exitosamente!");
+    setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
+  };
+
+  // Maneja la eliminación de una tienda
+  const handleDeleteTienda = (tiendaId) => {
+    setTiendas(tiendas.filter(tienda => tienda.id !== tiendaId));
+    setNotification("Tienda eliminada exitosamente!");
+    setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
+  };
+
+  // Filtrar las tiendas en base al término de búsqueda
   const filteredTiendas = tiendas.filter((tienda) =>
     tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -46,15 +69,17 @@ const ListaTiendas = () => {
     <div className="tiendas-container">
       <header>
         <h1 className="title-page">Capriccio</h1>
-        <button className="add-button" onClick={abrirModalAñadir}>Añadir Tienda</button>
+        <button className="add-button" onClick={abrirModalAñadir}>
+          Añadir Tienda
+        </button>
       </header>
-        <input
-          type="text"
-          placeholder="Buscar tienda..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
-          className="search-input"
-        />
+      <input
+        type="text"
+        placeholder="Buscar tienda..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
       <div className="card-container">
         {filteredTiendas.map((tienda) => (
           <div
@@ -79,14 +104,25 @@ const ListaTiendas = () => {
           </div>
         ))}
       </div>
+
+      {/* Notificación centrada */}
+      {notification && (
+        <div className="notification">
+          <p>{notification}</p>
+        </div>
+      )}
+
       <ModalAñadirTienda
         isOpen={modalAñadirAbierto}
         onRequestClose={cerrarModalAñadir}
+        onSave={handleSaveTienda} // Pasa la función para manejar el guardado
       />
       <ModalEditarTienda
         isOpen={modalEditarAbierto}
         onRequestClose={cerrarModalEditar}
         tienda={tiendaSeleccionada}
+        onSave={handleSaveTiendaEditada} // Pasa la función para manejar la edición
+        onDelete={handleDeleteTienda} // Pasa la función para manejar la eliminación
       />
     </div>
   );
