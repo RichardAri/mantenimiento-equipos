@@ -1,7 +1,7 @@
 .boton-flotante {
     position: fixed;
-    bottom: 20px; /* Ajusta según lo necesites */
-    right: 20px; /* Ajusta según lo necesites */
+    bottom: 20px;
+    left: 20px; /* Cambiado a la esquina inferior izquierda */
     background-color: #25d366; /* Color similar a WhatsApp */
     color: white;
     border: none;
@@ -20,5 +20,11 @@
   
   .boton-flotante:hover {
     background-color: #1da851; /* Un tono más oscuro al pasar el mouse */
+  }
+  
+  .informes-icon {
+    width: 24px;
+    height: 24px;
+    stroke: white;
   }
   

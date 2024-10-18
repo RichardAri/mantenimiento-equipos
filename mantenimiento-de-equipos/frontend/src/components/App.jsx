@@ -12,6 +12,7 @@ import Footer from "./Footer";
 // Elimina la importación de AuthProvider
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
 import BotonFlotante from "./Reports/BotonFlotante";
+import LogoutButton from "./Auth/LogoutButton";
 
 const App = () => {
   return (
@@ -77,9 +78,9 @@ const App = () => {
           }
         />
       </Routes>
-      <BotonFlotante />
       <Footer />
-
+      <BotonFlotante />
+      <LogoutButton /> 
     </div>
   );
 };
