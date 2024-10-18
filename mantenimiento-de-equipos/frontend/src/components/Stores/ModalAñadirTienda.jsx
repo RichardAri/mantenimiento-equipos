@@ -25,7 +25,7 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
 
     // Después añadir la tienda y mostrar la notificación
     onSave(nuevaTienda); 
-
+ 
     try {
       // Guardar en Firebase
       await addDoc(collection(db, "tiendas"), nuevaTienda);
