@@ -9,8 +9,8 @@ import ModalEditarEquipo from "./Hardware/ModalEditarEquipo";
 import ModalAñadirMantenimiento from "./Maintenance/ModalAñadirMantenimiento";
 import ModalEditarMantenimiento from "./Maintenance/ModalEditarMantenimiento";
 import Footer from "./Footer";
-import { AuthProvider } from "./AuthContext"; // Proveedor de autenticación
-import ProtectedRoute from "./ProtectedRoute"; // Ruta protegida
+import { AuthProvider } from "../context/AuthContext";
+import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
 
 const App = () => {
   return (
