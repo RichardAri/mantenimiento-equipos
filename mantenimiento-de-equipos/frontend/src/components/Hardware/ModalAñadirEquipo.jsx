@@ -14,7 +14,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
     e.preventDefault();
     const nuevoEquipo = { codigo, nombre, ip, descripcion };
     onSave(nuevoEquipo);
-    onRequestClose(); // Cerrar modal
+    onRequestClose();
   };
 
   return (

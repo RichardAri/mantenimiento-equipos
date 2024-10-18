@@ -13,6 +13,7 @@ import {
 import ModalAñadirEquipo from "./ModalAñadirEquipo";
 import ModalEditarEquipo from "./ModalEditarEquipo";
 import "./ListaEquipos.css";
+import { useLocation } from "react-router-dom";
 
 const ListaEquipos = () => {
   const { tiendaId } = useParams();
@@ -23,8 +24,10 @@ const ListaEquipos = () => {
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [alertaVisible, setAlertaVisible] = useState(false);
-  const [busqueda, setBusqueda] = useState(""); // Nuevo estado para la búsqueda
+  const [busqueda, setBusqueda] = useState(""); // estado para la busqueda
   const db = getFirestore();
+  const location = useLocation();
+  const { actualizarNumeroEquipos } = location.state || {};
 
   useEffect(() => {
     const fetchTienda = async () => {
@@ -62,17 +65,32 @@ const ListaEquipos = () => {
   };
 
   const añadirEquipo = async (nuevoEquipo) => {
-    const docRef = await addDoc(
-      collection(db, `tiendas/${tiendaId}/equipos`),
-      nuevoEquipo
-    );
-    setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
+    try {
+      // Añadir el nuevo equipo a la coleccion "equipos" en Firebase
+      const docRef = await addDoc(
+        collection(db, `tiendas/${tiendaId}/equipos`),
+        nuevoEquipo
+      );
 
-    // Incrementa el numero de equipos
-    actualizarNumeroEquipos(tiendaId, equipos.length + 1);
+      // Actualizar el estado local con el nuevo equipo
+      setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
 
-    cerrarModalAñadir();
-    mostrarAlerta();
+      // Incrementar el numero de equipos en la tienda
+      if (typeof actualizarNumeroEquipos === "function") {
+        const nuevoNumeroEquipos = equipos.length + 1; // Equipos actuales + 1
+        actualizarNumeroEquipos(tiendaId, nuevoNumeroEquipos); // Llamar la función para actualizar la tienda
+      } else {
+        console.warn(
+          "actualizarNumeroEquipos no está definida o no es una función"
+        );
+      }
+
+      // Cerrar modal de añadir equipo y mostrar alerta de éxito
+      cerrarModalAñadir();
+      mostrarAlerta();
+    } catch (error) {
+      console.error("Error al añadir el equipo: ", error);
+    }
   };
 
   const editarEquipo = async (equipoId, equipoActualizado) => {

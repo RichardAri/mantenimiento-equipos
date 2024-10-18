@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import ModalAñadirTienda from "./ModalAñadirTienda";
 import ModalEditarTienda from "./ModalEditarTienda";
+import { TiendasContext } from "../../context/TiendasContext";
 import "./ListaTiendas.css";
 
 const ListaTiendas = () => {
@@ -66,15 +67,6 @@ const ListaTiendas = () => {
   const filteredTiendas = tiendas.filter((tienda) =>
     tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  //Actualizar el numero de equipos en una tienda
-  const actualizarNumeroEquipos = (tiendaId, nuevoNumero) => {
-    setTiendas(
-      tiendas.map((tienda) =>
-        tienda.id === tiendaId ? { ...tienda, nroEquipos: nuevoNumero } : tienda
-      )
-    );
-  };
 
   return (
     <div className="tiendas-container">
