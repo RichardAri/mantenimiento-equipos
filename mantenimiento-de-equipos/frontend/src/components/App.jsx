@@ -9,12 +9,14 @@ import ModalEditarEquipo from "./Hardware/ModalEditarEquipo";
 import ModalAñadirMantenimiento from "./Maintenance/ModalAñadirMantenimiento";
 import ModalEditarMantenimiento from "./Maintenance/ModalEditarMantenimiento";
 import Footer from "./Footer";
-// Elimina la importación de AuthProvider
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
-import BotonFlotante from "./Reports/BotonFlotante";
-import LogoutButton from "./Auth/LogoutButton";
+import BotonFlotante from "./Reports/BotonFlotante";  // Botón de informes
+import LogoutButton from "./Auth/LogoutButton";       // Botón de logout
+import { useAuth } from "../context/AuthContext";     // Importa el contexto de autenticación
 
 const App = () => {
+  const { user } = useAuth();  // Obtén el usuario autenticado del contexto
+
   return (
     <div className="app-container">
       <Routes>
@@ -78,9 +80,15 @@ const App = () => {
           }
         />
       </Routes>
-      <Footer />
-      <BotonFlotante />
-      <LogoutButton /> 
+
+      {/* Solo muestra los botones si el usuario está autenticado */}
+      {user && (
+        <>
+          <Footer />
+          <BotonFlotante />   {/* Botón de informes */}
+          <LogoutButton />    {/* Botón de logout */}
+        </>
+      )}
     </div>
   );
 };

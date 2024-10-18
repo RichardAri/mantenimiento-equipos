@@ -28,8 +28,10 @@ const LogoutButton = () => {
         strokeLinejoin="round"
         className="logout-icon"
       >
+        {/* SVG del icono de logout */}
         <path d="M10 17l5-5-5-5" />
         <path d="M19 12H4" />
+        <path d="M14 2H8a2 2 0 00-2 2v16a2 2 0 002 2h6a2 2 0 002-2V2z" />
       </svg>
     </div>
   );
