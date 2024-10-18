@@ -1,17 +1,17 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./AuthContext"; // Supongamos que usas un contexto de autenticación
+import { useAuth } from "./AuthContext"; // autenticacion
 import Login from "./Auth/Login";
 import ListaTiendas from "./Stores/ListaTiendas";
 // ...
 
 const App = () => {
-  const { user } = useAuth(); // Verificas si el usuario está autenticado
+  const { user } = useAuth(); // Verificar si el usuario esta autenticado
 
   return (
     <div className="app-container">
       <Routes>
-        {/* Rutas públicas */}
+        {/* Rutas publicas */}
         <Route path="/" element={<Login />} />
 
         {/* Rutas privadas */}
@@ -26,7 +26,7 @@ const App = () => {
             <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar" element={<ModalEditarMantenimiento />} />
           </>
         ) : (
-          // Si no está autenticado, redirige a la página de login
+          // Si no está autenticado, redirige a la pagina de login
           <Route path="*" element={<Navigate to="/" />} />
         )}
       </Routes>
