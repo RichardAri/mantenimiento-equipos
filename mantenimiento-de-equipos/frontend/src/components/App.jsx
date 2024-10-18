@@ -8,19 +8,19 @@ import ModalAñadirEquipo from "./Hardware/ModalAñadirEquipo";
 import ModalEditarEquipo from "./Hardware/ModalEditarEquipo";
 import ModalAñadirMantenimiento from "./Maintenance/ModalAñadirMantenimiento";
 import ModalEditarMantenimiento from "./Maintenance/ModalEditarMantenimiento";
-import Footer from "./Footer";
+import Footer from "./Footer/Footer";
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
-import BotonFlotante from "./Reports/BotonFlotante";  // Botón de informes
+import BotonFlotante from "./Reports/BotonFlotante";  // Boton de informes
 import LogoutButton from "./Auth/LogoutButton";       // Botón de logout
-import { useAuth } from "../context/AuthContext";     // Importa el contexto de autenticación
+import { useAuth } from "../context/AuthContext";  
 
 const App = () => {
-  const { user } = useAuth();  // Obtén el usuario autenticado del contexto
+  const { user } = useAuth();
 
   return (
     <div className="app-container">
       <Routes>
-        {/* Ruta pública */}
+        {/* Ruta publica */}
         <Route path="/" element={<Login />} />
         {/* Rutas protegidas */}
         <Route
@@ -85,8 +85,8 @@ const App = () => {
       {user && (
         <>
           <Footer />
-          <BotonFlotante />   {/* Botón de informes */}
-          <LogoutButton />    {/* Botón de logout */}
+          <BotonFlotante />   {/* Boton de informes */}
+          <LogoutButton />    {/* Boton de logout */}
         </>
       )}
     </div>

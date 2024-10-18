@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import Clock from "../Clock";
 import "./Login.css";
-import useAuth from "../../context/useAuth"; 
+import useAuth from "./useAuth"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");

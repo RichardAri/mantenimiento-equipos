@@ -1,7 +1,6 @@
-// Footer.jsx
 import React from "react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
-import "./Footer.css"; // Asegúrate de tener este archivo CSS
+import "./Footer.css";
 
 const Footer = () => {
   return (
