@@ -1,37 +1,86 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./AuthContext"; // autenticacion
+import { Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
 import ListaTiendas from "./Stores/ListaTiendas";
-// ...
+import ListaEquipos from "./Hardware/ListaEquipos";
+import ListaMantenimientos from "./Maintenance/ListaMantenimientos";
+import ModalAñadirEquipo from "./Hardware/ModalAñadirEquipo";
+import ModalEditarEquipo from "./Hardware/ModalEditarEquipo";
+import ModalAñadirMantenimiento from "./Maintenance/ModalAñadirMantenimiento";
+import ModalEditarMantenimiento from "./Maintenance/ModalEditarMantenimiento";
+import Footer from "./Footer";
+import { AuthProvider } from "./AuthContext"; // Proveedor de autenticación
+import ProtectedRoute from "./ProtectedRoute"; // Ruta protegida
 
 const App = () => {
-  const { user } = useAuth(); // Verificar si el usuario esta autenticado
-
   return (
-    <div className="app-container">
-      <Routes>
-        {/* Rutas publicas */}
-        <Route path="/" element={<Login />} />
+    <AuthProvider>
+      <div className="app-container">
+        <Routes>
+          {/* Ruta pública */}
+          <Route path="/" element={<Login />} />
 
-        {/* Rutas privadas */}
-        {user ? (
-          <>
-            <Route path="/tiendas" element={<ListaTiendas />} />
-            <Route path="/tiendas/:tiendaId/equipos" element={<ListaEquipos />} />
-            <Route path="/tiendas/:tiendaId/equipos/nuevo" element={<ModalAñadirEquipo />} />
-            <Route path="/tiendas/:tiendaId/equipos/:equipoId/editar" element={<ModalEditarEquipo />} />
-            <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos" element={<ListaMantenimientos />} />
-            <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo" element={<ModalAñadirMantenimiento />} />
-            <Route path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar" element={<ModalEditarMantenimiento />} />
-          </>
-        ) : (
-          // Si no está autenticado, redirige a la pagina de login
-          <Route path="*" element={<Navigate to="/" />} />
-        )}
-      </Routes>
-      <Footer />
-    </div>
+          {/* Rutas protegidas */}
+          <Route
+            path="/tiendas"
+            element={
+              <ProtectedRoute>
+                <ListaTiendas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiendas/:tiendaId/equipos"
+            element={
+              <ProtectedRoute>
+                <ListaEquipos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiendas/:tiendaId/equipos/nuevo"
+            element={
+              <ProtectedRoute>
+                <ModalAñadirEquipo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiendas/:tiendaId/equipos/:equipoId/editar"
+            element={
+              <ProtectedRoute>
+                <ModalEditarEquipo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos"
+            element={
+              <ProtectedRoute>
+                <ListaMantenimientos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo"
+            element={
+              <ProtectedRoute>
+                <ModalAñadirMantenimiento />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar"
+            element={
+              <ProtectedRoute>
+                <ModalEditarMantenimiento />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        <Footer />
+      </div>
+    </AuthProvider>
   );
 };
 
