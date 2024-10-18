@@ -68,6 +68,10 @@ const ListaEquipos = () => {
       nuevoEquipo
     );
     setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
+
+    // Incrementa el numero de equipos
+    actualizarNumeroEquipos(tiendaId, equipos.length + 1);
+    
     cerrarModalAñadir();
     mostrarAlerta();
   };
@@ -86,8 +90,11 @@ const ListaEquipos = () => {
   };
 
   const eliminarEquipo = async (equipoId) => {
+    const numeroEquiposActual = equipos.length;
     await deleteDoc(doc(db, `tiendas/${tiendaId}/equipos`, equipoId));
     setEquipos(equipos.filter((equipo) => equipo.id !== equipoId));
+    // Actualiza el numero de equipos en la base de datos
+    actualizarNumeroEquipos(tiendaId, numeroEquiposActual - 1);
   };
 
   const filtrarEquipos = equipos.filter((equipo) =>

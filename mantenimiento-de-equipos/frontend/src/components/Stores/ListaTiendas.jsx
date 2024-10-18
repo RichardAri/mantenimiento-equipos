@@ -65,6 +65,13 @@ const ListaTiendas = () => {
     tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  //Actualizar el numero de equipos en una tienda 
+  const actualizarNumeroEquipos = (tiendaId, nuevoNumero) => {
+    setTiendas(tiendas.map(tienda =>
+      tienda.id === tiendaId ? { ...tienda, nroEquipos: nuevoNumero } : tienda
+    ));
+  };
+
   return (
     <div className="tiendas-container">
       <header>
