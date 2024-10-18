@@ -46,16 +46,18 @@ const ListaTiendas = () => {
 
   // Maneja la actualización de una tienda editada
   const handleSaveTiendaEditada = (tiendaActualizada) => {
-    setTiendas(tiendas.map(tienda =>
-      tienda.id === tiendaActualizada.id ? tiendaActualizada : tienda
-    ));
+    setTiendas(
+      tiendas.map((tienda) =>
+        tienda.id === tiendaActualizada.id ? tiendaActualizada : tienda
+      )
+    );
     setNotification("Tienda actualizada exitosamente!");
     setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
   };
 
   // Maneja la eliminación de una tienda
   const handleDeleteTienda = (tiendaId) => {
-    setTiendas(tiendas.filter(tienda => tienda.id !== tiendaId));
+    setTiendas(tiendas.filter((tienda) => tienda.id !== tiendaId));
     setNotification("Tienda eliminada exitosamente!");
     setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
   };
@@ -65,11 +67,13 @@ const ListaTiendas = () => {
     tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  //Actualizar el numero de equipos en una tienda 
+  //Actualizar el numero de equipos en una tienda
   const actualizarNumeroEquipos = (tiendaId, nuevoNumero) => {
-    setTiendas(tiendas.map(tienda =>
-      tienda.id === tiendaId ? { ...tienda, nroEquipos: nuevoNumero } : tienda
-    ));
+    setTiendas(
+      tiendas.map((tienda) =>
+        tienda.id === tiendaId ? { ...tienda, nroEquipos: nuevoNumero } : tienda
+      )
+    );
   };
 
   return (

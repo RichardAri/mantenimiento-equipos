@@ -2,19 +2,17 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 
-// Creamos el contexto
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-// Proveedor del contexto
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Escuchamos el cambio de estado de autenticación
+  // estado de autenticacion
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false); // Ya tenemos la respuesta de Firebase
+      setLoading(false); // respuesta de Firebase
     });
 
     return () => unsubscribe(); // Cleanup al desmontar
@@ -27,7 +25,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook para usar el contexto en otros componentes
 export const useAuth = () => {
   return useContext(AuthContext);
 };

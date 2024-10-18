@@ -1,4 +1,3 @@
-// ListaEquipos.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -71,7 +70,7 @@ const ListaEquipos = () => {
 
     // Incrementa el numero de equipos
     actualizarNumeroEquipos(tiendaId, equipos.length + 1);
-    
+
     cerrarModalAñadir();
     mostrarAlerta();
   };
