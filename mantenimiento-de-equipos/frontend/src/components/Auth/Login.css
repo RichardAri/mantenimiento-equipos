@@ -1,10 +1,11 @@
 body, html {
   margin: 0;
   padding: 0;
+  font-family: 'Arial', sans-serif; /* Fuente para mejor legibilidad */
 }
 
 .login-background {
-  background: linear-gradient(250deg, rgba(75,108,183,1) 0%, rgba(25,40,72,1) 100%);
+  background: linear-gradient(180deg, rgba(75, 108, 183, 1) 0%, rgba(25, 40, 72, 1) 100%);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -22,45 +23,68 @@ body, html {
 .clock-container {
   margin-bottom: 15px;
   color: white;
+  font-size: 1.2em; /* Aumentar el tamaño de la fuente para mayor claridad */
 }
 
 .login-container {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 20px;
-  border-radius: 10px;
-  color: white;
-  width: auto;
+  background: rgba(25, 40, 72, 0.9); /* Fondo oscuro para mayor contraste */
+  padding: 40px; /* Espacio interno más generoso */
+  border-radius: 12px; /* Bordes ligeramente más redondeados */
+  color: white; /* Color de texto claro para mejor legibilidad */
+  width: 350px; /* Ancho fijo para uniformidad */
   text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más sutil */
 }
 
 .login-container h1 {
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* Mayor espacio para el título */
+  font-size: 1.8em; /* Tamaño de fuente mayor para mejor visibilidad */
 }
 
 .login-container label {
   display: block;
-  margin: 1px 10px 5px;
+  margin: 10px 0 5px; /* Espaciado mejorado */
+  font-weight: bold; /* Negrita para los labels */
+  color: white; /* Color de texto de labels claro */
 }
 
 .login-container input {
   width: 90%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: none;
+  padding: 12px; /* Más espacio en los inputs */
+  margin-bottom: 20px; /* Espacio adicional entre campos */
+  border: 1px solid #ccc; /* Borde sutil para los inputs */
   border-radius: 5px;
+  background: rgba(255, 255, 255, 0.9); /* Fondo blanco con menos transparencia */
+  color: #333; /* Color de texto oscuro para los inputs */
+  transition: background-color 0.3s, border-color 0.3s; /* Transición suave */
+}
+
+.login-container input:focus {
+  background: rgba(255, 255, 255, 1); /* Cambio de fondo al enfocarse */
+  outline: none; /* Sin borde por defecto */
+  border-color: #0078d4; /* Borde de color al enfocar */
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.5); /* Sombra sutil al enfocar */
 }
 
 .login-container button {
-  margin-top: 5px;
+  margin-top: 15px; /* Espaciado aumentado */
   width: 95%;
-  padding: 10px;
+  padding: 12px; /* Espacio en el botón */
   border: none;
   border-radius: 5px;
   background: #0078d4;
   color: white;
   cursor: pointer;
+  font-size: 1em; /* Tamaño de fuente para mejor legibilidad */
+  transition: background-color 0.3s, transform 0.2s; /* Transición suave */
 }
 
 .login-container button:hover {
   background: #005a9e;
+  transform: scale(1.05); /* Efecto de escala al pasar el mouse */
+}
+
+.login-container button:focus {
+  outline: none; /* Sin borde por defecto */
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.5); /* Sombra al enfocar el botón */
 }

@@ -1,30 +1,23 @@
 .boton-flotante {
-    position: fixed;
-    bottom: 20px;
-    left: 20px; /* Cambiado a la esquina inferior izquierda */
-    background-color: #fceeba; /* Color similar a WhatsApp */
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
-    transition: background-color 0.3s;
-  }
-  
-  .boton-flotante:hover {
-    background-color: #1da851; /* Un tono más oscuro al pasar el mouse */
-  }
-  
-  .informes-icon {
-    width: 24px;
-    height: 24px;
-    stroke: white;
-  }
-  
+  position: fixed;
+  bottom: 20px;
+  left: 20px; /* Esquina inferior izquierda */
+  background-color: #0078d4; /* Color azul distintivo */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+  cursor: pointer;
+  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+}
+
+.boton-flotante:hover {
+  background-color: #005a9e; /* Tono más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de escala al pasar el mouse */
+}

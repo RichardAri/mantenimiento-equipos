@@ -114,7 +114,7 @@ const ListaEquipos = () => {
         <button className="back-button" onClick={() => navigate(-1)}>
           Atrás
         </button>
-        <h1>Lista de Equipos: {nombreTienda}</h1>
+        <h1>Lista de Equipos: {nombreTienda.toUpperCase()}</h1>
         <button className="add-button" onClick={abrirModalAñadir}>
           Añadir Equipo
         </button>

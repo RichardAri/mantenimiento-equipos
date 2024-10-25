@@ -1,25 +1,26 @@
 .logout-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px; /* Botón de logout en la esquina inferior derecha */
-    width: 60px;
-    height: 60px;
-    background-color: #f44336;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .logout-icon {
-    width: 24px;
-    height: 24px;
-    stroke: white;
-  }
-  
-  .logout-button:hover {
-    background-color: #d32f2f;
-  }
-  
+  position: fixed;
+  bottom: 20px; /* Espacio desde el fondo */
+  right: 20px; /* Botón de logout en la esquina inferior derecha */
+  width: 60px; /* Ancho fijo */
+  height: 60px; /* Altura fija */
+  background-color: #c0392b; /* Rojo más oscuro para mayor profesionalismo */
+  border-radius: 50%; /* Botón circular */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más marcada */
+  transition: background-color 0.3s, transform 0.2s; /* Transición suave */
+}
+
+.logout-icon {
+  width: 24px; /* Icono de logout */
+  height: 24px;
+  stroke: white;
+}
+
+.logout-button:hover {
+  background-color: #a83225; /* Rojo más intenso al pasar el mouse */
+  transform: scale(1.1); /* Efecto de escala al pasar el mouse */
+}
