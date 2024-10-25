@@ -48,10 +48,10 @@ const ModalAñadirMantenimiento = ({
     if (isOpen) {
       if (mantenimiento) {
         // Si se está editando, setear el estado con los datos de mantenimiento
-        setNombre(mantenimiento.nombre);
+        setNombreMantenimiento(mantenimiento.nombreMantenimiento);
+        setUsuario(mantenimiento.usuario || "");
         setDescripcion(mantenimiento.descripcion);
         setPersonal(mantenimiento.personal);
-        setUsuario(mantenimiento.usuario || "");
         setArea(mantenimiento.area || "");
         setModelo(mantenimiento.modelo || "");
         setSo(mantenimiento.so || "");
@@ -60,7 +60,6 @@ const ModalAñadirMantenimiento = ({
         setAlmacenamiento(mantenimiento.almacenamiento || "");
         setIp(mantenimiento.ip || "");
       } else {
-        // Si se está añadiendo, obtener datos del equipo
         fetchEquipoData();
       }
     }
@@ -71,6 +70,7 @@ const ModalAñadirMantenimiento = ({
     const nuevoMantenimiento = {
       fecha: new Date().toISOString(),
       usuario,
+      nombreMantenimiento,
       descripcion,
       personal,
       area,
@@ -155,7 +155,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={area}
             onChange={(e) => setArea(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
@@ -164,7 +163,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={modelo}
             onChange={(e) => setModelo(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
@@ -173,7 +171,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={so}
             onChange={(e) => setSo(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
@@ -182,7 +179,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={procesador}
             onChange={(e) => setProcesador(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
@@ -191,7 +187,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={ram}
             onChange={(e) => setRam(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
@@ -200,7 +195,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={almacenamiento}
             onChange={(e) => setAlmacenamiento(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
@@ -209,7 +203,6 @@ const ModalAñadirMantenimiento = ({
             type="text"
             value={ip}
             onChange={(e) => setIp(e.target.value)}
-            className="modal-input"
           />
         </div>
 
