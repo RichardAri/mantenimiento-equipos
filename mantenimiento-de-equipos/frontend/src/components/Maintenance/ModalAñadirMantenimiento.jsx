@@ -11,9 +11,10 @@ const ModalAñadirMantenimiento = ({
   onSave,
   equipoId,
   tiendaId,
-  mantenimiento, // Nueva propiedad para datos de mantenimiento
+  mantenimiento, // propiedad para datos de mantenimiento
 }) => {
-  const [nombre, setNombre] = useState("Cambio de Disco");
+  const [nombreMantenimiento, setNombreMantenimiento] = useState("Cambio de Disco");
+  const [usuario, setUsuario] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [personal, setPersonal] = useState("");
   const [caja, setCaja] = useState("");
@@ -33,7 +34,7 @@ const ModalAñadirMantenimiento = ({
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const equipoData = docSnap.data();
-        setCaja(equipoData.caja || "");
+        setCaja(equipoData.usuario || "");
         setArea(equipoData.area || "");
         setModelo(equipoData.modelo || "");
         setSo(equipoData.so || "");
@@ -50,7 +51,7 @@ const ModalAñadirMantenimiento = ({
         setNombre(mantenimiento.nombre);
         setDescripcion(mantenimiento.descripcion);
         setPersonal(mantenimiento.personal);
-        setCaja(mantenimiento.caja || "");
+        setUsuario(mantenimiento.usuario || "");
         setArea(mantenimiento.area || "");
         setModelo(mantenimiento.modelo || "");
         setSo(mantenimiento.so || "");
@@ -69,10 +70,9 @@ const ModalAñadirMantenimiento = ({
     e.preventDefault();
     const nuevoMantenimiento = {
       fecha: new Date().toISOString(),
-      nombre,
+      usuario,
       descripcion,
       personal,
-      caja,
       area,
       modelo,
       so,
@@ -101,17 +101,22 @@ const ModalAñadirMantenimiento = ({
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      onRequestClose={() => {
+        onRequestClose();
+      }}
       className="modal"
       overlayClassName="modal-overlay"
     >
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
       <h2 className="add-subtitle">
         {mantenimiento ? "Editar Mantenimiento" : "Añadir Mantenimiento"}
       </h2>
       <form onSubmit={handleSubmit} className="form-modal">
         <div className="form-group">
           <label className="form-lbl-text">Nombre del Mantenimiento:</label>
-          <select value={nombre} onChange={(e) => setNombre(e.target.value)}>
+          <select value={nombreMantenimiento} onChange={(e) => setNombreMantenimiento(e.target.value)}>
             <option value="Cambio de Disco">Cambio de Disco</option>
             <option value="Cambio de S.O.">Cambio de S.O.</option>
             <option value="Cambio de Ram">Cambio de Ram</option>
@@ -124,7 +129,6 @@ const ModalAñadirMantenimiento = ({
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             required
-            className="auto-textarea"
           />
         </div>
         <div className="form-group">
@@ -134,22 +138,19 @@ const ModalAñadirMantenimiento = ({
             value={personal}
             onChange={(e) => setPersonal(e.target.value)}
             required
-            className="modal-input"
           />
         </div>
         <h3 className="add-subtitle">Datos del Equipo</h3>
-
         <div className="form-group">
-          <label>Usuario:</label>
+          <label className="form-lbl-text">Usuario:</label>
           <input
             type="text"
             value={caja}
             onChange={(e) => setCaja(e.target.value)}
-            className="modal-input"
           />
         </div>
         <div className="form-group">
-          <label>Área:</label>
+          <label className="form-lbl-text">Área:</label>
           <input
             type="text"
             value={area}
@@ -158,7 +159,7 @@ const ModalAñadirMantenimiento = ({
           />
         </div>
         <div className="form-group">
-          <label>Modelo:</label>
+          <label className="form-lbl-text">Modelo:</label>
           <input
             type="text"
             value={modelo}
@@ -167,7 +168,7 @@ const ModalAñadirMantenimiento = ({
           />
         </div>
         <div className="form-group">
-          <label>Sistema Operativo:</label>
+          <label className="form-lbl-text">Sistema Operativo:</label>
           <input
             type="text"
             value={so}
@@ -176,7 +177,7 @@ const ModalAñadirMantenimiento = ({
           />
         </div>
         <div className="form-group">
-          <label>Procesador:</label>
+          <label className="form-lbl-text">Procesador:</label>
           <input
             type="text"
             value={procesador}
@@ -185,7 +186,7 @@ const ModalAñadirMantenimiento = ({
           />
         </div>
         <div className="form-group">
-          <label>Memoria RAM:</label>
+          <label className="form-lbl-text">Memoria RAM:</label>
           <input
             type="text"
             value={ram}
@@ -194,7 +195,7 @@ const ModalAñadirMantenimiento = ({
           />
         </div>
         <div className="form-group">
-          <label>Almacenamiento:</label>
+          <label className="form-lbl-text">Almacenamiento:</label>
           <input
             type="text"
             value={almacenamiento}
@@ -203,7 +204,7 @@ const ModalAñadirMantenimiento = ({
           />
         </div>
         <div className="form-group">
-          <label>IP:</label>
+          <label className="form-lbl-text">IP:</label>
           <input
             type="text"
             value={ip}

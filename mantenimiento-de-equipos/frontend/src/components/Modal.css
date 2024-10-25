@@ -16,31 +16,30 @@
   color: #1e2a45;
   border-radius: 10px;
   padding: 20px;
-  max-width: 600px; /* Ajusté el ancho para hacerlo más compacto */
+  max-width: 600px; /* ancho para hacerlo más compacto */
   width: 100%;
   margin: auto;
   margin-top: 30px;
   position: relative;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Asegura que el contenido del modal no se salga */
 }
 
 .add-subtitle {
   font-size: 24px;
   text-align: center;
   color: rgba(25, 40, 72, 1);
-  margin-bottom: 20px; /* Espacio adicional debajo del título */
+  margin-bottom: 10px; 
 }
 
 .form-modal {
   display: flex;
-  flex-wrap: wrap; /* Para organizar los elementos en columnas */
+  flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
 }
 
 .form-lbl-text {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
   color: #4b6cb7;
 }
 
@@ -98,11 +97,20 @@
 }
 
 .save-button {
-  background: #0b57d0;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  width: 95.6%;
+  background: #3aa856; /* Botón visible */
+  transition: transform 0.3s ease;
 }
 
 .save-button:hover {
-  background: #0946aa;
+  background: #34974d; /* Color en hover */
+  transform: scale(1.1);
 }
 
 .close-button {
@@ -131,4 +139,56 @@
 
 .button:active {
   background-color: #2e8644;
+}
+
+.form-tienda {
+  display: flex;
+  flex-direction: column; /* Alinear los elementos en columna */
+  gap: 10px; /* Espacio entre los campos */
+}
+
+.btn-tienda{
+  background-color: #007bff; /* Color de fondo del botón */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 10px; /* Espacio interno */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar cursor al pasar */
+}
+
+.btn-tienda:hover {
+  background-color: #0056b3; /* Color al pasar el ratón */
+}
+
+.modal-overlay-tienda {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+}
+
+.modal-tienda {
+  background: white; /* Color de fondo */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 20px; /* Espacio interno */
+  max-width: 400px; /* Ancho máximo del modal */
+  width: 90%; /* Ancho responsive */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+  position: relative; /* Asegurar que se posicione correctamente dentro del overlay */
+}
+
+.input-txt{
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #4b6cb7;
+  border-radius: 5px;
+  width: 90%; 
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
 }

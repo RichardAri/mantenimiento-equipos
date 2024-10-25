@@ -25,8 +25,8 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
     onRequestClose();
 
     // Despues añadir la tienda y mostrar la notificacion
-    onSave(nuevaTienda); 
- 
+    onSave(nuevaTienda);
+
     try {
       // Guardar en Firebase
       await addDoc(collection(db, "tiendas"), nuevaTienda);
@@ -45,35 +45,49 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="modal"
-      overlayClassName="modal-overlay"
+      className="modal-tienda"
+      overlayClassName="modal-overlay-tienda"
     >
-      <h2>Añadir Tienda</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Tienda:</label>
-        <input
-          type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        /> 
-        <label>Ubicación:</label>
-        <input
-          type="text"
-          value={ubicacion}
-          onChange={(e) => setUbicacion(e.target.value)}
-          required
-        />
-        <label>Encargado:</label>
-        <input
-          type="text"
-          value={encargado}
-          onChange={(e) => setEncargado(e.target.value)}
-          required
-        />
-        <button type="submit" className="add-button">
-          Añadir
-        </button>
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
+      <h2 className="add-subtitle">Añadir Tienda</h2>
+      <form onSubmit={handleSubmit} className="form-tienda">
+        <div className="form-group">
+          <label className="form-lbl-text">Tienda:</label>
+          <input
+            type="text"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+            className="input-txt"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-lbl-text">Ubicación:</label>
+          <input
+            type="text"
+            value={ubicacion}
+            onChange={(e) => setUbicacion(e.target.value)}
+            required
+            className="input-txt"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-lbl-text">Encargado:</label>
+          <input
+            type="text"
+            value={encargado}
+            onChange={(e) => setEncargado(e.target.value)}
+            required
+            className="input-txt"
+          />
+        </div>
+        <div className="form-group">
+          <button type="submit" className="save-button">
+            Añadir
+          </button>
+        </div>
       </form>
     </Modal>
   );
