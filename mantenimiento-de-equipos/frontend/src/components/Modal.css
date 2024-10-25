@@ -12,28 +12,30 @@
 }
 
 .modal {
-  background: #ffffff; /* Fondo blanco para mantener buen contraste */
-  color: #1e2a45; /* Texto oscuro para buena legibilidad */
+  background: #ffffff;
+  color: #1e2a45;
   border-radius: 10px;
   padding: 20px;
-  max-width: 500px;
+  max-width: 600px; /* Ajusté el ancho para hacerlo más compacto */
   width: 100%;
   margin: auto;
   margin-top: 30px;
   position: relative;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Asegura que el contenido del modal no se salga */
 }
 
 .add-subtitle {
   font-size: 24px;
   text-align: center;
-  color: rgba(25,40,72,1); /* Título con tono más oscuro del gradiente */
+  color: rgba(25, 40, 72, 1);
+  margin-bottom: 20px; /* Espacio adicional debajo del título */
 }
 
 .form-modal {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-wrap: wrap; /* Para organizar los elementos en columnas */
+  justify-content: space-between;
 }
 
 .form-lbl-text {
@@ -42,28 +44,28 @@
   color: #4b6cb7;
 }
 
+.modal form .form-group {
+  width: 40%; /* Cada grupo de formulario ocupa casi la mitad del espacio */
+  margin: auto;
+  margin-bottom: 10px;
+}
+
 .modal form input,
 .modal form textarea {
-  margin-top: 10px;
-  padding: 12px; 
-  border: 1px solid #4b6cb7; 
+  margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #4b6cb7;
   border-radius: 5px;
-  width: 95%;
-  background-color: #f9f9f9; 
+  width: 100%; /* Los inputs ocupan el 100% del espacio dentro de cada columna */
+  background-color: #f9f9f9;
   transition: border-color 0.3s ease;
 }
 
 .modal form input:focus,
 .modal form textarea:focus {
-  border-color: rgba(75,108,183,0.8); 
-  box-shadow: 0 0 5px rgba(75,108,183,0.5); 
-  outline: none; 
-}
-
-.auto-textarea {
-  line-height: 1.5;
-  field-sizing: content;
-  min-height: 3lh;
+  border-color: rgba(75, 108, 183, 0.8);
+  box-shadow: 0 0 5px rgba(75, 108, 183, 0.5);
+  outline: none;
 }
 
 .container-txta {
@@ -72,15 +74,13 @@
   margin-top: 0.4rem;
 }
 
-/* Botones */
 .modal form .button-group {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  margin: auto;
+  margin-top: 15px;
 }
 
 .modal form button {
-  margin-top: 20px;
   padding: 10px;
   border: none;
   border-radius: 5px;
@@ -88,55 +88,47 @@
   cursor: pointer;
   font-size: 16px;
   width: 100%;
+  background: #3aa856; /* Botón visible */
+  transition: transform 0.3s ease;
 }
 
-.modal form .button-group button {
-  width: 45%;
+.modal form button:hover {
+  background: #34974d; /* Color en hover */
+  transform: scale(1.1);
 }
 
 .save-button {
-  background: #0b57d0; /* Botón guardar - azul brillante */
+  background: #0b57d0;
 }
 
 .save-button:hover {
-  background: #0946aa; /* Hover en el botón guardar */
-}
-
-.delete-button {
-  background-color: #c82333; /* Botón eliminar - rojo fuerte */
-}
-
-.delete-button:hover {
-  background: #dc3545; /* Hover en el botón eliminar */
+  background: #0946aa;
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: none;
   border: none;
-  color: #c82333; /* Color visible para el botón de cerrar */
+  color: #c82333;
   font-size: 20px;
   cursor: pointer;
-  font-weight: bold; /* Botón más visible */
-  transition: transform 0.2s ease;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s ease;
 }
 
 .close-button:hover {
-  transform: scale(1.2); /* Efecto de agrandado al pasar el mouse */
+  transform: scale(1.2);
 }
 
-.readonly-input {
-  background-color: #f5f5f5;
-  border: none;
-  color: #333;
+.button:hover {
+  background-color: #34974d;
 }
 
-.readonly-label {
-  font-weight: bold;
-}
-
-.user{  
-  width: 50%;
+.button:active {
+  background-color: #2e8644;
 }

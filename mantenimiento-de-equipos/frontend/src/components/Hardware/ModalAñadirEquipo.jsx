@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import "../Modal.css";
 
@@ -14,6 +14,21 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
   const [almacenamiento, setAlmacenamiento] = useState("");
   const [ip, setIp] = useState("");
 
+  useEffect(() => {
+    if (!isOpen) resetForm();
+  }, [isOpen]);
+
+  const resetForm = () => {
+    setUsuario("");
+    setArea("");
+    setModelo("");
+    setSo("");
+    setProcesador("");
+    setRam("");
+    setAlmacenamiento("");
+    setIp("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const nuevoEquipo = {
@@ -26,70 +41,98 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
       almacenamiento,
       ip,
     };
-    onSave(nuevoEquipo); // Envía los datos del nuevo equipo al padre (ListaEquipos)
-    onRequestClose(); // Cierra el modal después de guardar
+    onSave(nuevoEquipo);
+    onRequestClose();
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      onRequestClose={() => {
+        onRequestClose();
+      }}
       className="modal"
       overlayClassName="modal-overlay"
+      
     >
-      <h2>Añadir Equipo</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Usuario:</label>
-        <input
-          type="text"
-          value={usuario}
-          className="user"
-          onChange={(e) => setUsuario(e.target.value)}
-          required
-        />
-        <label>Área:</label>
-        <input
-          type="text"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-          required
-        />
-        <label>Modelo:</label>
-        <input
-          type="text"
-          value={modelo}
-          onChange={(e) => setModelo(e.target.value)}
-          required
-        />
-        <label>SO:</label>
-        <input type="text" value={so} onChange={(e) => setSo(e.target.value)} />
-        <label>Procesador:</label>
-        <input
-          type="text"
-          value={procesador}
-          onChange={(e) => setProcesador(e.target.value)}
-        />
-        <label>RAM:</label>
-        <input
-          type="text"
-          value={ram}
-          onChange={(e) => setRam(e.target.value)}
-        />
-        <label>Almacenamiento:</label>
-        <input
-          type="text"
-          value={almacenamiento}
-          onChange={(e) => setAlmacenamiento(e.target.value)}
-        />
-        <label>IP:</label>
-        <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} />
-        <button type="submit" className="save-button">
-          Añadir
-        </button>
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
+      <h2 className="add-subtitle " >Añadir Equipo</h2>
+      <form className="form-modal" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Usuario:</label>
+          <input
+            type="text"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Área:</label>
+          <input
+            type="text"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Modelo:</label>
+          <input
+            type="text"
+            value={modelo}
+            onChange={(e) => setModelo(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Sistema Operativo:</label>
+          <input
+            type="text"
+            value={so}
+            onChange={(e) => setSo(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>Procesador:</label>
+          <input
+            type="text"
+            value={procesador}
+            onChange={(e) => setProcesador(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>RAM:</label>
+          <input
+            type="text"
+            value={ram}
+            onChange={(e) => setRam(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>Almacenamiento:</label>
+          <input
+            type="text"
+            value={almacenamiento}
+            onChange={(e) => setAlmacenamiento(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>IP:</label>
+          <input
+            type="text"
+            value={ip}
+            onChange={(e) => setIp(e.target.value)}
+          />
+        </div>
+        <div className="button-group">
+          <button type="submit" className="save-button">Añadir Equipo</button>
+        </div>
       </form>
     </Modal>
   );
 };
 
 export default ModalAñadirEquipo;
-

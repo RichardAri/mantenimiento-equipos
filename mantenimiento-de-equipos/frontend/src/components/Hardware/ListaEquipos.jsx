@@ -63,16 +63,12 @@ const ListaEquipos = () => {
 
   const añadirEquipo = async (nuevoEquipo) => {
     try {
-      // Añadir el nuevo equipo a la colección "equipos" en Firebase
       const docRef = await addDoc(
         collection(db, `tiendas/${tiendaId}/equipos`),
         nuevoEquipo
       );
 
-      // Actualizar el estado local con el nuevo equipo
       setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
-
-      // Cerrar modal de añadir equipo y mostrar alerta de éxito
       cerrarModalAñadir();
       mostrarAlerta();
     } catch (error) {
@@ -108,7 +104,6 @@ const ListaEquipos = () => {
     }
   };
 
-  // Filtrar equipos por el campo 'usuario'
   const filtrarEquipos = equipos.filter((equipo) =>
     equipo.usuario.toLowerCase().includes(busqueda.toLowerCase())
   );
@@ -147,7 +142,6 @@ const ListaEquipos = () => {
           >
             <h2>{equipo.usuario}</h2> {/* Mostrar el 'usuario' como título */}
             {equipo.so ? (
-              // Si el equipo tiene SO, muestra esta estructura
               <>
                 <p>IP: {equipo.ip || "No asignada"}</p>
                 <p>Área: {equipo.area}</p>
@@ -161,7 +155,6 @@ const ListaEquipos = () => {
                 </ul>
               </>
             ) : (
-              // Si el equipo no tiene SO, muestra esta estructura
               <>
                 <p>Área: {equipo.area}</p>
                 <p>Modelo: {equipo.modelo}</p>
@@ -169,7 +162,7 @@ const ListaEquipos = () => {
                 <ul>
                   <li>IP: {equipo.ip || "No Asignada"}</li>
                   <li>Procesador: {equipo.procesador || "----"}</li>
-                  <li>RAM: {equipo.ram || "----" }</li>
+                  <li>RAM: {equipo.ram || "----"}</li>
                   <li>Almacenamiento: {equipo.almacenamiento || "----"}</li>
                 </ul>
               </>
@@ -188,7 +181,9 @@ const ListaEquipos = () => {
       </div>
       <ModalAñadirEquipo
         isOpen={modalAñadirAbierto}
-        onRequestClose={cerrarModalAñadir}
+        onRequestClose={() => {
+          cerrarModalAñadir();
+        }}
         onSave={añadirEquipo}
       />
       <ModalEditarEquipo
