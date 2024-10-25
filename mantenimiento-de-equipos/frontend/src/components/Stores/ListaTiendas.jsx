@@ -108,7 +108,7 @@ const ListaTiendas = () => {
         ))}
       </div>
 
-      {/* Notificación centrada */}
+      {/* Notificacion centrada */}
       {notification && (
         <div className="notification">
           <p>{notification}</p>

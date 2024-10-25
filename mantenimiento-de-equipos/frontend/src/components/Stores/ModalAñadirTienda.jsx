@@ -18,12 +18,13 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
       ubicacion,
       encargado,
       nroEquipos: 0,
+      fechaCreacion: new Date().toISOString().split("T")[0],
     };
 
     // Primero cerrar el modal
     onRequestClose();
 
-    // Después añadir la tienda y mostrar la notificación
+    // Despues añadir la tienda y mostrar la notificacion
     onSave(nuevaTienda); 
  
     try {
@@ -34,9 +35,9 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
       setNombre("");
       setUbicacion("");
       setEncargado("");
+      setFechaDeCreacion("");
     } catch (error) {
       console.error("Error al añadir la tienda: ", error);
-      // Opcional: manejar el error.
     }
   };
 

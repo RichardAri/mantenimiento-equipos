@@ -39,7 +39,7 @@ const ListaMantenimientos = () => {
       const docRef = doc(db, `tiendas/${tiendaId}/equipos`, equipoId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setEquipoNombre(docSnap.data().nombre);
+        setEquipoNombre(docSnap.data().usuario);
       }
     };
 
@@ -113,7 +113,9 @@ const ListaMantenimientos = () => {
           Atrás
         </button>
         <h1>Lista de Mantenimientos: {equipoNombre}</h1>
-        <button className="add-button" onClick={abrirModalAñadir}>Añadir Mantenimiento</button>
+        <button className="add-button" onClick={abrirModalAñadir}>
+          Añadir Mantenimiento
+        </button>
       </header>
       <div className="card-container">
         {mantenimientos
@@ -125,9 +127,15 @@ const ListaMantenimientos = () => {
               onClick={() => abrirModalEditar(mantenimiento)}
             >
               <h2>{new Date(mantenimiento.fecha).toLocaleString()}</h2>
-              <p>Nombre: {mantenimiento.nombre}</p>
-              <p>Descripción: {mantenimiento.descripcion}</p>
-              <p>Personal: {mantenimiento.personal}</p>
+              <p>Usuario: {mantenimiento.usuario}</p>
+              <p>Caja: {mantenimiento.caja}</p>
+              <p>Área: {mantenimiento.area}</p>
+              <p>Modelo: {mantenimiento.modelo}</p>
+              <p>SO: {mantenimiento.so}</p>
+              <p>Procesador: {mantenimiento.procesador}</p>
+              <p>RAM: {mantenimiento.ram}</p>
+              <p>Almacenamiento: {mantenimiento.almacenamiento}</p>
+              <p>IP: {mantenimiento.ip}</p>
             </div>
           ))}
       </div>

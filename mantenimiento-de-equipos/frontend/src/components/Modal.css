@@ -39,26 +39,25 @@
 .form-lbl-text {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  color: #4b6cb7; /* Etiquetas con un tono intermedio del gradiente */
+  color: #4b6cb7;
 }
 
 .modal form input,
 .modal form textarea {
   margin-top: 10px;
-  padding: 12px; /* Incrementar padding para inputs */
-  border: 1px solid #4b6cb7; /* Borde más resaltado con color del gradiente */
+  padding: 12px; 
+  border: 1px solid #4b6cb7; 
   border-radius: 5px;
   width: 95%;
-  background-color: #f9f9f9; /* Fondo claro para los inputs */
-  transition: border-color 0.3s ease; /* Animación suave en focus */
+  background-color: #f9f9f9; 
+  transition: border-color 0.3s ease;
 }
 
-/* Efecto de foco para inputs */
 .modal form input:focus,
 .modal form textarea:focus {
-  border-color: rgba(75,108,183,0.8); /* Resalta borde en el foco */
-  box-shadow: 0 0 5px rgba(75,108,183,0.5); /* Sombra suave para resaltar */
-  outline: none; /* Eliminar el borde predeterminado */
+  border-color: rgba(75,108,183,0.8); 
+  box-shadow: 0 0 5px rgba(75,108,183,0.5); 
+  outline: none; 
 }
 
 .auto-textarea {
@@ -136,4 +135,8 @@
 
 .readonly-label {
   font-weight: bold;
+}
+
+.user{  
+  width: 50%;
 }

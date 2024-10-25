@@ -15,10 +15,15 @@ const ModalAñadirMantenimiento = ({
   const [nombre, setNombre] = useState("Cambio de Disco");
   const [descripcion, setDescripcion] = useState("");
   const [personal, setPersonal] = useState("");
-  const [codigoEquipo, setCodigoEquipo] = useState("");
-  const [nombreEquipo, setNombreEquipo] = useState("");
-  const [ipEquipo, setIpEquipo] = useState("");
-  const [descripcionEquipo, setDescripcionEquipo] = useState("");
+  const [caja, setCaja] = useState(""); // Nueva información de la caja
+  const [area, setArea] = useState(""); // Nueva información del área
+  const [modelo, setModelo] = useState(""); // Nueva información del modelo
+  const [so, setSo] = useState(""); // Nueva información del sistema operativo
+  const [procesador, setProcesador] = useState(""); // Nueva información del procesador
+  const [ram, setRam] = useState(""); // Nueva información de la RAM
+  const [almacenamiento, setAlmacenamiento] = useState(""); // Nueva información de almacenamiento
+  const [ip, setIp] = useState(""); // Nueva información de IP
+
   const db = getFirestore();
 
   useEffect(() => {
@@ -27,10 +32,14 @@ const ModalAñadirMantenimiento = ({
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const equipoData = docSnap.data();
-        setCodigoEquipo(equipoData.codigo);
-        setNombreEquipo(equipoData.nombre);
-        setIpEquipo(equipoData.ip);
-        setDescripcionEquipo(equipoData.descripcion);
+        setCaja(equipoData.caja || "");
+        setArea(equipoData.area || "");
+        setModelo(equipoData.modelo || "");
+        setSo(equipoData.so || "");
+        setProcesador(equipoData.procesador || "");
+        setRam(equipoData.ram || "");
+        setAlmacenamiento(equipoData.almacenamiento || "");
+        setIp(equipoData.ip || "");
       }
     };
     if (isOpen) {
@@ -44,11 +53,15 @@ const ModalAñadirMantenimiento = ({
       fecha: new Date().toISOString(),
       nombre,
       descripcion,
-      codigoEquipo,
-      nombreEquipo,
-      ipEquipo,
-      descripcionEquipo,
       personal,
+      caja,
+      area,
+      modelo,
+      so,
+      procesador,
+      ram,
+      almacenamiento,
+      ip,
     };
     await onSave(nuevoMantenimiento);
   };
@@ -62,57 +75,68 @@ const ModalAñadirMantenimiento = ({
     >
       <h2 className="add-subtitle">Añadir Mantenimiento</h2>
       <form onSubmit={handleSubmit}>
-        <label className="readonly-label">Código del Equipo:</label>
-        <input
-          type="text"
-          value={codigoEquipo}
-          readOnly
-          className="readonly-input"
-        />
         <div className="form-group">
-          <label className="form-lbl-text">Nombre: </label>
+          <label className="form-lbl-text">Nombre del Mantenimiento:</label>
           <select value={nombre} onChange={(e) => setNombre(e.target.value)}>
-            <option className="form-lbl-text" value="Cambio de Disco">
-              Cambio de Disco
-            </option>
+            <option value="Cambio de Disco">Cambio de Disco</option>
             <option value="Cambio de S.O.">Cambio de S.O.</option>
             <option value="Cambio de Ram">Cambio de Ram</option>
             <option value="Mantenimiento General">Mantenimiento General</option>
           </select>
         </div>
-        <label className="form-lbl-text"> Descripción: </label>
+
+        <label className="form-lbl-text">Descripción:</label>
         <textarea
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
           required
         />
-        <label className="form-lbl-text">Personal:</label>
+
+        <label className="form-lbl-text">Personal Responsable:</label>
         <input
           type="text"
           value={personal}
           onChange={(e) => setPersonal(e.target.value)}
           required
         />
-        <h3>Cambios</h3>
-        <label className="form-lbl-text">Nombre del Equipo:</label>
+
+        <h3>Datos del Equipo</h3>
+        <label className="readonly-label">Caja:</label>
+        <input type="text" value={caja} readOnly className="readonly-input" />
+
+        <label className="readonly-label">Área:</label>
+        <input type="text" value={area} readOnly className="readonly-input" />
+
+        <label className="readonly-label">Modelo:</label>
+        <input type="text" value={modelo} readOnly className="readonly-input" />
+
+        <label className="readonly-label">Sistema Operativo:</label>
+        <input type="text" value={so} readOnly className="readonly-input" />
+
+        <label className="readonly-label">Procesador:</label>
         <input
           type="text"
-          value={nombreEquipo}
-          onChange={(e) => setNombreEquipo(e.target.value)}
+          value={procesador}
+          readOnly
+          className="readonly-input"
         />
-        <label>IP del Equipo:</label>
+
+        <label className="readonly-label">Memoria RAM:</label>
+        <input type="text" value={ram} readOnly className="readonly-input" />
+
+        <label className="readonly-label">Almacenamiento:</label>
         <input
           type="text"
-          value={ipEquipo}
-          onChange={(e) => setIpEquipo(e.target.value)}
+          value={almacenamiento}
+          readOnly
+          className="readonly-input"
         />
-        <label>Descripción del Equipo:</label>
-        <textarea
-          value={descripcionEquipo}
-          onChange={(e) => setDescripcionEquipo(e.target.value)}
-        />
+
+        <label className="readonly-label">IP:</label>
+        <input type="text" value={ip} readOnly className="readonly-input" />
+
         <button type="submit" className="save-button">
-          Añadir
+          Añadir Mantenimiento
         </button>
       </form>
     </Modal>

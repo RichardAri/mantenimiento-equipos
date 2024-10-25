@@ -5,16 +5,29 @@ import "../Modal.css";
 Modal.setAppElement("#root");
 
 const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
-  const [codigo, setCodigo] = useState("");
-  const [nombre, setNombre] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [area, setArea] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [so, setSo] = useState("");
+  const [procesador, setProcesador] = useState("");
+  const [ram, setRam] = useState("");
+  const [almacenamiento, setAlmacenamiento] = useState("");
   const [ip, setIp] = useState("");
-  const [descripcion, setDescripcion] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const nuevoEquipo = { codigo, nombre, ip, descripcion };
-    onSave(nuevoEquipo);
-    onRequestClose();
+    const nuevoEquipo = {
+      usuario,
+      area,
+      modelo,
+      so,
+      procesador,
+      ram,
+      almacenamiento,
+      ip,
+    };
+    onSave(nuevoEquipo); // Envía los datos del nuevo equipo al padre (ListaEquipos)
+    onRequestClose(); // Cierra el modal después de guardar
   };
 
   return (
@@ -26,33 +39,50 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
     >
       <h2>Añadir Equipo</h2>
       <form onSubmit={handleSubmit}>
-        <label>Código:</label>
+        <label>Usuario:</label>
         <input
           type="text"
-          value={codigo}
-          onChange={(e) => setCodigo(e.target.value)}
+          value={usuario}
+          className="user"
+          onChange={(e) => setUsuario(e.target.value)}
           required
         />
-        <label>Nombre:</label>
+        <label>Área:</label>
         <input
           type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
           required
+        />
+        <label>Modelo:</label>
+        <input
+          type="text"
+          value={modelo}
+          onChange={(e) => setModelo(e.target.value)}
+          required
+        />
+        <label>SO:</label>
+        <input type="text" value={so} onChange={(e) => setSo(e.target.value)} />
+        <label>Procesador:</label>
+        <input
+          type="text"
+          value={procesador}
+          onChange={(e) => setProcesador(e.target.value)}
+        />
+        <label>RAM:</label>
+        <input
+          type="text"
+          value={ram}
+          onChange={(e) => setRam(e.target.value)}
+        />
+        <label>Almacenamiento:</label>
+        <input
+          type="text"
+          value={almacenamiento}
+          onChange={(e) => setAlmacenamiento(e.target.value)}
         />
         <label>IP:</label>
-        <input
-          type="text"
-          value={ip}
-          onChange={(e) => setIp(e.target.value)}
-          required
-        />
-        <label>Descripción:</label>
-        <textarea
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          required
-        />
+        <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} />
         <button type="submit" className="save-button">
           Añadir
         </button>
@@ -62,3 +92,4 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
 };
 
 export default ModalAñadirEquipo;
+
