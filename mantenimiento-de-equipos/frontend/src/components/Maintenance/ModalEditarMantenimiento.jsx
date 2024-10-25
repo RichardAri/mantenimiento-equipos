@@ -55,9 +55,12 @@ const ModalEditarMantenimiento = ({
       className="modal"
       overlayClassName="modal-overlay"
     >
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
       <h2 className="add-subtitle">Editar Mantenimiento</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="readonly-label">Código del Equipo:</label>
+      <form onSubmit={handleSubmit} className="form-modal">
+        <label className="form-lbl-text">Código del Equipo:</label>
         <input
           type="text"
           value={codigoEquipo}
@@ -65,18 +68,18 @@ const ModalEditarMantenimiento = ({
           className="readonly-input"
         />
         <div className="form-group">
-          <label className="form-lbl-text"> Nombre:</label>
+          <label className="form-lbl-text">Nombre:</label>
+          <select
+            className="form-lbl-text"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          >
+            <option value="Cambio de Disco">Cambio de Disco</option>
+            <option value="Cambio de S.O.">Cambio de S.O.</option>
+            <option value="Cambio de Ram">Cambio de Ram</option>
+            <option value="Mantenimiento General">Mantenimiento General</option>
+          </select>
         </div>
-        <select
-          className="form-lbl-text "
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        >
-          <option value="Cambio de Disco">Cambio de Disco</option>
-          <option value="Cambio de S.O.">Cambio de S.O.</option>
-          <option value="Cambio de Ram">Cambio de Ram</option>
-          <option value="Mantenimiento General">Mantenimiento General</option>
-        </select>
         <label className="container-txta">
           Descripción:
           <textarea

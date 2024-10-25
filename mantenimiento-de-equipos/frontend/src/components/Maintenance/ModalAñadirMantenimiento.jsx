@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import "../Modal.css";
 
 Modal.setAppElement("#root");
@@ -11,18 +11,19 @@ const ModalAñadirMantenimiento = ({
   onSave,
   equipoId,
   tiendaId,
+  mantenimiento, // Nueva propiedad para datos de mantenimiento
 }) => {
   const [nombre, setNombre] = useState("Cambio de Disco");
   const [descripcion, setDescripcion] = useState("");
   const [personal, setPersonal] = useState("");
-  const [caja, setCaja] = useState(""); // Nueva información de la caja
-  const [area, setArea] = useState(""); // Nueva información del área
-  const [modelo, setModelo] = useState(""); // Nueva información del modelo
-  const [so, setSo] = useState(""); // Nueva información del sistema operativo
-  const [procesador, setProcesador] = useState(""); // Nueva información del procesador
-  const [ram, setRam] = useState(""); // Nueva información de la RAM
-  const [almacenamiento, setAlmacenamiento] = useState(""); // Nueva información de almacenamiento
-  const [ip, setIp] = useState(""); // Nueva información de IP
+  const [caja, setCaja] = useState("");
+  const [area, setArea] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [so, setSo] = useState("");
+  const [procesador, setProcesador] = useState("");
+  const [ram, setRam] = useState("");
+  const [almacenamiento, setAlmacenamiento] = useState("");
+  const [ip, setIp] = useState("");
 
   const db = getFirestore();
 
@@ -42,10 +43,27 @@ const ModalAñadirMantenimiento = ({
         setIp(equipoData.ip || "");
       }
     };
+
     if (isOpen) {
-      fetchEquipoData();
+      if (mantenimiento) {
+        // Si se está editando, setear el estado con los datos de mantenimiento
+        setNombre(mantenimiento.nombre);
+        setDescripcion(mantenimiento.descripcion);
+        setPersonal(mantenimiento.personal);
+        setCaja(mantenimiento.caja || "");
+        setArea(mantenimiento.area || "");
+        setModelo(mantenimiento.modelo || "");
+        setSo(mantenimiento.so || "");
+        setProcesador(mantenimiento.procesador || "");
+        setRam(mantenimiento.ram || "");
+        setAlmacenamiento(mantenimiento.almacenamiento || "");
+        setIp(mantenimiento.ip || "");
+      } else {
+        // Si se está añadiendo, obtener datos del equipo
+        fetchEquipoData();
+      }
     }
-  }, [db, tiendaId, equipoId, isOpen]);
+  }, [db, tiendaId, equipoId, isOpen, mantenimiento]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +81,21 @@ const ModalAñadirMantenimiento = ({
       almacenamiento,
       ip,
     };
-    await onSave(nuevoMantenimiento);
+
+    if (mantenimiento) {
+      // Actualizar mantenimiento existente
+      const docRef = doc(
+        db,
+        `tiendas/${tiendaId}/mantenimientos`,
+        mantenimiento.id
+      );
+      await updateDoc(docRef, nuevoMantenimiento);
+    } else {
+      // Añadir nuevo mantenimiento
+      await onSave(nuevoMantenimiento);
+    }
+
+    onRequestClose(); // Cerrar el modal después de guardar
   };
 
   return (
@@ -73,8 +105,10 @@ const ModalAñadirMantenimiento = ({
       className="modal"
       overlayClassName="modal-overlay"
     >
-      <h2 className="add-subtitle">Añadir Mantenimiento</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 className="add-subtitle">
+        {mantenimiento ? "Editar Mantenimiento" : "Añadir Mantenimiento"}
+      </h2>
+      <form onSubmit={handleSubmit} className="form-modal">
         <div className="form-group">
           <label className="form-lbl-text">Nombre del Mantenimiento:</label>
           <select value={nombre} onChange={(e) => setNombre(e.target.value)}>
@@ -84,60 +118,107 @@ const ModalAñadirMantenimiento = ({
             <option value="Mantenimiento General">Mantenimiento General</option>
           </select>
         </div>
+        <div className="form-group">
+          <label className="form-lbl-text">Descripción:</label>
+          <textarea
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+            required
+            className="auto-textarea"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-lbl-text">Personal Responsable:</label>
+          <input
+            type="text"
+            value={personal}
+            onChange={(e) => setPersonal(e.target.value)}
+            required
+            className="modal-input"
+          />
+        </div>
+        <h3 className="add-subtitle">Datos del Equipo</h3>
 
-        <label className="form-lbl-text">Descripción:</label>
-        <textarea
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          required
-        />
+        <div className="form-group">
+          <label>Usuario:</label>
+          <input
+            type="text"
+            value={caja}
+            onChange={(e) => setCaja(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Área:</label>
+          <input
+            type="text"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Modelo:</label>
+          <input
+            type="text"
+            value={modelo}
+            onChange={(e) => setModelo(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Sistema Operativo:</label>
+          <input
+            type="text"
+            value={so}
+            onChange={(e) => setSo(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Procesador:</label>
+          <input
+            type="text"
+            value={procesador}
+            onChange={(e) => setProcesador(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Memoria RAM:</label>
+          <input
+            type="text"
+            value={ram}
+            onChange={(e) => setRam(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Almacenamiento:</label>
+          <input
+            type="text"
+            value={almacenamiento}
+            onChange={(e) => setAlmacenamiento(e.target.value)}
+            className="modal-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>IP:</label>
+          <input
+            type="text"
+            value={ip}
+            onChange={(e) => setIp(e.target.value)}
+            className="modal-input"
+          />
+        </div>
 
-        <label className="form-lbl-text">Personal Responsable:</label>
-        <input
-          type="text"
-          value={personal}
-          onChange={(e) => setPersonal(e.target.value)}
-          required
-        />
-
-        <h3>Datos del Equipo</h3>
-        <label className="readonly-label">Caja:</label>
-        <input type="text" value={caja} readOnly className="readonly-input" />
-
-        <label className="readonly-label">Área:</label>
-        <input type="text" value={area} readOnly className="readonly-input" />
-
-        <label className="readonly-label">Modelo:</label>
-        <input type="text" value={modelo} readOnly className="readonly-input" />
-
-        <label className="readonly-label">Sistema Operativo:</label>
-        <input type="text" value={so} readOnly className="readonly-input" />
-
-        <label className="readonly-label">Procesador:</label>
-        <input
-          type="text"
-          value={procesador}
-          readOnly
-          className="readonly-input"
-        />
-
-        <label className="readonly-label">Memoria RAM:</label>
-        <input type="text" value={ram} readOnly className="readonly-input" />
-
-        <label className="readonly-label">Almacenamiento:</label>
-        <input
-          type="text"
-          value={almacenamiento}
-          readOnly
-          className="readonly-input"
-        />
-
-        <label className="readonly-label">IP:</label>
-        <input type="text" value={ip} readOnly className="readonly-input" />
-
-        <button type="submit" className="save-button">
-          Añadir Mantenimiento
-        </button>
+        <div className="button-group">
+          <button type="submit" className="save-button">
+            {mantenimiento
+              ? "Actualizar Mantenimiento"
+              : "Añadir Mantenimiento"}
+          </button>
+        </div>
       </form>
     </Modal>
   );
