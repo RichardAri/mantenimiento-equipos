@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import ModalAñadirTienda from "./ModalAñadirTienda";
 import ModalEditarTienda from "./ModalEditarTienda";
-import { TiendasContext } from "../../context/TiendasContext";
 import "./ListaTiendas.css";
 
 const ListaTiendas = () => {

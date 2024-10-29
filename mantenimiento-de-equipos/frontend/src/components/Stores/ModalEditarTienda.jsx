@@ -41,15 +41,26 @@ const ModalEditarTienda = ({ isOpen, onRequestClose, tienda, onSave, onDelete })
   const handleDelete = async () => {
     const tiendaRef = doc(db, "tiendas", tienda.id);
 
-    // Primero cerrar el modal
+    // Primero cerramos el modal
     onRequestClose();
-
+  
+    // Buscar equipos de la tienda
+    const equiposRef = getFirestore().collection("equipos");
+    const equiposQuery = await equiposRef.where("tiendaId", "==", tienda.id).get();
+  
+    // Eliminar cada equipo encontrado
+    const deletePromises = equiposQuery.docs.map(doc => deleteDoc(doc.ref));
+    
+    // Esperar a que todas las eliminaciones de equipos se completen
+    await Promise.all(deletePromises);
+    
     // Luego eliminar la tienda en Firebase
     await deleteDoc(tiendaRef);
-
+  
     // Llamar a onDelete para actualizar la lista y mostrar la notificación
     onDelete(tienda.id);
   };
+  
 
   return (
     <Modal
