@@ -21,7 +21,12 @@ const ModalInformes = ({ isOpen, onRequestClose }) => {
       className="modal"
       overlayClassName="modal-overlay"
     >
-      <h2>Generar Informe</h2>
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
+      <div className="form-group">
+        <h2 className="add-subtitle">Generar Informe</h2>
+      </div>
       <form onSubmit={handleSubmit}>
         <label className="form-lbl-text">Nombre del Informe:</label>
         <input
@@ -30,9 +35,11 @@ const ModalInformes = ({ isOpen, onRequestClose }) => {
           onChange={(e) => setNombreInforme(e.target.value)}
           required
         />
-        <button type="submit" className="save-button">
-          Generar
-        </button>
+        <div className="form-group">
+          <button type="submit" className="save-button">
+            Generar
+          </button>
+        </div>
       </form>
     </Modal>
   );
