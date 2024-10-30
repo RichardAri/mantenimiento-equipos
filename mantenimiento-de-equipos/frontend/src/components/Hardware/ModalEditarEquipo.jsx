@@ -56,6 +56,9 @@ const ModalEditarEquipo = ({
       className="modal"
       overlayClassName="modal-overlay"
     >
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
       <h2 className="">Editar Equipo</h2>
       <form onSubmit={handleSubmit}>
         <label className="form-lbl-text">Usuario:</label>

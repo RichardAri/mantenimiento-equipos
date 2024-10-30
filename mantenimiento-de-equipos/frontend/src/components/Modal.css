@@ -54,7 +54,7 @@
   padding: 10px;
   border: 1px solid #4b6cb7;
   border-radius: 5px;
-  width: 95%; /* Los inputs ocupan el 100% del espacio dentro de cada columna */
+  width: 95%; /* Tamaño de los input en los formularios */
   background-color: #f9f9f9;
   transition: border-color 0.3s ease;
 }

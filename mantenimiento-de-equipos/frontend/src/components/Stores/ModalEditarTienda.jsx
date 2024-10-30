@@ -64,6 +64,9 @@ const ModalEditarTienda = ({
       className="modal"
       overlayClassName="modal-overlay"
     >
+      <button className="close-button" onClick={onRequestClose}>
+        &times;
+      </button>
       <h2>Editar Tienda</h2>
       <form onSubmit={handleSubmit}>
         <label>Tienda:</label>
