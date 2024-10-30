@@ -53,15 +53,14 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
       }}
       className="modal"
       overlayClassName="modal-overlay"
-      
     >
       <button className="close-button" onClick={onRequestClose}>
         &times;
       </button>
-      <h2 className="add-subtitle " >Añadir Equipo</h2>
+      <h2 className="add-subtitle">Añadir Equipo</h2>
       <form className="form-modal" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Usuario:</label>
+          <label className="form-lbl-text">Usuario:</label>
           <input
             type="text"
             value={usuario}
@@ -70,7 +69,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>Área:</label>
+          <label className="form-lbl-text">Área:</label>
           <input
             type="text"
             value={area}
@@ -79,7 +78,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>Modelo:</label>
+          <label className="form-lbl-text">Modelo:</label>
           <input
             type="text"
             value={modelo}
@@ -88,7 +87,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>Sistema Operativo:</label>
+          <label className="form-lbl-text">Sistema Operativo:</label>
           <input
             type="text"
             value={so}
@@ -96,7 +95,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>Procesador:</label>
+          <label className="form-lbl-text">Procesador:</label>
           <input
             type="text"
             value={procesador}
@@ -104,7 +103,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>RAM:</label>
+          <label className="form-lbl-text">RAM:</label>
           <input
             type="text"
             value={ram}
@@ -112,7 +111,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>Almacenamiento:</label>
+          <label className="form-lbl-text">Almacenamiento:</label>
           <input
             type="text"
             value={almacenamiento}
@@ -120,7 +119,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="form-group">
-          <label>IP:</label>
+          <label className="form-lbl-text">IP:</label>
           <input
             type="text"
             value={ip}

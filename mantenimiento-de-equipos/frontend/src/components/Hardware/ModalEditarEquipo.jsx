@@ -59,7 +59,7 @@ const ModalEditarEquipo = ({
       <button className="close-button" onClick={onRequestClose}>
         &times;
       </button>
-      <h2 className="">Editar Equipo</h2>
+      <h2 className="add-subtitle">Editar Equipo</h2>
       <form onSubmit={handleSubmit}>
         <label className="form-lbl-text">Usuario:</label>
         <input
