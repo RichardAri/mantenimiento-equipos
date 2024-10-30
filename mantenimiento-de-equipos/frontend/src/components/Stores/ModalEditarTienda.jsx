@@ -5,7 +5,13 @@ import "../Modal.css";
 
 Modal.setAppElement("#root");
 
-const ModalEditarTienda = ({ isOpen, onRequestClose, tienda, onSave, onDelete }) => {
+const ModalEditarTienda = ({
+  isOpen,
+  onRequestClose,
+  tienda,
+  onSave,
+  onDelete,
+}) => {
   const [nombre, setNombre] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [encargado, setEncargado] = useState("");
