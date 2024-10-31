@@ -80,6 +80,7 @@ const ModalAñadirMantenimiento = ({
       ram,
       almacenamiento,
       ip,
+      fechaCreacion: new Date().toISOString().split("T")[0],
     };
 
     if (mantenimiento) {

@@ -39,11 +39,12 @@ const ListaTiendas = () => {
   };
 
   const handleSaveTienda = (nuevaTienda) => {
-    setTiendas([...tiendas, nuevaTienda]);
-    setNotification("Tienda creada exitosamente!"); // Muestra la notificación
+    setTiendas([...tiendas, nuevaTienda]); // Añade la nueva tienda a la lista existente
+    setNotification("Tienda añadida exitosamente!"); // Muestra la notificación
     setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
   };
 
+  // Maneja la actualización de una tienda editada
   const handleSaveTiendaEditada = (tiendaActualizada) => {
     setTiendas(
       tiendas.map((tienda) =>
@@ -54,13 +55,14 @@ const ListaTiendas = () => {
     setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
   };
 
+  // Maneja la eliminación de una tienda
   const handleDeleteTienda = (tiendaId) => {
     setTiendas(tiendas.filter((tienda) => tienda.id !== tiendaId));
     setNotification("Tienda eliminada exitosamente!");
     setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
   };
 
-  // Filtrar las tiendas en base al término de busqueda
+  // Filtrar las tiendas en base al término de búsqueda
   const filteredTiendas = tiendas.filter((tienda) =>
     tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -88,7 +90,7 @@ const ListaTiendas = () => {
             onClick={() => navegarAEquipos(tienda.id)}
             style={{ cursor: "pointer" }}
           >
-            <h2 className="lbl-txt">{tienda.nombre}</h2>
+            <h2>{tienda.nombre}</h2>
             <p>Ubicación: {tienda.ubicacion}</p>
             <p>Nro de Equipos: {tienda.nroEquipos}</p>
             <p>Encargado: {tienda.encargado}</p>

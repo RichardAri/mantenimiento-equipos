@@ -40,6 +40,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
       ram,
       almacenamiento,
       ip,
+      fechaCreacion: new Date().toISOString().split("T")[0],
     };
     onSave(nuevoEquipo);
     onRequestClose();
