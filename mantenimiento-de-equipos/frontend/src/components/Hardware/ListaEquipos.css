@@ -104,10 +104,10 @@ header .add-button:hover {
 }
 
 .alerta {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #ffb300; /* Amarillo dorado para alertas */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #3aa856; /* color verde para alertas */
   color: white;
   padding: 10px 20px;
   border-radius: 5px;

@@ -11,7 +11,7 @@ const ModalInformes = ({ isOpen, onRequestClose }) => {
     e.preventDefault();
     // Aquí iría la lógica para generar el informe
     console.log("Generar informe:", nombreInforme);
-    onRequestClose(); 
+    onRequestClose();
   };
 
   return (
