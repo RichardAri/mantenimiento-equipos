@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, deleteDoc, collection, getDocs, query, where } from "firebase/firestore";
 import "../Modal.css";
 
 Modal.setAppElement("#root");
@@ -45,16 +45,39 @@ const ModalEditarTienda = ({
   };
 
   const handleDelete = async () => {
+    const db = getFirestore();
     const tiendaRef = doc(db, "tiendas", tienda.id);
-
-    // Primero cerrar el modal
-    onRequestClose();
-
-    // Luego eliminar la tienda en Firebase
-    await deleteDoc(tiendaRef);
-
-    // Llamar a onDelete para actualizar la lista y mostrar la notificación
-    onDelete(tienda.id);
+  
+    try {
+      // Primero cerrar el modal
+      onRequestClose();
+  
+      // Eliminar los equipos asociados a la tienda
+      const equiposRef = collection(db, "equipos");
+      const equiposSnapshot = await getDocs(query(equiposRef, where("tiendaId", "==", tienda.id)));
+      
+      for (const equipoDoc of equiposSnapshot.docs) {
+        const equipoId = equipoDoc.id;
+        const mantenimientosRef = collection(db, "equipos", equipoId, "mantenimientos");
+  
+        // Eliminar los mantenimientos de cada equipo
+        const mantenimientosSnapshot = await getDocs(mantenimientosRef);
+        for (const mantenimientoDoc of mantenimientosSnapshot.docs) {
+          await deleteDoc(mantenimientoDoc.ref);
+        }
+  
+        // Luego, eliminar el equipo
+        await deleteDoc(equipoDoc.ref);
+      }
+  
+      // Finalmente, eliminar la tienda
+      await deleteDoc(tiendaRef);
+  
+      // Actualizar la lista y mostrar la notificación
+      onDelete(tienda.id);
+    } catch (error) {
+      console.error("Error al eliminar la tienda y sus datos relacionados: ", error);
+    }
   };
 
   return (
