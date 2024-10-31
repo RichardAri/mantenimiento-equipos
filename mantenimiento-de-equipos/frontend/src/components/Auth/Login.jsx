@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"; // Importa useEffect
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
-import Clock from "../Clock";
+import Clock from "../Clock/Clock";
 import "./Login.css";
 import useAuth from "./useAuth"; 
 
