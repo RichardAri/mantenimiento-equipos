@@ -179,7 +179,7 @@ const ListaEquipos = () => {
           </div>
         ))}
       </div>
-      <ModalAñadirEquipoEquipo01
+      <ModalAñadirEquipo
         isOpen={modalAñadirAbierto}
         onRequestClose={() => {
           cerrarModalAñadir();
