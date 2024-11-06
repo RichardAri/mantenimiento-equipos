@@ -21,11 +21,11 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
       fechaCreacion: new Date().toISOString().split("T")[0],
     };
 
-    // Primero cerrar el modal
-    onRequestClose();
-
-    // Despues añadir la tienda y mostrar la notificacion
+    // Primero añadir la tienda y mostrar la notificacion
     onSave(nuevaTienda);
+
+    // Despues cerrar el modal
+    onRequestClose();
 
     try {
       // Guardar en Firebase

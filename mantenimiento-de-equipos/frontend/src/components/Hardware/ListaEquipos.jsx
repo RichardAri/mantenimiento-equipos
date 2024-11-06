@@ -67,7 +67,6 @@ const ListaEquipos = () => {
         collection(db, `tiendas/${tiendaId}/equipos`),
         nuevoEquipo
       );
-
       setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
       cerrarModalAñadir();
       mostrarAlerta();
