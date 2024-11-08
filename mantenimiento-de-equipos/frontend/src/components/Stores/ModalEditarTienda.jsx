@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, deleteDoc, collection, getDocs } from "firebase/firestore";
 import "../Modal.css";
 
 Modal.setAppElement("#root");
@@ -27,20 +27,15 @@ const ModalEditarTienda = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const tiendaRef = doc(db, "tiendas", tienda.id);
-
-    // Primero cerrar el modal
     onRequestClose();
 
-    // Luego actualizar la tienda en Firebase
     await updateDoc(tiendaRef, {
       nombre,
       ubicacion,
       encargado,
     });
 
-    // Llamar a onSave para actualizar la tienda en la lista y mostrar la notificación
     onSave({ ...tienda, nombre, ubicacion, encargado });
   };
 
@@ -50,11 +45,38 @@ const ModalEditarTienda = ({
     // Primero cerrar el modal
     onRequestClose();
 
-    // Luego eliminar la tienda en Firebase
-    await deleteDoc(tiendaRef);
+    try {
+      // Obtener todos los equipos dentro de la tienda
+      const equiposSnapshot = await getDocs(collection(db, "tiendas", tienda.id, "equipos"));
 
-    // Llamar a onDelete para actualizar la lista y mostrar la notificación
-    onDelete(tienda.id);
+      // Eliminar los mantenimientos de cada equipo y luego el equipo
+      for (let equipoDoc of equiposSnapshot.docs) {
+        const equipoId = equipoDoc.id;
+        
+        // Obtener los mantenimientos del equipo
+        const mantenimientosSnapshot = await getDocs(
+          collection(db, "tiendas", tienda.id, "equipos", equipoId, "mantenimientos")
+        );
+
+        // Eliminar cada mantenimiento
+        for (let mantenimientoDoc of mantenimientosSnapshot.docs) {
+          await deleteDoc(
+            doc(db, "tiendas", tienda.id, "equipos", equipoId, "mantenimientos", mantenimientoDoc.id)
+          );
+        }
+
+        // Eliminar el equipo
+        await deleteDoc(doc(db, "tiendas", tienda.id, "equipos", equipoId));
+      }
+
+      // Finalmente, eliminar la tienda
+      await deleteDoc(tiendaRef);
+
+      // Llamar a onDelete para actualizar la lista y mostrar la notificación
+      onDelete(tienda.id);
+    } catch (error) {
+      console.error("Error al eliminar la tienda en cascada:", error);
+    }
   };
 
   return (
