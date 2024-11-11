@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, limit, startAfter } from "firebase/firestore"; // Asegúrate de tener las funciones necesarias
+
 import ModalAñadirTienda from "./ModalAñadirTienda";
 import ModalEditarTienda from "./ModalEditarTienda";
 import "./ListaTiendas.css";
@@ -11,23 +12,47 @@ const ListaTiendas = () => {
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [notification, setNotification] = useState(""); // Estado para la notificación
+  const [notification, setNotification] = useState(""); 
+  const [lastVisible, setLastVisible] = useState(null); // Controla la paginación
+  const [loading, setLoading] = useState(false); // Estado de carga
+
   const db = getFirestore();
   const navigate = useNavigate();
 
+  // Función para obtener tiendas con paginación
+  const fetchTiendas = async () => {
+    setLoading(true); // Muestra un indicador de carga
+
+    const tiendaRef = collection(db, "tiendas");
+    const tiendaQuery = lastVisible
+      ? query(tiendaRef, limit(10), startAfter(lastVisible)) // Si hay un `lastVisible`, usa paginación
+      : query(tiendaRef, limit(10)); // Primera carga con límite de 10
+
+    const querySnapshot = await getDocs(tiendaQuery);
+    
+    const tiendasData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setTiendas((prevTiendas) => [...prevTiendas, ...tiendasData]); // Añade las tiendas nuevas
+
+    const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+    setLastVisible(lastVisibleDoc); // Guarda el último documento para cargar más en la siguiente solicitud
+
+    setLoading(false); // Oculta el indicador de carga
+  };
+
   useEffect(() => {
-    const fetchTiendas = async () => {
-      const querySnapshot = await getDocs(collection(db, "tiendas"));
-      setTiendas(
-        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-      );
-    };
     fetchTiendas();
   }, [db]);
 
+  // Filtrar las tiendas en base al término de búsqueda
+  const filteredTiendas = useMemo(
+    () => tiendas.filter((tienda) =>
+      tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    ),
+    [tiendas, searchTerm]
+  );
+
   const abrirModalAñadir = () => setModalAñadirAbierto(true);
   const cerrarModalAñadir = () => setModalAñadirAbierto(false);
-
   const abrirModalEditar = (tienda) => {
     setTiendaSeleccionada(tienda);
     setModalEditarAbierto(true);
@@ -39,33 +64,28 @@ const ListaTiendas = () => {
   };
 
   const handleSaveTienda = (nuevaTienda) => {
-    setTiendas([...tiendas, nuevaTienda]); // Añade la nueva tienda a la lista existente
-    setNotification("Tienda añadida exitosamente!"); // Muestra la notificación
-    setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
+    setTiendas((prevTiendas) => [...prevTiendas, nuevaTienda]);
+    setNotification("Tienda añadida exitosamente!");
+    setTimeout(() => setNotification(""), 3000);
   };
 
-  // Maneja la actualización de una tienda editada
   const handleSaveTiendaEditada = (tiendaActualizada) => {
-    setTiendas(
-      tiendas.map((tienda) =>
+    setTiendas((prevTiendas) =>
+      prevTiendas.map((tienda) =>
         tienda.id === tiendaActualizada.id ? tiendaActualizada : tienda
       )
     );
     setNotification("Tienda actualizada exitosamente!");
-    setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
+    setTimeout(() => setNotification(""), 3000);
   };
 
-  // Maneja la eliminación de una tienda
   const handleDeleteTienda = (tiendaId) => {
-    setTiendas(tiendas.filter((tienda) => tienda.id !== tiendaId));
+    setTiendas((prevTiendas) =>
+      prevTiendas.filter((tienda) => tienda.id !== tiendaId)
+    );
     setNotification("Tienda eliminada exitosamente!");
-    setTimeout(() => setNotification(""), 3000); // Oculta la notificación después de 3 segundos
+    setTimeout(() => setNotification(""), 3000);
   };
-
-  // Filtrar las tiendas en base al término de búsqueda
-  const filteredTiendas = tiendas.filter((tienda) =>
-    tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div className="tiendas-container">
@@ -108,25 +128,23 @@ const ListaTiendas = () => {
           </div>
         ))}
       </div>
-
-      {/* Notificacion centrada */}
+      {loading && <div>Cargando más tiendas...</div>} {/* Indicador de carga */}
       {notification && (
         <div className="notification">
           <p>{notification}</p>
         </div>
       )}
-
       <ModalAñadirTienda
         isOpen={modalAñadirAbierto}
         onRequestClose={cerrarModalAñadir}
-        onSave={handleSaveTienda} // Pasa la función para manejar el guardado
+        onSave={handleSaveTienda}
       />
       <ModalEditarTienda
         isOpen={modalEditarAbierto}
         onRequestClose={cerrarModalEditar}
         tienda={tiendaSeleccionada}
-        onSave={handleSaveTiendaEditada} // Pasa la función para manejar la edición
-        onDelete={handleDeleteTienda} // Pasa la función para manejar la eliminación
+        onSave={handleSaveTiendaEditada}
+        onDelete={handleDeleteTienda}
       />
     </div>
   );
