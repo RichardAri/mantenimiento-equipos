@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getFirestore,
-  collection,
+  collection, 
   getDocs,
   doc,
   deleteDoc,
@@ -47,11 +47,13 @@ const ListaEquipos = () => {
 
   const abrirModalAñadir = () => setModalAñadirAbierto(true);
   const cerrarModalAñadir = () => setModalAñadirAbierto(false);
-
+  
   const abrirModalEditar = (equipo) => {
+    console.log('Opening modal with equipo:', equipo); // Add this line for debugging
     setEquipoSeleccionado(equipo);
     setModalEditarAbierto(true);
   };
+
   const cerrarModalEditar = () => setModalEditarAbierto(false);
 
   const mostrarAlerta = () => {
@@ -68,6 +70,7 @@ const ListaEquipos = () => {
         nuevoEquipo
       );
       setEquipos([...equipos, { id: docRef.id, ...nuevoEquipo }]);
+      setBusqueda(""); // Limpiar búsqueda después de agregar
       cerrarModalAñadir();
       mostrarAlerta();
     } catch (error) {
@@ -96,15 +99,33 @@ const ListaEquipos = () => {
 
   const eliminarEquipo = async (equipoId) => {
     try {
+      // Obtener todos los mantenimientos del equipo
+      const mantenimientosSnapshot = await getDocs(
+        collection(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`)
+      );
+  
+      // Eliminar cada mantenimiento
+      for (let mantenimientoDoc of mantenimientosSnapshot.docs) {
+        await deleteDoc(
+          doc(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`, mantenimientoDoc.id)
+        );
+      }
+  
+      // Eliminar el equipo después de eliminar sus mantenimientos
       await deleteDoc(doc(db, `tiendas/${tiendaId}/equipos`, equipoId));
+  
+      // Actualizar el estado para reflejar la eliminación
       setEquipos(equipos.filter((equipo) => equipo.id !== equipoId));
+  
+      console.log('Equipo eliminado exitosamente con todos sus mantenimientos.');
     } catch (error) {
-      console.error("Error al eliminar el equipo: ", error);
+      console.error("Error al eliminar el equipo y sus mantenimientos:", error);
     }
   };
 
+  // Filtrado de equipos
   const filtrarEquipos = equipos.filter((equipo) =>
-    equipo.usuario.toLowerCase().includes(busqueda.toLowerCase())
+    equipo.usuario.toLowerCase().includes(busqueda.toLowerCase()) || false
   );
 
   return (
@@ -139,7 +160,7 @@ const ListaEquipos = () => {
               )
             }
           >
-            <h2>{equipo.usuario}</h2> {/* Mostrar el 'usuario' como título */}
+            <h2>{equipo.usuario}</h2>
             {equipo.so ? (
               <>
                 <p>IP: {equipo.ip || "No asignada"}</p>
@@ -190,7 +211,7 @@ const ListaEquipos = () => {
         onRequestClose={cerrarModalEditar}
         equipo={equipoSeleccionado}
         onSave={editarEquipo}
-        onDelete={eliminarEquipo}
+        onDelete={() => eliminarEquipo(equipoSeleccionado.id)}
       />
     </div>
   );

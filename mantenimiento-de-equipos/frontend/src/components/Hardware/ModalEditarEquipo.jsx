@@ -33,8 +33,7 @@ const ModalEditarEquipo = ({
     }
   }, [equipo]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSave = () => {
     const equipoActualizado = {
       usuario,
       area,
@@ -45,8 +44,12 @@ const ModalEditarEquipo = ({
       almacenamiento,
       ip,
     };
-    onSave(equipo.id, equipoActualizado); // Enviar equipo actualizado
-    onRequestClose(); // Cerrar modal
+    onSave(equipo.id, equipoActualizado);
+  };
+
+  const handleDelete = async () => {
+    await onDelete();
+    onRequestClose();
   };
 
   return (
@@ -56,62 +59,94 @@ const ModalEditarEquipo = ({
       className="modal"
       overlayClassName="modal-overlay"
     >
-      <button className="close-button" onClick={onRequestClose}>
-        &times;
-      </button>
-      <h2 className="add-subtitle">Editar Equipo</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="form-lbl-text">Usuario:</label>
-        <input
-          type="text"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
-          required
-        />
-        <label className="form-lbl-text">Área:</label>
-        <input
-          type="text"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-          required
-        />
-        <label className="form-lbl-text">Modelo:</label>
-        <input
-          type="text"
-          value={modelo}
-          onChange={(e) => setModelo(e.target.value)}
-          required
-        />
-        <label className="form-lbl-text">SO:</label>
-        <input type="text" value={so} onChange={(e) => setSo(e.target.value)} />
-        <label className="form-lbl-text">Procesador:</label>
-        <input
-          type="text"
-          value={procesador}
-          onChange={(e) => setProcesador(e.target.value)}
-        />
-        <label className="form-lbl-text">RAM:</label>
-        <input
-          type="text"
-          value={ram}
-          onChange={(e) => setRam(e.target.value)}
-        />
-        <label className="form-lbl-text">Almacenamiento:</label>
-        <input
-          type="text"
-          value={almacenamiento}
-          onChange={(e) => setAlmacenamiento(e.target.value)}
-        />
-        <label className="form-lbl-text">IP:</label>
-        <input type="text" value={ip} onChange={(e) => setIp(e.target.value)} />
+      <h2>Editar Equipo</h2>
+      <form onSubmit={handleSave}>
+        <label className="form-lbl-text">
+          Usuario
+          <input
+            type="text"
+            placeholder="Usuario"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          Área
+          <input
+            type="text"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          Modelo
+          <input
+            type="text"
+            value={modelo}
+            onChange={(e) => setModelo(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          SO
+          <input
+            type="text"
+            value={so}
+            onChange={(e) => setSo(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          Procesador
+          <input
+            type="text"
+            value={procesador}
+            onChange={(e) => setProcesador(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          RAM
+          <input
+            type="text"
+            value={ram}
+            onChange={(e) => setRam(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          Almacenamiento
+          <input
+            type="text"
+            value={almacenamiento}
+            onChange={(e) => setAlmacenamiento(e.target.value)}
+          />
+        </label>
+        <label className="form-lbl-text">
+          IP
+          <input
+            type="text"
+            value={ip}
+            onChange={(e) => setIp(e.target.value)}
+          />
+        </label>
+
+        {/* Botón Guardar */}
         <div className="button-group">
-          <button type="submit" className="save-button">
+          <button
+            type="submit"
+            className="save-button"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+          >
             Guardar
           </button>
+          {/* Botón Eliminar */}
           <button
             type="button"
             className="delete-button"
-            onClick={() => onDelete(equipo.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(); // Llamar a la función de eliminación
+            }}
           >
             Eliminar
           </button>

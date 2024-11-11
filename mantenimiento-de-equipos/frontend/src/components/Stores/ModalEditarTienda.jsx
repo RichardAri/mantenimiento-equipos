@@ -119,7 +119,7 @@ const ModalEditarTienda = ({
           <button
             type="button"
             className="delete-button"
-            onClick={handleDelete}
+            onClick={() => onDelete(equipoSeleccionado.id)}
           >
             Eliminar
           </button>

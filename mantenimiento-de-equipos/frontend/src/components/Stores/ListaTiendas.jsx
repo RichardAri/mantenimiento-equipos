@@ -94,15 +94,17 @@ const ListaTiendas = () => {
             <p>Ubicación: {tienda.ubicacion}</p>
             <p>Nro de Equipos: {tienda.nroEquipos}</p>
             <p>Encargado: {tienda.encargado}</p>
-            <button
-              className="edit-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                abrirModalEditar(tienda);
-              }}
-            >
-              ✎
-            </button>
+            <div>
+              <button
+                className="edit-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  abrirModalEditar(tienda);
+                }}
+              >
+                ✎
+              </button>
+            </div>
           </div>
         ))}
       </div>
