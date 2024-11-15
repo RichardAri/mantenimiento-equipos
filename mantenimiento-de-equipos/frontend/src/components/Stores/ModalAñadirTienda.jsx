@@ -17,8 +17,11 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
       nombre,
       ubicacion,
       encargado,
-      nroEquipos: 0,
-      fechaCreacion: new Date().toISOString().split("T")[0],
+      nroEquipos: 0, // numero de equipos asociados a la tienda
+      fechaCreacion: new Date().toISOString(), // Fecha completa
+      mesCreacion: new Date().getMonth() + 1, // Mes de creacion (1-12)
+      añoCreacion: new Date().getFullYear(), // Año de creacion
+      mantenimientos: 0, // Contador de mantenimientos
     };
 
     // Primero añadir la tienda y mostrar la notificacion

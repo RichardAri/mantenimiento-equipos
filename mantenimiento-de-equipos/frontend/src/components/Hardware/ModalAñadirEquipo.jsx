@@ -40,7 +40,10 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
       ram,
       almacenamiento,
       ip,
-      fechaCreacion: new Date().toISOString().split("T")[0],
+      tiendaId, // ID de la tienda a la que pertenece este equipo
+      fechaCreacion: new Date().toISOString(), // Fecha coompleta
+      mesCreacion: new Date().getMonth() + 1, // Mes de creacion (1-12)
+      añoCreacion: new Date().getFullYear(), // Año de creacion
     };
     onSave(nuevoEquipo);
     onRequestClose();
@@ -128,7 +131,9 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
           />
         </div>
         <div className="button-group">
-          <button type="submit" className="save-button">Añadir Equipo</button>
+          <button type="submit" className="save-button">
+            Añadir Equipo
+          </button>
         </div>
       </form>
     </Modal>

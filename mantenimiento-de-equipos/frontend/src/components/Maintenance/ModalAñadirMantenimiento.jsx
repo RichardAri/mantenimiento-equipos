@@ -13,7 +13,8 @@ const ModalAñadirMantenimiento = ({
   tiendaId,
   mantenimiento, // propiedad para datos de mantenimiento
 }) => {
-  const [nombreMantenimiento, setNombreMantenimiento] = useState("Cambio de Disco");
+  const [nombreMantenimiento, setNombreMantenimiento] =
+    useState("Cambio de Disco");
   const [usuario, setUsuario] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [personal, setPersonal] = useState("");
@@ -80,7 +81,11 @@ const ModalAñadirMantenimiento = ({
       ram,
       almacenamiento,
       ip,
-      fechaCreacion: new Date().toISOString().split("T")[0],
+      tiendaId, // ID de la tienda donde se realizo el mantenimiento
+      equipoId, // ID del equipo que recibio el mantenimiento
+      fechaCreacion: new Date().toISOString(), // Fecha completa
+      mesCreacion: new Date().getMonth() + 1, // Mes de mantenimiento (1-12)
+      añoCreacion: new Date().getFullYear(), // Año de mantenimiento
     };
 
     if (mantenimiento) {
@@ -117,7 +122,10 @@ const ModalAñadirMantenimiento = ({
       <form onSubmit={handleSubmit} className="form-modal">
         <div className="form-group">
           <label className="form-lbl-text">Nombre del Mantenimiento:</label>
-          <select value={nombreMantenimiento} onChange={(e) => setNombreMantenimiento(e.target.value)}>
+          <select
+            value={nombreMantenimiento}
+            onChange={(e) => setNombreMantenimiento(e.target.value)}
+          >
             <option value="Cambio de Disco">Cambio de Disco</option>
             <option value="Cambio de S.O.">Cambio de S.O.</option>
             <option value="Cambio de Ram">Cambio de Ram</option>
