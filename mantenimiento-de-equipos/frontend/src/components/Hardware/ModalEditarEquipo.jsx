@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
+import { doc, updateDoc, increment } from "firebase/firestore";
+import { db } from "../../firebase";
 import "../Modal.css";
 
 Modal.setAppElement("#root");
@@ -48,8 +50,20 @@ const ModalEditarEquipo = ({
   };
 
   const handleDelete = async () => {
-    await onDelete();
-    onRequestClose();
+    try {
+      // Llamar a la función onDelete proporcionada por el padre
+      await onDelete(equipo.id);
+
+      // Decrementar el contador de equipos en Firestore
+      const tiendaRef = doc(db, "tiendas", tiendaId);
+      await updateDoc(tiendaRef, {
+        nroEquipos: increment(-1),
+      });
+
+      onRequestClose();
+    } catch (error) {
+      console.error("Error al eliminar el equipo:", error);
+    }
   };
 
   return (
