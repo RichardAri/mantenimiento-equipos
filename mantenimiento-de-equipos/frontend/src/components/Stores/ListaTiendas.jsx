@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, getDocs, query, limit, startAfter } from "firebase/firestore"; // Asegúrate de tener las funciones necesarias
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  limit,
+  startAfter,
+} from "firebase/firestore"; // Asegúrate de tener las funciones necesarias
 
 import ModalAñadirTienda from "./ModalAñadirTienda";
 import ModalEditarTienda from "./ModalEditarTienda";
@@ -12,7 +19,7 @@ const ListaTiendas = () => {
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [tiendaSeleccionada, setTiendaSeleccionada] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [notification, setNotification] = useState(""); 
+  const [notification, setNotification] = useState("");
   const [lastVisible, setLastVisible] = useState(null); // Controla la paginación
   const [loading, setLoading] = useState(false); // Estado de carga
 
@@ -29,8 +36,11 @@ const ListaTiendas = () => {
       : query(tiendaRef, limit(10)); // Primera carga con límite de 10
 
     const querySnapshot = await getDocs(tiendaQuery);
-    
-    const tiendasData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    const tiendasData = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     setTiendas((prevTiendas) => [...prevTiendas, ...tiendasData]); // Añade las tiendas nuevas
 
     const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -45,9 +55,10 @@ const ListaTiendas = () => {
 
   // Filtrar las tiendas en base al término de búsqueda
   const filteredTiendas = useMemo(
-    () => tiendas.filter((tienda) =>
-      tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-    ),
+    () =>
+      tiendas.filter((tienda) =>
+        tienda.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
     [tiendas, searchTerm]
   );
 

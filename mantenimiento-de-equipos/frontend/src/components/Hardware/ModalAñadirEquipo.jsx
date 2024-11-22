@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
+import { doc, updateDoc, increment } from "firebase/firestore";
+import { db } from "../../firebase";
 import "../Modal.css";
 
 Modal.setAppElement("#root");
 
-const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
+const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave, tiendaId }) => {
   const [usuario, setUsuario] = useState("");
   const [area, setArea] = useState("");
   const [modelo, setModelo] = useState("");
@@ -29,7 +31,7 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
     setIp("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const nuevoEquipo = {
       usuario,
@@ -41,12 +43,24 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave }) => {
       almacenamiento,
       ip,
       tiendaId, // ID de la tienda a la que pertenece este equipo
-      fechaCreacion: new Date().toISOString(), // Fecha coompleta
+      fechaCreacion: `${new Date().getFullYear()}-${new Date().getMonth() + 1
+      }-${new Date().getDate()}`, // Fecha completa
       mesCreacion: new Date().getMonth() + 1, // Mes de creacion (1-12)
       añoCreacion: new Date().getFullYear(), // Año de creacion
     };
-    onSave(nuevoEquipo);
-    onRequestClose();
+    try {
+      // Guardar el equipo usando el callback onSave
+      await onSave(nuevoEquipo);
+      // Incrementar el numero de equipos en Firestore
+      const tiendaRef = doc(db, "tiendas", tiendaId);
+      await updateDoc(tiendaRef, {
+        nroEquipos: increment(1),
+      });
+
+      onRequestClose();
+    } catch (error) {
+      console.error("Error al añadir equipo:", error);
+    }
   };
 
   return (

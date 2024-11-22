@@ -25,10 +25,10 @@ const ModalEditarTienda = ({
     }
   }, [tienda]);
 
+  // Actualizar tienda
   const handleSubmit = async (e) => {
     e.preventDefault();
     const tiendaRef = doc(db, "tiendas", tienda.id);
-    onRequestClose();
 
     await updateDoc(tiendaRef, {
       nombre,
@@ -37,45 +37,48 @@ const ModalEditarTienda = ({
     });
 
     onSave({ ...tienda, nombre, ubicacion, encargado });
+    onRequestClose();
   };
 
+  // Eliminar tienda en cascada
   const handleDelete = async () => {
+    if (!tienda) return;
+
     const tiendaRef = doc(db, "tiendas", tienda.id);
 
-    // Primero cerrar el modal
-    onRequestClose();
-
     try {
-      // Obtener todos los equipos dentro de la tienda
+
+      // Obtener equipos asociados a la tienda
       const equiposSnapshot = await getDocs(collection(db, "tiendas", tienda.id, "equipos"));
 
-      // Eliminar los mantenimientos de cada equipo y luego el equipo
       for (let equipoDoc of equiposSnapshot.docs) {
         const equipoId = equipoDoc.id;
-        
-        // Obtener los mantenimientos del equipo
+
+        // Obtener mantenimientos asociados al equipo
         const mantenimientosSnapshot = await getDocs(
           collection(db, "tiendas", tienda.id, "equipos", equipoId, "mantenimientos")
         );
 
-        // Eliminar cada mantenimiento
+        // Eliminar mantenimientos del equipo
         for (let mantenimientoDoc of mantenimientosSnapshot.docs) {
           await deleteDoc(
             doc(db, "tiendas", tienda.id, "equipos", equipoId, "mantenimientos", mantenimientoDoc.id)
           );
         }
 
-        // Eliminar el equipo
+        // Eliminar equipo
         await deleteDoc(doc(db, "tiendas", tienda.id, "equipos", equipoId));
       }
 
       // Finalmente, eliminar la tienda
       await deleteDoc(tiendaRef);
 
-      // Llamar a onDelete para actualizar la lista y mostrar la notificación
+      // Cerrar el modal una vez eliminada la tienda
+      onRequestClose();
+      // Notificar al componente principal
       onDelete(tienda.id);
     } catch (error) {
-      console.error("Error al eliminar la tienda en cascada:", error);
+      console.error("Error al eliminar la tienda y su contenido:", error);
     }
   };
 
@@ -119,7 +122,7 @@ const ModalEditarTienda = ({
           <button
             type="button"
             className="delete-button"
-            onClick={() => onDelete(equipoSeleccionado.id)}
+            onClick={handleDelete}
           >
             Eliminar
           </button>

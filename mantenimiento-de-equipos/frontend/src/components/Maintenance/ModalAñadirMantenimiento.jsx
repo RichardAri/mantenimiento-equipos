@@ -11,10 +11,10 @@ const ModalAñadirMantenimiento = ({
   onSave,
   equipoId,
   tiendaId,
-  mantenimiento, // propiedad para datos de mantenimiento
+  mantenimiento, // datos de mantenimiento si estamos editando
 }) => {
-  const [nombreMantenimiento, setNombreMantenimiento] =
-    useState("Cambio de Disco");
+  // Estados locales para manejar el formulario
+  const [nombreMantenimiento, setNombreMantenimiento] = useState("Cambio de Disco");
   const [usuario, setUsuario] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [personal, setPersonal] = useState("");
@@ -29,6 +29,7 @@ const ModalAñadirMantenimiento = ({
 
   const db = getFirestore();
 
+  // useEffect para obtener datos del equipo
   useEffect(() => {
     const fetchEquipoData = async () => {
       const docRef = doc(db, `tiendas/${tiendaId}/equipos`, equipoId);
@@ -46,23 +47,21 @@ const ModalAñadirMantenimiento = ({
       }
     };
 
-    if (isOpen) {
-      if (mantenimiento) {
-        // Si se está editando, setear el estado con los datos de mantenimiento
-        setNombreMantenimiento(mantenimiento.nombreMantenimiento);
-        setUsuario(mantenimiento.usuario || "");
-        setDescripcion(mantenimiento.descripcion);
-        setPersonal(mantenimiento.personal);
-        setArea(mantenimiento.area || "");
-        setModelo(mantenimiento.modelo || "");
-        setSo(mantenimiento.so || "");
-        setProcesador(mantenimiento.procesador || "");
-        setRam(mantenimiento.ram || "");
-        setAlmacenamiento(mantenimiento.almacenamiento || "");
-        setIp(mantenimiento.ip || "");
-      } else {
-        fetchEquipoData();
-      }
+    if (isOpen && !mantenimiento) {
+      fetchEquipoData();
+    } else if (isOpen && mantenimiento) {
+      // Si estamos editando un mantenimiento, rellenamos los campos con los datos existentes
+      setNombreMantenimiento(mantenimiento.nombreMantenimiento);
+      setUsuario(mantenimiento.usuario || "");
+      setDescripcion(mantenimiento.descripcion);
+      setPersonal(mantenimiento.personal);
+      setArea(mantenimiento.area || "");
+      setModelo(mantenimiento.modelo || "");
+      setSo(mantenimiento.so || "");
+      setProcesador(mantenimiento.procesador || "");
+      setRam(mantenimiento.ram || "");
+      setAlmacenamiento(mantenimiento.almacenamiento || "");
+      setIp(mantenimiento.ip || "");
     }
   }, [db, tiendaId, equipoId, isOpen, mantenimiento]);
 
@@ -81,20 +80,16 @@ const ModalAñadirMantenimiento = ({
       ram,
       almacenamiento,
       ip,
-      tiendaId, // ID de la tienda donde se realizo el mantenimiento
-      equipoId, // ID del equipo que recibio el mantenimiento
-      fechaCreacion: new Date().toISOString(), // Fecha completa
+      tiendaId, // ID de la tienda donde se realizó el mantenimiento
+      equipoId, // ID del equipo que recibió el mantenimiento
+      fechaCreacion: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`, // Fecha completa
       mesCreacion: new Date().getMonth() + 1, // Mes de mantenimiento (1-12)
       añoCreacion: new Date().getFullYear(), // Año de mantenimiento
     };
 
     if (mantenimiento) {
       // Actualizar mantenimiento existente
-      const docRef = doc(
-        db,
-        `tiendas/${tiendaId}/mantenimientos`,
-        mantenimiento.id
-      );
+      const docRef = doc(db, `tiendas/${tiendaId}/mantenimientos`, mantenimiento.id);
       await updateDoc(docRef, nuevoMantenimiento);
     } else {
       // Añadir nuevo mantenimiento
@@ -107,9 +102,7 @@ const ModalAñadirMantenimiento = ({
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={() => {
-        onRequestClose();
-      }}
+      onRequestClose={onRequestClose}
       className="modal"
       overlayClassName="modal-overlay"
     >
@@ -132,6 +125,7 @@ const ModalAñadirMantenimiento = ({
             <option value="Mantenimiento General">Mantenimiento General</option>
           </select>
         </div>
+
         <div className="form-group">
           <label className="form-lbl-text">Descripción:</label>
           <textarea
@@ -140,6 +134,7 @@ const ModalAñadirMantenimiento = ({
             required
           />
         </div>
+
         <div className="form-group">
           <label className="form-lbl-text">Personal Responsable:</label>
           <input
@@ -149,6 +144,7 @@ const ModalAñadirMantenimiento = ({
             required
           />
         </div>
+
         <h3 className="add-subtitle">Datos del Equipo</h3>
         <div className="form-group">
           <label className="form-lbl-text">Usuario:</label>
@@ -217,9 +213,7 @@ const ModalAñadirMantenimiento = ({
 
         <div className="button-group">
           <button type="submit" className="save-button">
-            {mantenimiento
-              ? "Actualizar Mantenimiento"
-              : "Añadir Mantenimiento"}
+            {mantenimiento ? "Actualizar Mantenimiento" : "Añadir Mantenimiento"}
           </button>
         </div>
       </form>

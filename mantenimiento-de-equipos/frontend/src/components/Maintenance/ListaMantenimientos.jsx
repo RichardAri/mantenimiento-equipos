@@ -21,8 +21,7 @@ const ListaMantenimientos = () => {
   const [equipoNombre, setEquipoNombre] = useState("");
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
-  const [mantenimientoSeleccionado, setMantenimientoSeleccionado] =
-    useState(null);
+  const [mantenimientoSeleccionado, setMantenimientoSeleccionado] = useState(null);
   const db = getFirestore();
 
   useEffect(() => {
@@ -68,10 +67,7 @@ const ListaMantenimientos = () => {
     cerrarModalAñadir();
   };
 
-  const editarMantenimiento = async (
-    mantenimientoId,
-    mantenimientoActualizado
-  ) => {
+  const editarMantenimiento = async (mantenimientoId, mantenimientoActualizado) => {
     await updateDoc(
       doc(
         db,

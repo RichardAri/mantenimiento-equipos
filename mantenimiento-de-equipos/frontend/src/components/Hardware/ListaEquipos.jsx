@@ -15,7 +15,7 @@ import ModalEditarEquipo from "./ModalEditarEquipo";
 import "./ListaEquipos.css";
 
 const ListaEquipos = () => {
-  const { tiendaId } = useParams();
+  const { tiendaId } = useParams();  // Obtenemos el `tiendaId` desde los parámetros de la URL
   const navigate = useNavigate();
   const [equipos, setEquipos] = useState([]);
   const [nombreTienda, setNombreTienda] = useState("");
@@ -205,6 +205,7 @@ const ListaEquipos = () => {
           cerrarModalAñadir();
         }}
         onSave={añadirEquipo}
+        tiendaId={tiendaId} // Prop para pasar el id de la tienda a el modal
       />
       <ModalEditarEquipo
         isOpen={modalEditarAbierto}

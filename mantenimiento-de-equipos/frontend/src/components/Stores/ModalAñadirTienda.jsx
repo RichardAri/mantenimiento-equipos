@@ -10,37 +10,46 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
   const [ubicacion, setUbicacion] = useState("");
   const [encargado, setEncargado] = useState("");
   const db = getFirestore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(""); // Reset error state
+
     const nuevaTienda = {
       nombre,
       ubicacion,
       encargado,
-      nroEquipos: 0, // numero de equipos asociados a la tienda
-      fechaCreacion: new Date().toISOString(), // Fecha completa
-      mesCreacion: new Date().getMonth() + 1, // Mes de creacion (1-12)
-      añoCreacion: new Date().getFullYear(), // Año de creacion
-      mantenimientos: 0, // Contador de mantenimientos
+      nroEquipos: 0, // Número de equipos asociados a la tienda
+      fechaCreacion: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`, // Fecha completa
+      mesCreacion: new Date().getMonth() + 1, // Mes de creación (1-12)
+      añoCreacion: new Date().getFullYear(), // Año de creación
+      mantenimientos: 0, // Contador de mantenimientos general por tienda 
     };
-
-    // Primero añadir la tienda y mostrar la notificacion
-    onSave(nuevaTienda);
-
-    // Despues cerrar el modal
-    onRequestClose();
 
     try {
       // Guardar en Firebase
       await addDoc(collection(db, "tiendas"), nuevaTienda);
 
-      // Limpiar campos
+      // Notificar al componente principal que se ha guardado una nueva tienda (si es necesario)
+      if (onSave) {
+        onSave(nuevaTienda); // Actualizar el estado del componente principal
+      }
+
+      // Limpiar los campos del formulario
       setNombre("");
       setUbicacion("");
       setEncargado("");
-      setFechaDeCreacion("");
+
+      // Cerrar el modal después de guardar
+      onRequestClose();
     } catch (error) {
       console.error("Error al añadir la tienda: ", error);
+      setError("Hubo un problema al añadir la tienda. Intenta de nuevo.");
+    } finally {
+      setLoading(false); // Para quitar el estado de carga
     }
   };
 
@@ -55,6 +64,9 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
         &times;
       </button>
       <h2 className="add-subtitle">Añadir Tienda</h2>
+
+      {error && <div className="error-message">{error}</div>}
+
       <form onSubmit={handleSubmit} className="form-tienda">
         <div className="form-group">
           <label className="form-lbl-text">Tienda:</label>
@@ -86,9 +98,10 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
             className="input-txt"
           />
         </div>
+
         <div className="form-group">
-          <button type="submit" className="save-button">
-            Añadir
+          <button type="submit" className="save-button" disabled={loading}>
+            {loading ? "Guardando..." : "Añadir"}
           </button>
         </div>
       </form>

@@ -1,250 +1,174 @@
+/* eslint-disable no-unused-vars */
 import "./reportes.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { jsPDF } from "jspdf";
 import { Chart } from "chart.js/auto";
+import {
+  fetchTiendas,
+  fetchMantenimientos,
+  fetchEquipos,
+} from "../../firestoreQueries";
 
 Modal.setAppElement("#root");
 
-const ModalInformes = ({ isOpen, onRequestClose, tiendas = [], equipos = [], mantenimientos = [] }) => {
+// eslint-disable-next-line react/prop-types
+const ModalInformes = ({ isOpen, onRequestClose }) => {
   const [nombreInforme, setNombreInforme] = useState("");
-  const [fechaInicio, setFechaInicio] = useState("");
-  const [fechaFin, setFechaFin] = useState("");
-  const [mesSeleccionado, setMesSeleccionado] = useState("");
-  const [tipoFecha, setTipoFecha] = useState(""); // Estado para seleccionar el tipo de fecha (rango o mes)
-  const [tipoReporte, setTipoReporte] = useState(""); // Estado para seleccionar el tipo de reporte
+  const [selectedTienda, setSelectedTienda] = useState("");
+  const [tiendas, setTiendas] = useState([]);
+  const [equipos, setEquipos] = useState([]);
+  const [mantenimientos, setMantenimientos] = useState([]);
+  const [reportData, setReportData] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    generarInforme();
-    onRequestClose();
-  };
+  // Cargar datos iniciales
+  useEffect(() => {
+    const fetchData = async () => {
+      const tiendasData = await fetchTiendas();
+      setTiendas(tiendasData);
 
-  const generarInforme = () => {
-    let tiendasFiltradas = [];
-    let equiposFiltrados = [];
-    let mantenimientosFiltrados = [];
-    let tituloInforme = "";
-    let descripcionInforme = "";
+      let equiposData = [];
+      let mantenimientosData = [];
+      for (const tienda of tiendasData) {
+        const equipos = await fetchEquipos(tienda.id);
+        equiposData = [...equiposData, ...equipos];
+        for (const equipo of equipos) {
+          const mantenimientos = await fetchMantenimientos(
+            tienda.id,
+            equipo.id
+          );
+          mantenimientosData = [...mantenimientosData, ...mantenimientos];
+        }
+      }
 
-    // Filtrar por tipo de fecha (rango o mes)
-    if (tipoFecha === "rango") {
-      // Filtrado por rango de fechas
-      tiendasFiltradas = tiendas.filter((tienda) => {
-        const fechaTienda = new Date(tienda.fechaCreacion);
-        const fechaInicioObj = new Date(fechaInicio);
-        const fechaFinObj = new Date(fechaFin);
-        return fechaTienda >= fechaInicioObj && fechaTienda <= fechaFinObj;
-      });
+      setEquipos(equiposData);
+      setMantenimientos(mantenimientosData);
+    };
 
-      // Filtrar mantenimientos y equipos en el mismo rango
-      mantenimientosFiltrados = mantenimientos.filter((mantenimiento) => {
-        const fechaMantenimiento = new Date(mantenimiento.fecha);
-        const fechaInicioObj = new Date(fechaInicio);
-        const fechaFinObj = new Date(fechaFin);
-        return fechaMantenimiento >= fechaInicioObj && fechaMantenimiento <= fechaFinObj;
-      });
+    fetchData();
+  }, []);
 
-      tituloInforme = `Informe de ${fechaInicio} a ${fechaFin}`;
-      descripcionInforme = `Generado para el rango de fechas de ${fechaInicio} a ${fechaFin}`;
-    } else if (tipoFecha === "mes") {
-      // Filtrado por mes
-      tiendasFiltradas = tiendas.filter((tienda) => {
-        const fechaTienda = new Date(tienda.fechaCreacion);
-        const mesTienda = fechaTienda.getMonth() + 1;
-        const añoTienda = fechaTienda.getFullYear();
-        const [año, mes] = mesSeleccionado.split("-");
-        return mesTienda === parseInt(mes) && añoTienda === parseInt(año);
-      });
+  // Actualizamos datos del reporte al seleccionar una tienda
+  useEffect(() => {
+    if (selectedTienda) {
+      const tiendaData = tiendas.find((tienda) => tienda.id === selectedTienda);
+      if (tiendaData) {
+        const mantenimientosPorMes = Array(12).fill(0);
 
-      // Filtrar mantenimientos y equipos para ese mes
-      mantenimientosFiltrados = mantenimientos.filter((mantenimiento) => {
-        const fechaMantenimiento = new Date(mantenimiento.fecha);
-        const mesMantenimiento = fechaMantenimiento.getMonth() + 1;
-        const añoMantenimiento = fechaMantenimiento.getFullYear();
-        const [año, mes] = mesSeleccionado.split("-");
-        return mesMantenimiento === parseInt(mes) && añoMantenimiento === parseInt(año);
-      });
+        // Contamos mantenimientos por mes
+        mantenimientos.forEach((mantenimiento) => {
+          if (mantenimiento.tiendaId === selectedTienda) {
+            const mes = mantenimiento.mesCreacion - 1; // Convertir a índice (0-11)
+            mantenimientosPorMes[mes]++;
+          }
+        });
 
-      const nombreMes = new Date(`${mesSeleccionado}-01`).toLocaleString("default", { month: "long" });
-      tituloInforme = `Informe del mes de ${nombreMes}`;
-      descripcionInforme = `Generado para el mes de ${nombreMes} ${mesSeleccionado}`;
+        setReportData({
+          ...tiendaData,
+          mantenimientosTotales: mantenimientosPorMes.reduce(
+            (acc, val) => acc + val,
+            0
+          ),
+          mantenimientosPorMes,
+        });
+      }
     }
+  }, [selectedTienda, tiendas, mantenimientos]);
 
-    // Generar el reporte basado en el tipo de informe seleccionado
-    if (tipoReporte === "tiendas") {
-      // Reporte de tiendas creadas y su número de equipos
-      generarReporteTiendas(tiendasFiltradas, tituloInforme, descripcionInforme);
-    } else if (tipoReporte === "mantenimientos") {
-      // Reporte de mantenimientos realizados
-      generarReporteMantenimientos(mantenimientosFiltrados, tituloInforme, descripcionInforme);
-    } else if (tipoReporte === "equipos") {
-      // Reporte de equipos creados
-      generarReporteEquipos(equiposFiltrados, tituloInforme, descripcionInforme);
-    }
+  const generatePDF = () => {
+    if (!reportData) return;
 
-    console.log("Informe generado y descargado con éxito");
-  };
-
-  const generarReporteTiendas = (tiendasFiltradas, tituloInforme, descripcionInforme) => {
     const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text(tituloInforme, 10, 10);
+    doc.setFontSize(16);
+    doc.text(`Reporte de Tienda: ${reportData.nombre}`, 10, 10);
     doc.setFontSize(12);
-    doc.text(descripcionInforme, 10, 20);
+    doc.text(`Ubicación: ${reportData.ubicacion}`, 10, 20);
+    doc.text(`Encargado: ${reportData.encargado}`, 10, 30);
+    doc.text(`Número de Equipos: ${reportData.nroEquipos}`, 10, 40);
+    doc.text(
+      `Mantenimientos Totales: ${reportData.mantenimientosTotales}`,
+      10,
+      50
+    );
+    doc.text(`Fecha de Creación: ${reportData.fechaCreacion}`, 10, 60);
 
-    // Graficar el número de equipos por tienda
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    if (!ctx) {
-      console.log("No se pudo crear el contexto para el gráfico");
-      return;
+    const canvas = document.getElementById("grafico-mantenimientos");
+    if (canvas) {
+      const imageData = canvas.toDataURL("image/png");
+      doc.addImage(imageData, "PNG", 10, 70, 180, 90);
     }
 
+    doc.save(`${nombreInforme || "Reporte_Tienda"}.pdf`);
+  };
+
+  const renderChart = () => {
+    if (!reportData) return;
+
+    const ctx = document
+      .getElementById("grafico-mantenimientos")
+      .getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: tiendasFiltradas.map((tienda) => tienda.nombre || "Sin nombre"),
+        labels: [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ],
         datasets: [
           {
-            label: "N° de Equipos",
-            data: tiendasFiltradas.map((tienda) => tienda.nroEquipos || 0),
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            label: "Mantenimientos por Mes",
+            data: reportData.mantenimientosPorMes,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
             borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 1,
           },
         ],
       },
       options: {
-        responsive: false,
+        responsive: true,
         plugins: {
-          legend: {
-            display: true,
-          },
+          legend: { display: true },
+        },
+        scales: {
+          x: { title: { display: true, text: "Meses" } },
+          y: { title: { display: true, text: "Cantidad" }, beginAtZero: true },
         },
       },
     });
-
-    const chartImage = canvas.toDataURL("image/png");
-    doc.addImage(chartImage, "PNG", 10, 60, 180, 80);
-    doc.save(`${tituloInforme}.pdf`);
   };
 
-  const generarReporteMantenimientos = (mantenimientosFiltrados, tituloInforme, descripcionInforme) => {
-    const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text(tituloInforme, 10, 10);
-    doc.setFontSize(12);
-    doc.text(descripcionInforme, 10, 20);
+  useEffect(() => {
+    if (reportData) renderChart();
+  }, [reportData]);
 
-    // Graficar los mantenimientos por tienda
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    if (!ctx) {
-      console.log("No se pudo crear el contexto para el gráfico");
-      return;
-    }
-
-    const mantenimientosPorTienda = mantenimientosFiltrados.reduce((acc, mantenimiento) => {
-      const tiendaId = mantenimiento.tiendaId;
-      if (!acc[tiendaId]) acc[tiendaId] = 0;
-      acc[tiendaId]++;
-      return acc;
-    }, {});
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: Object.keys(mantenimientosPorTienda),
-        datasets: [
-          {
-            label: "N° de Mantenimientos",
-            data: Object.values(mantenimientosPorTienda),
-            backgroundColor: "rgba(255, 99, 132, 0.2)",
-            borderColor: "rgba(255, 99, 132, 1)",
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: false,
-        plugins: {
-          legend: {
-            display: true,
-          },
-        },
-      },
-    });
-
-    const chartImage = canvas.toDataURL("image/png");
-    doc.addImage(chartImage, "PNG", 10, 60, 180, 80);
-    doc.save(`${tituloInforme}.pdf`);
-  };
-
-  const generarReporteEquipos = (equiposFiltrados, tituloInforme, descripcionInforme) => {
-    const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text(tituloInforme, 10, 10);
-    doc.setFontSize(12);
-    doc.text(descripcionInforme, 10, 20);
-
-    // Graficar los equipos creados
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    if (!ctx) {
-      console.log("No se pudo crear el contexto para el gráfico");
-      return;
-    }
-
-    const equiposPorMes = equiposFiltrados.reduce((acc, equipo) => {
-      const mesCreacion = equipo.mesCreacion;
-      if (!acc[mesCreacion]) acc[mesCreacion] = 0;
-      acc[mesCreacion]++;
-      return acc;
-    }, {});
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: Object.keys(equiposPorMes),
-        datasets: [
-          {
-            label: "N° de Equipos Creados",
-            data: Object.values(equiposPorMes),
-            backgroundColor: "rgba(54, 162, 235, 0.2)",
-            borderColor: "rgba(54, 162, 235, 1)",
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: false,
-        plugins: {
-          legend: {
-            display: true,
-          },
-        },
-      },
-    });
-
-    const chartImage = canvas.toDataURL("image/png");
-    doc.addImage(chartImage, "PNG", 10, 60, 180, 80);
-    doc.save(`${tituloInforme}.pdf`);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    generatePDF();
+    onRequestClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="modal" overlayClassName="modal-overlay">
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      className="modal"
+      overlayClassName="modal-overlay"
+    >
       <button className="close-button" onClick={onRequestClose}>
         &times;
       </button>
-      <div className="form-group">
-        <h2 className="add-subtitle">Generar Informe</h2>
-      </div>
       <form onSubmit={handleSubmit}>
-        <label className="form-lbl-text">Nombre del Informe:</label>
+        <label className="add-subtitle" >Nombre del Informe:</label>
         <input
           type="text"
           value={nombreInforme}
@@ -252,93 +176,35 @@ const ModalInformes = ({ isOpen, onRequestClose, tiendas = [], equipos = [], man
           required
         />
 
-        <label className="form-lbl-text">Seleccionar Tipo de Fecha:</label>
-        <div>
-          <input
-            type="radio"
-            id="rango"
-            name="tipoFecha"
-            value="rango"
-            checked={tipoFecha === "rango"}
-            onChange={(e) => setTipoFecha(e.target.value)}
-          />
-          <label htmlFor="rango">Rango de Fechas</label>
+        <label className="form-lbl-text">Seleccionar Tienda:</label>
+        <select
+          onChange={(e) => setSelectedTienda(e.target.value)}
+          value={selectedTienda}
+          required
+        >
+          <option value="">-- Seleccionar Tienda --</option>
+          {tiendas.map((tienda) => (
+            <option key={tienda.id} value={tienda.id}>
+              {tienda.nombre}
+            </option>
+          ))}
+        </select>
 
-          <input
-            type="radio"
-            id="mes"
-            name="tipoFecha"
-            value="mes"
-            checked={tipoFecha === "mes"}
-            onChange={(e) => setTipoFecha(e.target.value)}
-          />
-          <label htmlFor="mes">Mes</label>
-        </div>
-
-        {tipoFecha === "rango" && (
+        {reportData && (
           <>
-            <label className="form-lbl-text">Fecha Inicio:</label>
-            <input
-              type="date"
-              value={fechaInicio}
-              onChange={(e) => setFechaInicio(e.target.value)}
-              required
-            />
-            <label className="form-lbl-text">Fecha Fin:</label>
-            <input
-              type="date"
-              value={fechaFin}
-              onChange={(e) => setFechaFin(e.target.value)}
-              required
-            />
+            <h3>Resumen de Tienda</h3>
+            <p>Nombre: {reportData.nombre}</p>
+            <p>Ubicación: {reportData.ubicacion}</p>
+            <p>Encargado: {reportData.encargado}</p>
+            <p>Número de Equipos: {reportData.nroEquipos}</p>
+            <p>Mantenimientos Totales: {reportData.mantenimientosTotales}</p>
+            <canvas
+              id="grafico-mantenimientos"
+              width="400"
+              height="200"
+            ></canvas>
           </>
         )}
-
-        {tipoFecha === "mes" && (
-          <>
-            <label className="form-lbl-text">Seleccionar Mes:</label>
-            <input
-              type="month"
-              value={mesSeleccionado}
-              onChange={(e) => setMesSeleccionado(e.target.value)}
-              required
-            />
-          </>
-        )}
-
-        <label className="form-lbl-text">Tipo de Reporte:</label>
-        <div>
-          <input
-            type="radio"
-            id="tiendas"
-            name="tipoReporte"
-            value="tiendas"
-            checked={tipoReporte === "tiendas"}
-            onChange={(e) => setTipoReporte(e.target.value)}
-          />
-          <label htmlFor="tiendas">Tiendas</label>
-
-          <input
-            type="radio"
-            id="mantenimientos"
-            name="tipoReporte"
-            value="mantenimientos"
-            checked={tipoReporte === "mantenimientos"}
-            onChange={(e) => setTipoReporte(e.target.value)}
-          />
-          <label htmlFor="mantenimientos">Mantenimientos</label>
-
-          <input
-            type="radio"
-            id="equipos"
-            name="tipoReporte"
-            value="equipos"
-            checked={tipoReporte === "equipos"}
-            onChange={(e) => setTipoReporte(e.target.value)}
-          />
-          <label htmlFor="equipos">Equipos</label>
-        </div>
-
         <div className="form-group">
           <button type="submit" className="save-button">
             Generar Informe
