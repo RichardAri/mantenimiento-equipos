@@ -11,7 +11,7 @@ import ModalEditarMantenimiento from "../Modales/ModalEditarMantenimiento/ModalE
 import Footer from "./Footer/Footer";
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
 import BotonFlotante from "./BotonFlotante/BotonFlotante"; // Boton de informes
-import LogoutButton from "./Auth/LogoutButton"; // Botón de logout
+import LogoutButton from "./LogoutButton/LogoutButton"; // Botón de logout
 import { useAuth } from "../context/AuthContext";
 import { TiendasProvider } from "../context/TiendasContext";
 
