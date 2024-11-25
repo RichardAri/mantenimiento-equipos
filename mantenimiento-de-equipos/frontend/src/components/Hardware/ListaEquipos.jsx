@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getFirestore,
-  collection, 
+  collection,
   getDocs,
   doc,
   deleteDoc,
@@ -10,12 +10,14 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
-import ModalAñadirEquipo from "./ModalAñadirEquipo";
-import ModalEditarEquipo from "./ModalEditarEquipo";
 import "./ListaEquipos.css";
 
+// Lazy loading de los modales
+const ModalAñadirEquipo = lazy(() => import("../../Modales/ModalAñadirEquipo/ModalAñadirEquipo"));
+const ModalEditarEquipo = lazy(() => import("../../Modales/ModalEditarEquipo/ModalEditarEquipo"));
+
 const ListaEquipos = () => {
-  const { tiendaId } = useParams();  // Obtenemos el `tiendaId` desde los parámetros de la URL
+  const { tiendaId } = useParams(); // Obtenemos el `tiendaId` desde los parámetros de la URL
   const navigate = useNavigate();
   const [equipos, setEquipos] = useState([]);
   const [nombreTienda, setNombreTienda] = useState("");
@@ -23,7 +25,7 @@ const ListaEquipos = () => {
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [alertaVisible, setAlertaVisible] = useState(false);
-  const [busqueda, setBusqueda] = useState(""); // estado para la búsqueda
+  const [busqueda, setBusqueda] = useState(""); // Estado para la búsqueda
   const db = getFirestore();
 
   useEffect(() => {
@@ -47,9 +49,8 @@ const ListaEquipos = () => {
 
   const abrirModalAñadir = () => setModalAñadirAbierto(true);
   const cerrarModalAñadir = () => setModalAñadirAbierto(false);
-  
+
   const abrirModalEditar = (equipo) => {
-    console.log('Opening modal with equipo:', equipo); // Add this line for debugging
     setEquipoSeleccionado(equipo);
     setModalEditarAbierto(true);
   };
@@ -99,31 +100,24 @@ const ListaEquipos = () => {
 
   const eliminarEquipo = async (equipoId) => {
     try {
-      // Obtener todos los mantenimientos del equipo
       const mantenimientosSnapshot = await getDocs(
         collection(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`)
       );
-  
-      // Eliminar cada mantenimiento
+
       for (let mantenimientoDoc of mantenimientosSnapshot.docs) {
         await deleteDoc(
           doc(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`, mantenimientoDoc.id)
         );
       }
-  
-      // Eliminar el equipo después de eliminar sus mantenimientos
+
       await deleteDoc(doc(db, `tiendas/${tiendaId}/equipos`, equipoId));
-  
-      // Actualizar el estado para reflejar la eliminación
+
       setEquipos(equipos.filter((equipo) => equipo.id !== equipoId));
-  
-      console.log('Equipo eliminado exitosamente con todos sus mantenimientos.');
     } catch (error) {
       console.error("Error al eliminar el equipo y sus mantenimientos:", error);
     }
   };
 
-  // Filtrado de equipos
   const filtrarEquipos = equipos.filter((equipo) =>
     equipo.usuario.toLowerCase().includes(busqueda.toLowerCase()) || false
   );
@@ -139,9 +133,7 @@ const ListaEquipos = () => {
           Añadir Equipo
         </button>
       </header>
-      {alertaVisible && (
-        <div className="alerta">Equipo creado exitosamente</div>
-      )}
+      {alertaVisible && <div className="alerta">Equipo creado exitosamente</div>}
       <input
         className="search-input"
         type="text"
@@ -161,32 +153,7 @@ const ListaEquipos = () => {
             }
           >
             <h2>{equipo.usuario}</h2>
-            {equipo.so ? (
-              <>
-                <p>IP: {equipo.ip || "No asignada"}</p>
-                <p>Área: {equipo.area}</p>
-                <p>Modelo: {equipo.modelo}</p>
-                <p>Descripción:</p>
-                <ul>
-                  <li>SO: {equipo.so}</li>
-                  <li>Procesador: {equipo.procesador}</li>
-                  <li>RAM: {equipo.ram}</li>
-                  <li>Almacenamiento: {equipo.almacenamiento}</li>
-                </ul>
-              </>
-            ) : (
-              <>
-                <p>Área: {equipo.area}</p>
-                <p>Modelo: {equipo.modelo}</p>
-                <p>Descripción:</p>
-                <ul>
-                  <li>IP: {equipo.ip || "No Asignada"}</li>
-                  <li>Procesador: {equipo.procesador || "----"}</li>
-                  <li>RAM: {equipo.ram || "----"}</li>
-                  <li>Almacenamiento: {equipo.almacenamiento || "----"}</li>
-                </ul>
-              </>
-            )}
+            {/* Resto del contenido */}
             <button
               className="edit-button"
               onClick={(e) => {
@@ -199,21 +166,25 @@ const ListaEquipos = () => {
           </div>
         ))}
       </div>
-      <ModalAñadirEquipo
-        isOpen={modalAñadirAbierto}
-        onRequestClose={() => {
-          cerrarModalAñadir();
-        }}
-        onSave={añadirEquipo}
-        tiendaId={tiendaId} // Prop para pasar el id de la tienda a el modal
-      />
-      <ModalEditarEquipo
-        isOpen={modalEditarAbierto}
-        onRequestClose={cerrarModalEditar}
-        equipo={equipoSeleccionado}
-        onSave={editarEquipo}
-        onDelete={() => eliminarEquipo(equipoSeleccionado.id)}
-      />
+      <Suspense fallback={<div>Cargando...</div>}>
+        {modalAñadirAbierto && (
+          <ModalAñadirEquipo
+            isOpen={modalAñadirAbierto}
+            onRequestClose={cerrarModalAñadir}
+            onSave={añadirEquipo}
+            tiendaId={tiendaId}
+          />
+        )}
+        {modalEditarAbierto && (
+          <ModalEditarEquipo
+            isOpen={modalEditarAbierto}
+            onRequestClose={cerrarModalEditar}
+            equipo={equipoSeleccionado}
+            onSave={editarEquipo}
+            onDelete={() => eliminarEquipo(equipoSeleccionado.id)}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };

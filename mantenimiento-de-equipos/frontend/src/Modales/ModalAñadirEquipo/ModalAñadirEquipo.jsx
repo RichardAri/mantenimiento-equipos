@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
-import "../Modal.css";
 
 Modal.setAppElement("#root");
 

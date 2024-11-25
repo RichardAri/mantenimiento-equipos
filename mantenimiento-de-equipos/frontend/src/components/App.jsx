@@ -4,10 +4,10 @@ import Login from "./Auth/Login";
 import ListaTiendas from "./Stores/ListaTiendas";
 import ListaEquipos from "./Hardware/ListaEquipos";
 import ListaMantenimientos from "./Maintenance/ListaMantenimientos";
-import ModalAñadirEquipo from "./Hardware/ModalAñadirEquipo";
-import ModalEditarEquipo from "./Hardware/ModalEditarEquipo";
-import ModalAñadirMantenimiento from "./Maintenance/ModalAñadirMantenimiento";
-import ModalEditarMantenimiento from "./Maintenance/ModalEditarMantenimiento";
+import ModalAñadirEquipo from "../Modales/ModalAñadirEquipo/ModalAñadirEquipo";
+import ModalEditarEquipo from "../Modales/ModalEditarEquipo/ModalEditarEquipo";
+import ModalAñadirMantenimiento from "../Modales/ModalAñadirMantenimiento/ModalAñadirMantenimiento";
+import ModalEditarMantenimiento from "../Modales/ModalEditarMantenimiento/ModalEditarMantenimiento";
 import Footer from "./Footer/Footer";
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
 import BotonFlotante from "./Reports/BotonFlotante"; // Boton de informes
