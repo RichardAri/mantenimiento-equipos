@@ -13,8 +13,12 @@ import {
 import "./ListaEquipos.css";
 
 // Lazy loading de los modales
-const ModalAñadirEquipo = lazy(() => import("../../Modales/ModalAñadirEquipo/ModalAñadirEquipo"));
-const ModalEditarEquipo = lazy(() => import("../../Modales/ModalEditarEquipo/ModalEditarEquipo"));
+const ModalAñadirEquipo = lazy(() =>
+  import("../../Modales/ModalAñadirEquipo/ModalAñadirEquipo")
+);
+const ModalEditarEquipo = lazy(() =>
+  import("../../Modales/ModalEditarEquipo/ModalEditarEquipo")
+);
 
 const ListaEquipos = () => {
   const { tiendaId } = useParams(); // Obtenemos el `tiendaId` desde los parámetros de la URL
@@ -25,7 +29,7 @@ const ListaEquipos = () => {
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [alertaVisible, setAlertaVisible] = useState(false);
-  const [busqueda, setBusqueda] = useState(""); // Estado para la búsqueda
+  const [busqueda, setBusqueda] = useState("");
   const db = getFirestore();
 
   useEffect(() => {
@@ -106,7 +110,11 @@ const ListaEquipos = () => {
 
       for (let mantenimientoDoc of mantenimientosSnapshot.docs) {
         await deleteDoc(
-          doc(db, `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`, mantenimientoDoc.id)
+          doc(
+            db,
+            `tiendas/${tiendaId}/equipos/${equipoId}/mantenimientos`,
+            mantenimientoDoc.id
+          )
         );
       }
 
@@ -118,8 +126,9 @@ const ListaEquipos = () => {
     }
   };
 
-  const filtrarEquipos = equipos.filter((equipo) =>
-    equipo.usuario.toLowerCase().includes(busqueda.toLowerCase()) || false
+  const filtrarEquipos = equipos.filter(
+    (equipo) =>
+      equipo.usuario.toLowerCase().includes(busqueda.toLowerCase()) || false
   );
 
   return (
@@ -133,7 +142,9 @@ const ListaEquipos = () => {
           Añadir Equipo
         </button>
       </header>
-      {alertaVisible && <div className="alerta">Equipo creado exitosamente</div>}
+      {alertaVisible && (
+        <div className="alerta">Equipo creado exitosamente</div>
+      )}
       <input
         className="search-input"
         type="text"
@@ -153,7 +164,32 @@ const ListaEquipos = () => {
             }
           >
             <h2>{equipo.usuario}</h2>
-            {/* Resto del contenido */}
+            {equipo.so ? (
+              <>
+                <p>IP: {equipo.ip || "No asignada"}</p>
+                <p>Área: {equipo.area}</p>
+                <p>Modelo: {equipo.modelo}</p>
+                <p>Descripción:</p>
+                <ul>
+                  <li>SO: {equipo.so}</li>
+                  <li>Procesador: {equipo.procesador}</li>
+                  <li>RAM: {equipo.ram}</li>
+                  <li>Almacenamiento: {equipo.almacenamiento}</li>
+                </ul>
+              </>
+            ) : (
+              <>
+                <p>Área: {equipo.area}</p>
+                <p>Modelo: {equipo.modelo}</p>
+                <p>Descripción:</p>
+                <ul>
+                  <li>IP: {equipo.ip || "No Asignada"}</li>
+                  <li>Procesador: {equipo.procesador || "----"}</li>
+                  <li>RAM: {equipo.ram || "----"}</li>
+                  <li>Almacenamiento: {equipo.almacenamiento || "----"}</li>
+                </ul>
+              </>
+            )}
             <button
               className="edit-button"
               onClick={(e) => {
@@ -166,6 +202,7 @@ const ListaEquipos = () => {
           </div>
         ))}
       </div>
+
       <Suspense fallback={<div>Cargando...</div>}>
         {modalAñadirAbierto && (
           <ModalAñadirEquipo

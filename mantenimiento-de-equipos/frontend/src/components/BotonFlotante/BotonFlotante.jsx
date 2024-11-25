@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ModalInformes from "./ModalInformes";
+import ModalInformes from "../Reports/ModalInformes";
 import "./BotonFlotante.css";
 
 const BotonFlotante = () => {

@@ -10,7 +10,7 @@ import ModalAñadirMantenimiento from "../Modales/ModalAñadirMantenimiento/Moda
 import ModalEditarMantenimiento from "../Modales/ModalEditarMantenimiento/ModalEditarMantenimiento";
 import Footer from "./Footer/Footer";
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
-import BotonFlotante from "./Reports/BotonFlotante"; // Boton de informes
+import BotonFlotante from "./BotonFlotante/BotonFlotante"; // Boton de informes
 import LogoutButton from "./Auth/LogoutButton"; // Botón de logout
 import { useAuth } from "../context/AuthContext";
 import { TiendasProvider } from "../context/TiendasContext";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // Importa useEffect
+import React, { useState, useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
@@ -15,7 +15,7 @@ const Login = () => {
   // Verifica si el usuario ya está autenticado
   useEffect(() => {
     if (!loading && user) { // Solo redirige si 'loading' ha terminado y hay un usuario
-      navigate("/tiendas");
+      navigate("/");
     }
   }, [user, loading, navigate]); // Ejecuta cada vez que cambien 'user' o 'loading'
 
