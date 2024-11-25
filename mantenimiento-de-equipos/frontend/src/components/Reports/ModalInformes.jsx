@@ -8,7 +8,7 @@ import {
   fetchTiendas,
   fetchMantenimientos,
   fetchEquipos,
-} from "../../firestoreQueries";
+} from "../../Utils/firestoreQueries";
 
 Modal.setAppElement("#root");
 

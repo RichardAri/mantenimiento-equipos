@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getFirestore,
@@ -10,9 +10,15 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import ModalAñadirMantenimiento from "./ModalAñadirMantenimiento";
-import ModalEditarMantenimiento from "./ModalEditarMantenimiento";
 import "./ListaMantenimientos.css";
+
+// Importación diferida (lazy loading) de los modales
+const ModalAñadirMantenimiento = lazy(() =>
+  import("../../Modales/ModalAñadirMantenimiento/ModalAñadirMantenimiento")
+);
+const ModalEditarMantenimiento = lazy(() =>
+  import("../../Modales/ModalEditarMantenimiento/ModalEditarMantenimiento")
+);
 
 const ListaMantenimientos = () => {
   const { tiendaId, equipoId } = useParams();
@@ -21,7 +27,8 @@ const ListaMantenimientos = () => {
   const [equipoNombre, setEquipoNombre] = useState("");
   const [modalAñadirAbierto, setModalAñadirAbierto] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
-  const [mantenimientoSeleccionado, setMantenimientoSeleccionado] = useState(null);
+  const [mantenimientoSeleccionado, setMantenimientoSeleccionado] =
+    useState(null);
   const db = getFirestore();
 
   useEffect(() => {
@@ -67,7 +74,10 @@ const ListaMantenimientos = () => {
     cerrarModalAñadir();
   };
 
-  const editarMantenimiento = async (mantenimientoId, mantenimientoActualizado) => {
+  const editarMantenimiento = async (
+    mantenimientoId,
+    mantenimientoActualizado
+  ) => {
     await updateDoc(
       doc(
         db,
@@ -135,20 +145,26 @@ const ListaMantenimientos = () => {
             </div>
           ))}
       </div>
-      <ModalAñadirMantenimiento
-        isOpen={modalAñadirAbierto}
-        onRequestClose={cerrarModalAñadir}
-        onSave={añadirMantenimiento}
-        equipoId={equipoId}
-        tiendaId={tiendaId}
-      />
-      <ModalEditarMantenimiento
-        isOpen={modalEditarAbierto}
-        onRequestClose={cerrarModalEditar}
-        mantenimiento={mantenimientoSeleccionado}
-        onSave={editarMantenimiento}
-        onDelete={eliminarMantenimiento}
-      />
+      <Suspense fallback={<div>Cargando...</div>}>
+        {modalAñadirAbierto && (
+          <ModalAñadirMantenimiento
+            isOpen={modalAñadirAbierto}
+            onRequestClose={cerrarModalAñadir}
+            onSave={añadirMantenimiento}
+            equipoId={equipoId}
+            tiendaId={tiendaId}
+          />
+        )}
+        {modalEditarAbierto && (
+          <ModalEditarMantenimiento
+            isOpen={modalEditarAbierto}
+            onRequestClose={cerrarModalEditar}
+            mantenimiento={mantenimientoSeleccionado}
+            onSave={editarMantenimiento}
+            onDelete={eliminarMantenimiento}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };

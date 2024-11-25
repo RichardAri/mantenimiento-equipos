@@ -10,8 +10,8 @@ import {
 } from "firebase/firestore";
 import "./ListaTiendas.css";
 
-const ModalAñadirTienda = lazy(() => import("../ModalAñadirTienda/ModalAñadirTienda"));
-const ModalEditarTienda = lazy(() => import("../ModalEditarTienda/ModalEditarTienda"));
+const ModalAñadirTienda = lazy(() => import("../../Modales/ModalAñadirTienda/ModalAñadirTienda"));
+const ModalEditarTienda = lazy(() => import("../../Modales/ModalEditarTienda/ModalEditarTienda"));
 
 const ListaTiendas = () => {
   const [tiendas, setTiendas] = useState([]);
