@@ -69,6 +69,7 @@ const ModalAñadirMantenimiento = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const nuevoMantenimiento = {
+      fecha: new Date(),
       usuario,
       nombreMantenimiento,
       descripcion,
