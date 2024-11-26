@@ -42,7 +42,8 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave, tiendaId }) => {
       almacenamiento,
       ip,
       tiendaId, // ID de la tienda a la que pertenece este equipo
-      fechaCreacion: `${new Date().getFullYear()}-${new Date().getMonth() + 1
+      fechaCreacion: `${new Date().getFullYear()}-${
+        new Date().getMonth() + 1
       }-${new Date().getDate()}`, // Fecha completa
       mesCreacion: new Date().getMonth() + 1, // Mes de creacion (1-12)
       añoCreacion: new Date().getFullYear(), // Año de creacion

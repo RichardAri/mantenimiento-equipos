@@ -23,10 +23,12 @@ const ModalAñadirTienda = ({ isOpen, onRequestClose, onSave }) => {
       ubicacion,
       encargado,
       nroEquipos: 0, // Número de equipos asociados a la tienda
-      fechaCreacion: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`, // Fecha completa
+      fechaCreacion: `${new Date().getFullYear()}-${
+        new Date().getMonth() + 1
+      }-${new Date().getDate()}`, // Fecha completa
       mesCreacion: new Date().getMonth() + 1, // Mes de creación (1-12)
       añoCreacion: new Date().getFullYear(), // Año de creación
-      mantenimientos: 0, // Contador de mantenimientos general por tienda 
+      mantenimientos: 0, // Contador de mantenimientos general por tienda
     };
 
     try {

@@ -14,7 +14,8 @@ const ModalAñadirMantenimiento = ({
   mantenimiento, // datos de mantenimiento si estamos editando
 }) => {
   // Estados locales para manejar el formulario
-  const [nombreMantenimiento, setNombreMantenimiento] = useState("Cambio de Disco");
+  const [nombreMantenimiento, setNombreMantenimiento] =
+    useState("Cambio de Disco");
   const [usuario, setUsuario] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [personal, setPersonal] = useState("");
@@ -68,7 +69,6 @@ const ModalAñadirMantenimiento = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const nuevoMantenimiento = {
-      fecha: new Date().toISOString(),
       usuario,
       nombreMantenimiento,
       descripcion,
@@ -82,14 +82,20 @@ const ModalAñadirMantenimiento = ({
       ip,
       tiendaId, // ID de la tienda donde se realizó el mantenimiento
       equipoId, // ID del equipo que recibió el mantenimiento
-      fechaCreacion: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`, // Fecha completa
+      fechaCreacion: `${new Date().getFullYear()}-${
+        new Date().getMonth() + 1
+      }-${new Date().getDate()}`, // Fecha completa
       mesCreacion: new Date().getMonth() + 1, // Mes de mantenimiento (1-12)
       añoCreacion: new Date().getFullYear(), // Año de mantenimiento
     };
 
     if (mantenimiento) {
       // Actualizar mantenimiento existente
-      const docRef = doc(db, `tiendas/${tiendaId}/mantenimientos`, mantenimiento.id);
+      const docRef = doc(
+        db,
+        `tiendas/${tiendaId}/mantenimientos`,
+        mantenimiento.id
+      );
       await updateDoc(docRef, nuevoMantenimiento);
     } else {
       // Añadir nuevo mantenimiento
@@ -213,7 +219,9 @@ const ModalAñadirMantenimiento = ({
 
         <div className="button-group">
           <button type="submit" className="save-button">
-            {mantenimiento ? "Actualizar Mantenimiento" : "Añadir Mantenimiento"}
+            {mantenimiento
+              ? "Actualizar Mantenimiento"
+              : "Añadir Mantenimiento"}
           </button>
         </div>
       </form>

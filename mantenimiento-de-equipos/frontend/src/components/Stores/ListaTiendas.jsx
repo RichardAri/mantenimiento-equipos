@@ -96,7 +96,7 @@ const ListaTiendas = () => {
           </div>
         ))}
       </div>
-      {loading && <div className="notification">Cargando más tiendas...</div>}
+      {loading && <div className="notification">Cargando tiendas...</div>}
       {notification && (
         <div className="notification">
           <p>{notification}</p>
