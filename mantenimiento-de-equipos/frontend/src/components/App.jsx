@@ -23,7 +23,7 @@ const App = () => {
       <div className="app-container">
         <Routes>
           {/* Ruta publica */}
-          <Route path="/tienda" element={<Login />} />
+          <Route path="/tiendas" element={<Login />} />
           {/* Rutas protegidas */}
           <Route
             path="/tiendas"
