@@ -8,16 +8,18 @@ const TiendasProvider = ({ children }) => {
   const [tiendas, setTiendas] = useState([]);
 
   const actualizarNumeroEquipos = async (tiendaId, nuevoNumero) => {
-    // Actualiza en Firestore
-    const tiendaRef = doc(db, `tiendas/${tiendaId}`);
-    await updateDoc(tiendaRef, { numeroEquipos: nuevoNumero });
+    try {
+      const tiendaRef = doc(db, `tiendas/${tiendaId}`);
+      await updateDoc(tiendaRef, { numeroEquipos: nuevoNumero });
 
-    // Actualiza el estado local
-    setTiendas(prevTiendas =>
-      prevTiendas.map(tienda =>
-        tienda.id === tiendaId ? { ...tienda, numeroEquipos: nuevoNumero } : tienda
-      )
-    );
+      setTiendas((prevTiendas) =>
+        prevTiendas.map((tienda) =>
+          tienda.id === tiendaId ? { ...tienda, numeroEquipos: nuevoNumero } : tienda
+        )
+      );
+    } catch (error) {
+      console.error("Error al actualizar el número de equipos:", error);
+    }
   };
 
   return (

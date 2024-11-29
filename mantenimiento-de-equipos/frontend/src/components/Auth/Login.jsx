@@ -4,32 +4,33 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import Clock from "../Clock/Clock";
 import "./Login.css";
-import useAuth from "./useAuth"; 
+import { useAuth } from "../../context/AuthContext"; // Usamos el hook para acceder a 'user' y 'loading'
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { user, loading } = useAuth(); // Obtén el estado del usuario del contexto
+  const { user, loading } = useAuth(); // Accedemos al estado de autenticación y cargando
 
-  // Verifica si el usuario ya está autenticado
   useEffect(() => {
-    if (!loading && user) { // Solo redirige si 'loading' ha terminado y hay un usuario
-      navigate("/");
+    console.log("User state:", user); // Verifica si el estado de 'user' cambia
+
+    // Evitamos redirigir si el usuario está en proceso de carga
+    if (user && !loading) {
+      navigate("/tiendas"); // Redirige a '/tiendas' si el usuario está autenticado
     }
-  }, [user, loading, navigate]); // Ejecuta cada vez que cambien 'user' o 'loading'
+  }, [user, loading, navigate]); // Dependemos de 'user', 'loading' y 'navigate'
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/tiendas");
     } catch (error) {
       alert("Error al iniciar sesión");
     }
   };
 
-  // Si está cargando, podrías mostrar un mensaje o spinner
+  // Si está cargando, mostramos un mensaje o spinner (evitamos mostrar el login)
   if (loading) return <div>Cargando...</div>;
 
   return (

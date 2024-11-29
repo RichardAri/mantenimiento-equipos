@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";  // Usamos solo Routes y Route aquí
+import { Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
 import ListaTiendas from "./Stores/ListaTiendas";
 import ListaEquipos from "./Hardware/ListaEquipos";
@@ -10,13 +10,24 @@ import ModalAñadirMantenimiento from "../Modales/ModalAñadirMantenimiento/Moda
 import ModalEditarMantenimiento from "../Modales/ModalEditarMantenimiento/ModalEditarMantenimiento";
 import Footer from "./Footer/Footer";
 import ProtectedRoute from "../context/ProtectedRoute"; // Ruta protegida
-import BotonFlotante from "./BotonFlotante/BotonFlotante"; // Botón de informes
+import BotonFlotante from "./BotonFlotante/BotonFlotante"; // Boton de informes
 import LogoutButton from "./LogoutButton/LogoutButton"; // Botón de logout
 import { useAuth } from "../context/AuthContext";
-import { TiendasProvider } from "../context/TiendasContext"; // El contexto de Tiendas
+import { TiendasProvider } from "../context/TiendasContext";
 
 const App = () => {
-  const { user } = useAuth();  // Obtenemos el usuario autenticado
+  const { user } = useAuth();
+
+  // Definimos las rutas protegidas de forma centralizada
+  const protectedRoutes = [
+    { path: "/tiendas", component: <ListaTiendas /> },
+    { path: "/tiendas/:tiendaId/equipos", component: <ListaEquipos /> },
+    { path: "/tiendas/:tiendaId/equipos/nuevo", component: <ModalAñadirEquipo /> },
+    { path: "/tiendas/:tiendaId/equipos/:equipoId/editar", component: <ModalEditarEquipo /> },
+    { path: "/tiendas/:tiendaId/equipos/:equipoId/mantenimientos", component: <ListaMantenimientos /> },
+    { path: "/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo", component: <ModalAñadirMantenimiento /> },
+    { path: "/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar", component: <ModalEditarMantenimiento /> },
+  ];
 
   return (
     <TiendasProvider>
@@ -25,63 +36,14 @@ const App = () => {
           {/* Ruta pública */}
           <Route path="/" element={<Login />} />
 
-          {/* Rutas protegidas */}
-          <Route
-            path="/tiendas"
-            element={
-              <ProtectedRoute>
-                <ListaTiendas />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos"
-            element={
-              <ProtectedRoute>
-                <ListaEquipos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/nuevo"
-            element={
-              <ProtectedRoute>
-                <ModalAñadirEquipo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/editar"
-            element={
-              <ProtectedRoute>
-                <ModalEditarEquipo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos"
-            element={
-              <ProtectedRoute>
-                <ListaMantenimientos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo"
-            element={
-              <ProtectedRoute>
-                <ModalAñadirMantenimiento />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar"
-            element={
-              <ProtectedRoute>
-                <ModalEditarMantenimiento />
-              </ProtectedRoute>
-            }
-          />
+          {/* Rutas protegidas agrupadas */}
+          {protectedRoutes.map(({ path, component }) => (
+            <Route
+              key={path}
+              path={path}
+              element={<ProtectedRoute>{component}</ProtectedRoute>}
+            />
+          ))}
         </Routes>
 
         {/* Solo muestra los botones si el usuario está autenticado */}

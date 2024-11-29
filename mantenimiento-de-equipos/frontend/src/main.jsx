@@ -1,23 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './components/App'; // El componente principal de tu aplicación
-import { AuthProvider } from './context/AuthContext'; // Contexto de autenticación
-import { TiendasProvider } from './context/TiendasContext'; // Contexto de tiendas
-import { BrowserRouter } from 'react-router-dom'; // Envolvemos toda la aplicación en BrowserRouter
+import ReactDOM from 'react-dom/client'; // API 
+import { BrowserRouter as Router } from 'react-router-dom';
+import App from './components/App'; // componente principal
+import { AuthProvider } from './context/AuthContext'; // Provider
 
 // Crear el root con React 18
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// Renderizamos el árbol de la aplicación con los contextos y el enrutamiento
+// Renderizar el árbol de la aplicación
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>  {/* Solo un BrowserRouter a nivel de la raíz */}
-      <AuthProvider>
-        <TiendasProvider>
-          <App />
-        </TiendasProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <AuthProvider>
+    <Router>
+      <App />
+    </Router>
+  </AuthProvider>
 );

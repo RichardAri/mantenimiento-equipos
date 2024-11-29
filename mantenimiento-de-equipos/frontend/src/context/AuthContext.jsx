@@ -6,13 +6,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Añadimos loading para verificar el estado de la autenticación
 
-  // estado de autenticacion
+  // Verificamos el estado de autenticación
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false); // respuesta de Firebase
+      setLoading(false); // Una vez se haya determinado el estado, dejamos de cargar
     });
 
     return () => unsubscribe(); // Cleanup al desmontar
@@ -25,6 +25,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
