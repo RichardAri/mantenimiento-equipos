@@ -56,11 +56,10 @@ const ModalAñadirEquipo = ({ isOpen, onRequestClose, onSave, tiendaId }) => {
       await updateDoc(tiendaRef, {
         nroEquipos: increment(1),
       });
-
-      onRequestClose();
     } catch (error) {
       console.error("Error al añadir equipo:", error);
     }
+    onRequestClose();
   };
 
   return (
