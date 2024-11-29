@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";  // Cambié a BrowserRouter
 import Login from "./Auth/Login";
 import ListaTiendas from "./Stores/ListaTiendas";
 import ListaEquipos from "./Hardware/ListaEquipos";
@@ -20,78 +20,80 @@ const App = () => {
 
   return (
     <TiendasProvider>
-      <div className="app-container">
-        <Routes>
-          {/* Ruta publica */}
-          <Route path="/" element={<Login />} />
-          {/* Rutas protegidas */}
-          <Route
-            path="/tiendas"
-            element={
-              <ProtectedRoute>
-                <ListaTiendas />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos"
-            element={
-              <ProtectedRoute>
-                <ListaEquipos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/nuevo"
-            element={
-              <ProtectedRoute>
-                <ModalAñadirEquipo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/editar"
-            element={
-              <ProtectedRoute>
-                <ModalEditarEquipo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos"
-            element={
-              <ProtectedRoute>
-                <ListaMantenimientos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo"
-            element={
-              <ProtectedRoute>
-                <ModalAñadirMantenimiento />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar"
-            element={
-              <ProtectedRoute>
-                <ModalEditarMantenimiento />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+      <Router>  {/* Envolvemos con BrowserRouter */}
+        <div className="app-container">
+          <Routes>
+            {/* Ruta publica */}
+            <Route path="/" element={<Login />} />
+            {/* Rutas protegidas */}
+            <Route
+              path="/tiendas"
+              element={
+                <ProtectedRoute>
+                  <ListaTiendas />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tiendas/:tiendaId/equipos"
+              element={
+                <ProtectedRoute>
+                  <ListaEquipos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tiendas/:tiendaId/equipos/nuevo"
+              element={
+                <ProtectedRoute>
+                  <ModalAñadirEquipo />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tiendas/:tiendaId/equipos/:equipoId/editar"
+              element={
+                <ProtectedRoute>
+                  <ModalEditarEquipo />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos"
+              element={
+                <ProtectedRoute>
+                  <ListaMantenimientos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/nuevo"
+              element={
+                <ProtectedRoute>
+                  <ModalAñadirMantenimiento />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tiendas/:tiendaId/equipos/:equipoId/mantenimientos/:mantenimientoId/editar"
+              element={
+                <ProtectedRoute>
+                  <ModalEditarMantenimiento />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
 
-        {/* Solo muestra los botones si el usuario está autenticado */}
-        {user && (
-          <>
-            <Footer />
-            <BotonFlotante /> {/* Boton de informes */}
-            <LogoutButton /> {/* Boton de logout */}
-          </>
-        )}
-      </div>
+          {/* Solo muestra los botones si el usuario está autenticado */}
+          {user && (
+            <>
+              <Footer />
+              <BotonFlotante /> {/* Boton de informes */}
+              <LogoutButton /> {/* Boton de logout */}
+            </>
+          )}
+        </div>
+      </Router>  {/* Cierre de BrowserRouter */}
     </TiendasProvider>
   );
 };
