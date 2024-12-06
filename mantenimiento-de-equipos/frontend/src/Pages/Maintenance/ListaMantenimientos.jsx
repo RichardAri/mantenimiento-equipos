@@ -11,6 +11,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import "./ListaMantenimientos.css";
+import Card from "../../components/Card/Card";
 
 // Importación diferida (lazy loading) de los modales
 const ModalAñadirMantenimiento = lazy(() =>
@@ -127,24 +128,25 @@ const ListaMantenimientos = () => {
         {mantenimientos
           .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
           .map((mantenimiento) => (
-            <div
-              className="card"
+            <Card
               key={mantenimiento.id}
+              title={new Date(mantenimiento.fecha).toLocaleString()}
+              description={`Usuario: ${mantenimiento.usuario}`}
+              details={[
+                `Caja: ${mantenimiento.caja}`,
+                `Área: ${mantenimiento.area}`,
+                `Modelo: ${mantenimiento.modelo}`,
+                `SO: ${mantenimiento.so}`,
+                `Procesador: ${mantenimiento.procesador}`,
+                `RAM: ${mantenimiento.ram}`,
+                `Almacenamiento: ${mantenimiento.almacenamiento}`,
+                `IP: ${mantenimiento.ip}`,
+              ]}
               onClick={() => abrirModalEditar(mantenimiento)}
-            >
-              <h2>{new Date(mantenimiento.fecha).toLocaleString()}</h2>
-              <p>Usuario: {mantenimiento.usuario}</p>
-              <p>Caja: {mantenimiento.caja}</p>
-              <p>Área: {mantenimiento.area}</p>
-              <p>Modelo: {mantenimiento.modelo}</p>
-              <p>SO: {mantenimiento.so}</p>
-              <p>Procesador: {mantenimiento.procesador}</p>
-              <p>RAM: {mantenimiento.ram}</p>
-              <p>Almacenamiento: {mantenimiento.almacenamiento}</p>
-              <p>IP: {mantenimiento.ip}</p>
-            </div>
+            />
           ))}
       </div>
+      ;
       <Suspense fallback={<div>Cargando...</div>}>
         {modalAñadirAbierto && (
           <ModalAñadirMantenimiento

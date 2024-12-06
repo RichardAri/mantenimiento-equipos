@@ -9,9 +9,14 @@ import {
   startAfter,
 } from "firebase/firestore";
 import "./ListaTiendas.css";
+import Card from "../../components/Card/Card";
 
-const ModalAñadirTienda = lazy(() => import("../../Modales/ModalAñadirTienda/ModalAñadirTienda"));
-const ModalEditarTienda = lazy(() => import("../../Modales/ModalEditarTienda/ModalEditarTienda"));
+const ModalAñadirTienda = lazy(() =>
+  import("../../Modales/ModalAñadirTienda/ModalAñadirTienda")
+);
+const ModalEditarTienda = lazy(() =>
+  import("../../Modales/ModalEditarTienda/ModalEditarTienda")
+);
 
 const ListaTiendas = () => {
   const [tiendas, setTiendas] = useState([]);
@@ -58,7 +63,10 @@ const ListaTiendas = () => {
     <div className="tiendas-container">
       <header>
         <h1 className="title-page">Capriccio</h1>
-        <button className="add-button" onClick={() => setModalAñadirAbierto(true)}>
+        <button
+          className="add-button"
+          onClick={() => setModalAñadirAbierto(true)}
+        >
           Añadir Tienda
         </button>
       </header>
@@ -71,32 +79,23 @@ const ListaTiendas = () => {
       />
       <div className="card-container">
         {filteredTiendas.map((tienda) => (
-          <div
-            className="card"
+          <Card
             key={tienda.id}
+            title={tienda.nombre}
+            description={`Ubicación: ${tienda.ubicacion}`}
+            details={[
+              `Nro de Equipos: ${tienda.nroEquipos}`,
+              `Encargado: ${tienda.encargado}`,
+            ]}
             onClick={() => navigate(`/tiendas/${tienda.id}/equipos`)}
-            style={{ cursor: "pointer" }}
-          >
-            <h2>{tienda.nombre}</h2>
-            <p>Ubicación: {tienda.ubicacion}</p>
-            <p>Nro de Equipos: {tienda.nroEquipos}</p>
-            <p>Encargado: {tienda.encargado}</p>
-            <div>
-              <button
-                className="edit-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setTiendaSeleccionada(tienda);
-                  setModalEditarAbierto(true);
-                }}
-              >
-                ✎
-              </button>
-            </div>
-          </div>
+            onEditClick={() => {
+              setTiendaSeleccionada(tienda);
+              setModalEditarAbierto(true);
+            }}
+          />
         ))}
       </div>
-      {loading && <div className="notification">Cargando tiendas...</div>}
+      ;{loading && <div className="notification">Cargando tiendas...</div>}
       {notification && (
         <div className="notification">
           <p>{notification}</p>
@@ -122,7 +121,9 @@ const ListaTiendas = () => {
             onSave={(tiendaActualizada) => {
               setTiendas((prevTiendas) =>
                 prevTiendas.map((tienda) =>
-                  tienda.id === tiendaActualizada.id ? tiendaActualizada : tienda
+                  tienda.id === tiendaActualizada.id
+                    ? tiendaActualizada
+                    : tienda
                 )
               );
               setNotification("Tienda actualizada exitosamente!");

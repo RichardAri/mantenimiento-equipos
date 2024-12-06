@@ -11,6 +11,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import "./ListaEquipos.css";
+import Card from "../../components/Card/Card";
 
 // Lazy loading de los modales
 const ModalAñadirEquipo = lazy(() =>
@@ -154,55 +155,28 @@ const ListaEquipos = () => {
       />
       <div className="card-container">
         {filtrarEquipos.map((equipo) => (
-          <div
-            className="card"
+          <Card
             key={equipo.id}
+            title={equipo.usuario}
+            description={`IP: ${equipo.ip || "No asignada"}`}
+            details={[
+              `Área: ${equipo.area}`,
+              `Modelo: ${equipo.modelo}`,
+              `SO: ${equipo.so || "N/A"}`,
+              `Procesador: ${equipo.procesador || "N/A"}`,
+              `RAM: ${equipo.ram || "N/A"}`,
+              `Almacenamiento: ${equipo.almacenamiento || "N/A"}`,
+            ]}
             onClick={() =>
               navigate(
                 `/tiendas/${tiendaId}/equipos/${equipo.id}/mantenimientos`
               )
             }
-          >
-            <h2>{equipo.usuario}</h2>
-            {equipo.so ? (
-              <>
-                <p>IP: {equipo.ip || "No asignada"}</p>
-                <p>Área: {equipo.area}</p>
-                <p>Modelo: {equipo.modelo}</p>
-                <p>Descripción:</p>
-                <ul>
-                  <li>SO: {equipo.so}</li>
-                  <li>Procesador: {equipo.procesador}</li>
-                  <li>RAM: {equipo.ram}</li>
-                  <li>Almacenamiento: {equipo.almacenamiento}</li>
-                </ul>
-              </>
-            ) : (
-              <>
-                <p>Área: {equipo.area}</p>
-                <p>Modelo: {equipo.modelo}</p>
-                <p>Descripción:</p>
-                <ul>
-                  <li>IP: {equipo.ip || "No Asignada"}</li>
-                  <li>Procesador: {equipo.procesador || "----"}</li>
-                  <li>RAM: {equipo.ram || "----"}</li>
-                  <li>Almacenamiento: {equipo.almacenamiento || "----"}</li>
-                </ul>
-              </>
-            )}
-            <button
-              className="edit-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                abrirModalEditar(equipo);
-              }}
-            >
-              ✎
-            </button>
-          </div>
+            onEditClick={() => abrirModalEditar(equipo)}
+          />
         ))}
       </div>
-
+      ;
       <Suspense fallback={<div>Cargando...</div>}>
         {modalAñadirAbierto && (
           <ModalAñadirEquipo
